@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank A4" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab1d72b0-408f-4243-9b2d-9f9663570ad9">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ConexionMind"/>
+	<parameter name="usuarioUsos" class="java.lang.String"/>
+	<parameter name="inicioUsos" class="java.sql.Timestamp"/>
+	<parameter name="finalUsos" class="java.sql.Timestamp"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT usuarios.nombres as NombreCliente, usuarios.apellidos as ApellidosCliente, usos_usuarios.fecha_asignacion as FechaAsignacion, usos_usuarios.usos_asignados as UsosAsignados, usos_usuarios.usos_redimidos as UsosRedimidos FROM usuarios, usos_usuarios WHERE usuarios.identificador = $P{usuarioUsos} AND usuarios.identificador = usos_usuarios.usuarios_identificador AND usos_usuarios.fecha_asignacion >= $P{inicioUsos} AND usos_usuarios.fecha_asignacion <=  $P{finalUsos};]]>
+	</queryString>
+	<field name="NombreCliente" class="java.lang.String"/>
+	<field name="ApellidosCliente" class="java.lang.String"/>
+	<field name="FechaAsignacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="UsosAsignados" class="java.lang.Integer"/>
+	<field name="UsosRedimidos" class="java.lang.Integer"/>
+	<group name="NombreCliente"/>
+	<group name="ApellidosCliente"/>
+	<group name="FechaAsignacion"/>
+	<group name="UsosAsignados"/>
+	<group name="UsosRedimidos"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="34ef02a6-df9c-4f58-9747-05968424ad2a" key="staticText-1" x="0" y="0" width="555" height="30"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font fontName="SansSerif" size="18" isBold="true"/>
+				</textElement>
+				<text><![CDATA[REPORTE DE USOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="270" splitType="Stretch">
+			<textField>
+				<reportElement uuid="4589a663-5c38-42a4-ba48-2c0506eb2b65" x="0" y="0" width="110" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{FechaAsignacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="64e89dc0-97fb-4584-b93c-06fc517b5c72" x="110" y="0" width="150" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{NombreCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a0f748c9-3474-4f79-b2af-b44f563fc16d" x="260" y="0" width="140" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ApellidosCliente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8dfedc5e-2a74-4bc2-9a58-65bde6cbb506" x="400" y="0" width="80" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{UsosAsignados}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="91ea31fc-458d-4b47-a668-51cc1440ce6f" x="480" y="0" width="75" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{UsosRedimidos}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

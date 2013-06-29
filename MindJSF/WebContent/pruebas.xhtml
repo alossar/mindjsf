@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="css/2mstyle.css" />
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<link rel="stylesheet" href="css/bootstrap-notify.css"></link>
+	<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+</style>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
+    <![endif]-->
+	<title>Pruebas - Mind Management</title>
+</h:head>
+<body>
+	<f:view>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<h:form>
+
+						<h:commandLink action="#{indexController.irAIndex }"
+							styleClass="brand">
+							<img src="img/logo.png" />
+						</h:commandLink>
+
+						<div class="nav-collapse collapse">
+
+							<ul class="nav">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAProcesos }"
+											style="color:white; " value="Procesos"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink action="#{indexController.irAPruebas }"
+											value="Pruebas" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAEvaluados }" value="Evaluados"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink
+											action="#{indexController.irAProgramadores }"
+											value="Programadores" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.maestro }">
+									<li><h:commandLink
+											action="#{indexController.irAClientes }" value="Clientes"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+							</ul>
+							<ul class="navbar-text pull-right">
+								<div class="btn-group" id="barraUsuario">
+									<h:commandLink styleClass="btn btn-inverse"
+										style="margin-top:5px;" action="#{indexController.irACuenta }">
+										<i class="icon-user icon-white"></i>
+										<h:outputText value="#{pruebasController.nombreUsuario}"></h:outputText>
+									</h:commandLink>
+									<h:commandLink styleClass="btn btn-danger"
+										style="margin-top:5px;"
+										action="#{indexController.cerrarSesion }">
+										<i class="icon-remove icon-white"></i>
+									</h:commandLink>
+								</div>
+							</ul>
+						</div>
+					</h:form>
+					<!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+		<!--Cierro Navegador-->
+		<div class="container-fluid">
+
+			<div class="row">
+
+				<h:form styleClass="form-search pull-right">
+					<h:inputText styleClass="input-medium search-query "
+						value="#{pruebasController.parametroBusqueda }" />
+					<h:commandLink styleClass="btn btn-info "
+						action="#{pruebasController.buscarPruebas }">
+						<i class="icon-search icon-white"></i>
+					</h:commandLink>
+					<a data-toggle="modal" class="btn btn-info "
+						href="#myModalCrearPrueba"> <i class="icon-plus icon-white"></i>
+					</a>
+				</h:form>
+			</div>
+
+			<legend>Pruebas</legend>
+			<h:form id="formPanelTablaPruebas">
+				<h:dataTable rendered="#{not empty pruebasController.pruebas }"
+					id="panelTablaPruebas"
+					styleClass="table table-hover table-condensed table-striped"
+					binding="#{pruebasController.dataTable }"
+					value="#{pruebasController.pruebas }" var="prueba">
+					<small> <h:column>
+							<f:facet name="header">
+								<h:outputText value="Nombre de la Prueba"></h:outputText>
+							</f:facet>
+							<h:commandLink value="#{prueba.nombre }" style="color:black; "
+								title="#{prueba.descripcion }"
+								action="#{pruebasController.irAPruebaEspecifica }"
+								rendered="#{not prueba.editar }"></h:commandLink>
+							<h:inputText styleClass="input-small" id="editarNombrePrueba"
+								value="#{prueba.nombre }" rendered="#{prueba.editar }"
+								required="true" requiredMessage="El nombre es necesario."></h:inputText>
+
+							<h:message for="editarNombrePrueba"
+								styleClass="alert alert-error" />
+
+						</h:column> <h:column>
+							<center>
+								<f:facet name="header">
+									<center>
+										<h:outputText value="Cantidad (preguntas)"></h:outputText>
+									</center>
+								</f:facet>
+								<h:outputText value="#{prueba.cantidad }">
+								</h:outputText>
+							</center>
+						</h:column> <h:column>
+							<center>
+								<f:facet name="header">
+									<center>
+										<h:outputText value="Duración (minutos)"></h:outputText>
+									</center>
+								</f:facet>
+								<h:outputText value="#{prueba.duracion }">
+								</h:outputText>
+							</center>
+						</h:column> <h:column>
+							<h:commandLink styleClass="btn btn-info btn-small"
+								action="#{pruebasController.editarPrueba }"
+								rendered="#{not prueba.editar }" style="padding: 5;">
+								<i class="icon-pencil icon-white"></i>
+							</h:commandLink>
+							<h:commandLink styleClass="btn btn-success btn-small"
+								action="#{pruebasController.guardarEditarPrueba }"
+								rendered="#{prueba.editar }" style="padding: 5;">
+								<i class="icon-ok icon-white"></i>
+							</h:commandLink>&nbsp;
+							<h:commandLink styleClass="btn btn-danger btn-small "
+								onclick="$('#myModal').modal('show');"
+								rendered="#{not prueba.editar }">
+								<f:ajax
+									listener="#{pruebasController.seleccionarPruebaEliminar }"></f:ajax>
+								<i class="icon-trash icon-white"></i>
+							</h:commandLink>
+							<h:commandLink styleClass="btn btn-danger btn-small"
+								action="#{pruebasController.cancelarEditarPrueba }"
+								rendered="#{prueba.editar }" style="padding: 5;">
+								<i class="icon-remove icon-white"></i>
+							</h:commandLink>
+
+						</h:column>
+					</small>
+				</h:dataTable>
+				<h:panelGroup styleClass="alert"
+					rendered="#{empty pruebasController.pruebas }">
+					<h:outputText value="No se encontraron pruebas en tu cuenta."></h:outputText>
+					<a data-toggle="modal" href="#myModalCrearPrueba">Crea una
+						prueba. </a>
+				</h:panelGroup>
+			</h:form>
+
+			<h:form id="formModalEliminarPrueba">
+				<div id="myModal" class="modal hide fade" tabindex="-1"
+					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-body"
+						style="text-align: center; font-size: 18pt; font-weight: bold;">
+						<img src="img/dialogo.png" />
+						<h2>Borrar Prueba.</h2>
+						<p style="font-size: 12pt;">¿Estas Seguro que Deseas Borrar?</p>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-danger" data-dismiss="modal"
+							aria-hidden="true">No</button>
+						<h:commandLink styleClass="btn btn-primary show-notification"
+							actionListener="#{pruebasController.eliminarPrueba }"
+							onclick="closeDialog ();" rendered="#{not prueba.editar }"
+							style="padding: 5;" value="SI">
+							<f:ajax render=":formPanelTablaPruebas:panelTablaPruebas" />
+						</h:commandLink>
+					</div>
+
+				</div>
+			</h:form>
+
+			<div id="myModalCrearPrueba" class="modal hide fade" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 345px;">
+				<div class="modal-header" style="height: 50px;">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h3 id="myModalLabel" style="margin-top: 5px; text-align: center;">
+						<img src="img/logoPruebasCrear.png" />Crear Prueba
+					</h3>
+				</div>
+				<h:form>
+					<div id="contenedorBotonesCrearPrueba">
+						<div>
+							<p style="margin-left: 29px;">Nombre</p>
+							<h:inputText required="true" id="inputCrearPrueba"
+								value="#{pruebasController.nombrePruebaCrear }"></h:inputText>
+						</div>
+						<div style="margin-top: 5px;">
+							<p>Descripción</p>
+							<h:inputTextarea required="true" style="height: 100px;"
+								value="#{pruebasController.descripcionPruebaCrear }"></h:inputTextarea>
+						</div>
+
+						<h:commandButton styleClass="btn btn-primary" id="botCrearPrueba"
+							action="#{pruebasController.crearPrueba }" value="Crear"></h:commandButton>
+					</div>
+				</h:form>
+			</div>
+			<hr />
+			<footer>
+			<p>&copy; Mind Management 2013</p>
+			</footer>
+
+		</div>
+		<!--/.fluid-container-->
+	</f:view>
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap-transition.js"></script>
+	<script src="js/bootstrap-alert.js"></script>
+	<script src="js/bootstrap-notify.js"></script>
+
+	<script>
+		$('.show-notification').click(function(e) {
+			$('.top-left').notify({
+				message : {
+					text : 'Aw yeah, It works!'
+				}
+			}).show();
+		});
+	</script>
+	<script>
+		function closeDialog() {
+			$('#myModalCrearProceso').modal('hide');
+			$('#myModal').modal('hide');
+			$('#myModalDuplicarProceso').modal('hide');
+		};
+	</script>
+</body>
+</html>

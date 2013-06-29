@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank A4" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ab1d72b0-408f-4243-9b2d-9f9663570ad9">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<style name="Table">
+		<box>
+			<topPen lineWidth="1.0" lineColor="#3E69A4"/>
+			<bottomPen lineWidth="1.0" lineColor="#3E69A4"/>
+		</box>
+	</style>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#3E69A4"/>
+			<bottomPen lineWidth="0.5" lineColor="#3E69A4"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#3E69A4"/>
+			<bottomPen lineWidth="0.5" lineColor="#3E69A4"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<topPen lineWidth="0.5" lineColor="#3E69A4"/>
+			<bottomPen lineWidth="0.5" lineColor="#3E69A4"/>
+		</box>
+	</style>
+	<subDataset name="Dataset1" uuid="ce07dcfd-ce2b-49cb-b612-d7ed43a31051">
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="ConexionMind"/>
+		<queryString>
+			<![CDATA[SELECT DISTINCT preguntas_usuarios.identificador AS PreguntaID, resultados.identificador as RespuestaID, evaluados.nombres AS NombreEvaluado, evaluados.apellidos as ApellidosEvaluado, preguntas_usuarios.pregunta as Pregunta, resultados.respuesta as Respuesta FROM evaluados, participacion_en_proceso, resultados, preguntas_usuarios, procesos_usuarios, pruebas_usuarios, procesos_usuarios_has_pruebas_usuarios WHERE evaluados.identificador = participacion_en_proceso.usuarios_basicos_identificador AND participacion_en_proceso.procesos_usuarios_identificador=procesos_usuarios.identificador AND participacion_en_proceso.identificador = 1 AND procesos_usuarios.identificador = procesos_usuarios_has_pruebas_usuarios.procesos_usuarios_identificador AND pruebas_usuarios.identificador = procesos_usuarios_has_pruebas_usuarios.pruebas_usuarios_identificador AND preguntas_usuarios.pruebas_usuarios_identificador=pruebas_usuarios.identificador AND resultados.preguntas_identificador = preguntas_usuarios.identificador AND resultados.participacion_en_proceso_identificador=participacion_en_proceso.identificador;]]>
+		</queryString>
+		<field name="NombreEvaluado" class="java.lang.String"/>
+		<field name="ApellidosEvaluado" class="java.lang.String"/>
+		<field name="Pregunta" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<field name="Respuesta" class="java.lang.String">
+			<fieldDescription><![CDATA[]]></fieldDescription>
+		</field>
+		<group name="NombreEvaluado">
+			<groupExpression><![CDATA[$F{NombreEvaluado}]]></groupExpression>
+		</group>
+		<group name="ApellidosEvaluado">
+			<groupExpression><![CDATA[$F{ApellidosEvaluado}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="participacionID" class="java.util.ArrayList"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR_PRE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT preguntas_usuarios.identificador AS PreguntaID, resultados.identificador as RespuestaID, evaluados.nombres AS NombreEvaluado, evaluados.apellidos as ApellidosEvaluado, preguntas_usuarios.pregunta as Pregunta, resultados.respuesta as Respuesta FROM evaluados, participacion_en_proceso, resultados, preguntas_usuarios, procesos_usuarios, pruebas_usuarios, procesos_usuarios_has_pruebas_usuarios WHERE evaluados.identificador = participacion_en_proceso.usuarios_basicos_identificador AND participacion_en_proceso.procesos_usuarios_identificador=procesos_usuarios.identificador AND participacion_en_proceso.identificador = $X{IN,participacion_en_proceso.identificador,participacionID}  AND procesos_usuarios.identificador = procesos_usuarios_has_pruebas_usuarios.procesos_usuarios_identificador AND pruebas_usuarios.identificador = procesos_usuarios_has_pruebas_usuarios.pruebas_usuarios_identificador AND preguntas_usuarios.pruebas_usuarios_identificador=pruebas_usuarios.identificador AND resultados.preguntas_identificador = preguntas_usuarios.identificador AND resultados.participacion_en_proceso_identificador=participacion_en_proceso.identificador;]]>
+	</queryString>
+	<field name="NombreEvaluado" class="java.lang.String"/>
+	<field name="ApellidosEvaluado" class="java.lang.String"/>
+	<field name="Respuesta" class="java.lang.String"/>
+	<field name="Pregunta" class="java.lang.String"/>
+	<field name="RespuestaID" class="java.lang.Integer"/>
+	<field name="PreguntaID" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="34ef02a6-df9c-4f58-9747-05968424ad2a" key="staticText-1" x="0" y="0" width="554" height="35"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="20"/>
+				</textElement>
+				<text><![CDATA[RESULTADOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="156" splitType="Stretch">
+			<componentElement>
+				<reportElement uuid="d6bf98f6-ddd7-46c5-a04d-9335fa4a0a83" x="0" y="0" width="554" height="155"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Dataset1" uuid="420eef4d-1d80-4432-9334-fafda6011874">
+						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+					</datasetRun>
+					<jr:column width="70" uuid="b1bd180b-e9e0-4706-a5aa-c83885a20e16">
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement uuid="68c9ed17-cba5-4f7e-95cf-36f2368e8f46" x="0" y="0" width="70" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14"/>
+								</textElement>
+								<text><![CDATA[Nombre]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement uuid="18a5fb67-938d-4541-a039-b21a8ecd858b" x="0" y="0" width="70" height="30"/>
+								<textElement/>
+								<textFieldExpression><![CDATA[$F{NombreEvaluado}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="80" uuid="f379b381-7540-41d4-8fdd-3013245af54c">
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement uuid="035a1aa8-9f5e-48c3-9d70-f02186656a34" x="0" y="0" width="80" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14"/>
+								</textElement>
+								<text><![CDATA[Apellidos]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement uuid="00587358-5880-45ba-8c08-7cbc0c873aeb" x="0" y="0" width="80" height="30"/>
+								<textElement/>
+								<textFieldExpression><![CDATA[$F{ApellidosEvaluado}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="200" uuid="9af13aad-74e9-4f12-96b1-905b4d8c89c3">
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement uuid="d87f8d56-c615-480f-9402-087d120f6ede" x="0" y="0" width="200" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14"/>
+								</textElement>
+								<text><![CDATA[Pregunta]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement uuid="1f5f2248-4882-4dc9-b311-4039c1eceb44" x="0" y="0" width="200" height="30"/>
+								<textElement/>
+								<textFieldExpression><![CDATA[$F{Pregunta}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="204" uuid="3ef1eb4e-013c-4102-a620-30251061d157">
+						<jr:tableHeader style="Table_TH" height="30"/>
+						<jr:tableFooter style="Table_TH" height="30"/>
+						<jr:columnHeader style="Table_CH" height="30">
+							<staticText>
+								<reportElement uuid="eec793f6-efa5-49cb-bb63-f0f473a88404" x="0" y="0" width="204" height="30"/>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font size="14"/>
+								</textElement>
+								<text><![CDATA[Respuesta]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter style="Table_CH" height="30"/>
+						<jr:detailCell style="Table_TD" height="30">
+							<textField>
+								<reportElement uuid="b7658da2-696e-483b-b19a-dabe1bee0d5c" x="0" y="0" width="204" height="30"/>
+								<textElement/>
+								<textFieldExpression><![CDATA[$F{Respuesta}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="35" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

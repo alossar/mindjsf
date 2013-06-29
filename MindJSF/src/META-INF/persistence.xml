@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+	<persistence-unit name="Mind">
+		<class>co.mind.management.shared.entidades.Evaluado</class>
+		<class>co.mind.management.shared.entidades.Imagen</class>
+		<class>co.mind.management.shared.entidades.ImagenUsuario</class>
+		<class>co.mind.management.shared.entidades.ParticipacionEnProceso</class>
+		<class>co.mind.management.shared.entidades.PreguntaUsuario</class>
+		<class>co.mind.management.shared.entidades.ProcesoUsuario</class>
+		<class>co.mind.management.shared.entidades.ProcesoUsuarioHasPruebaUsuario</class>
+		<class>co.mind.management.shared.entidades.PruebaUsuario</class>
+		<class>co.mind.management.shared.entidades.Resultado</class>
+		<class>co.mind.management.shared.entidades.Solicitud</class>
+		<class>co.mind.management.shared.entidades.UsoUsuario</class>
+		<class>co.mind.management.shared.entidades.Usuario</class>
+
+		<properties>
+			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+			<property name="javax.persistence.jdbc.url"
+				value="jdbc:mysql://localhost:3306/mind_measurement" />
+			<property name="javax.persistence.jdbc.user" value="root" />
+			<property name="javax.persistence.jdbc.password" value="admin" />
+		</properties> 
+
+<!-- 		<properties> -->
+<!-- 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" /> -->
+<!-- 			<property name="javax.persistence.jdbc.url" -->
+<!-- 				value="jdbc:mysql://192.168.13.62:3306/mind_measurement" /> -->
+<!-- 			<property name="javax.persistence.jdbc.user" value="root" /> -->
+<!-- 			<property name="javax.persistence.jdbc.password" value="WUWV1ITjkI" /> -->
+<!-- 		</properties> -->
+
+	</persistence-unit>
+</persistence>

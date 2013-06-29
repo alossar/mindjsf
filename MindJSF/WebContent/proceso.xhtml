@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="css/2mstyle.css"></link>
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
+	<link rel="stylesheet" href="css/datepicker.css"></link>
+	<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+</style>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
+    <![endif]-->
+	<title>Proceso de Evaluación - Mind Management</title>
+</h:head>
+<body>
+	<f:view>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<h:form>
+
+						<h:commandLink action="#{indexController.irAIndex }"
+							styleClass="brand">
+							<img src="img/logo.png" />
+						</h:commandLink>
+
+						<div class="nav-collapse collapse">
+
+							<ul class="nav">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAProcesos }"
+											style="color:white; " value="Procesos"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink action="#{indexController.irAPruebas }"
+											value="Pruebas" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAEvaluados }" value="Evaluados"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink
+											action="#{indexController.irAProgramadores }"
+											value="Programadores" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.maestro }">
+									<li><h:commandLink
+											action="#{indexController.irAClientes }" value="Clientes"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+							</ul>
+							<ul class="navbar-text pull-right">
+								<div class="btn-group" id="barraUsuario">
+									<h:commandLink styleClass="btn btn-inverse"
+										style="margin-top:5px;" action="#{indexController.irACuenta }">
+										<i class="icon-user icon-white"></i>
+										<h:outputText
+											value="#{procesoEspecificoController.nombreUsuario}"></h:outputText>
+									</h:commandLink>
+									<h:commandLink styleClass="btn btn-danger"
+										style="margin-top:5px;"
+										action="#{indexController.cerrarSesion }">
+										<i class="icon-remove icon-white"></i>
+									</h:commandLink>
+								</div>
+							</ul>
+						</div>
+					</h:form>
+					<!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="container contenedorProcesos">
+				<h:form>
+					<ul class="breadcrumb">
+						<li><h:commandLink action="#{indexController.irAProcesos}">Procesos</h:commandLink>
+							<span class="divider">/</span></li>
+						<li class="active"><h:outputText
+								value="#{procesoEspecificoController.nombreProceso }"></h:outputText></li>
+					</ul>
+				</h:form>
+
+				<div class="container-fluid">
+					<div class="row-fluid">
+
+						<div class="span3" id="panelInfoProceso">
+							<h:form>
+								<div id="tituloProceso">
+									<h4>
+										<h:outputText
+											value="#{procesoEspecificoController.nombreProceso }"></h:outputText>
+									</h4>
+								</div>
+								<div id="infoGeneral">
+									<p>Nombre</p>
+									<h:inputText
+										value="#{procesoEspecificoController.proceso.nombre }"
+										styleClass="textoProceso" style="width: 180px;"
+										readonly="#{not procesoEspecificoController.editar }"
+										disabled="#{not procesoEspecificoController.editar }"></h:inputText>
+									<p>Descripción</p>
+									<h:inputTextarea
+										value="#{procesoEspecificoController.proceso.descripcion }"
+										rows="3" styleClass="textoProceso"
+										readonly="#{not procesoEspecificoController.editar }"
+										disabled="#{not procesoEspecificoController.editar }"
+										style="width: 180px;"></h:inputTextarea>
+									<p>Fecha de Creación</p>
+									<h:inputText readonly="true" disabled="true"
+										style="width: 180px;"
+										value="#{procesoEspecificoController.proceso.fechaCreacion }"></h:inputText>
+									<p>Fecha de Inicio</p>
+									<h:inputText styleClass="datepicker"
+										value="#{procesoEspecificoController.proceso.fechaInicio }"
+										readonly="#{not procesoEspecificoController.editar }"
+										disabled="#{not procesoEspecificoController.editar }"
+										style="width: 180px;"></h:inputText>
+									<p>Fecha de Finalización</p>
+									<h:inputText styleClass="datepicker"
+										value="#{procesoEspecificoController.proceso.fechaFinalizacion }"
+										readonly="#{not procesoEspecificoController.editar }"
+										disabled="#{not procesoEspecificoController.editar }"
+										style="width: 180px;"></h:inputText>
+									<h:commandLink styleClass="btn btn-primary"
+										action="#{procesoEspecificoController.editarProceso }"
+										rendered="#{not procesoEspecificoController.editar }"
+										style="float: right; margin-right: 20px;" value="Editar"></h:commandLink>
+									<h:commandLink styleClass="btn btn-primary"
+										rendered="#{procesoEspecificoController.editar }"
+										action="#{procesoEspecificoController.guardarEditarProceso }"
+										style="float: right; margin-right: 20px;" value="Guardar"></h:commandLink>
+									<h:commandLink styleClass="btn btn-danger"
+										rendered="#{procesoEspecificoController.editar }"
+										style="float: right; margin-right: 20px;" value="Cancelar"></h:commandLink>
+
+								</div>
+							</h:form>
+						</div>
+
+						<div class="span9" id="parrillaInfoProceso">
+
+							<div id="tabsProceso">
+								<h:form>
+									<ul class="nav nav-tabs">
+										<li><h:commandLink
+												action="#{procesoEspecificoController.verPruebas }">Pruebas</h:commandLink></li>
+										<li><h:commandLink
+												action="#{procesoEspecificoController.verParticipaciones }">Evaluados</h:commandLink></li>
+										<li><h:commandLink
+												action="#{procesoEspecificoController.verResultados }">Resultados</h:commandLink></li>
+									</ul>
+								</h:form>
+							</div>
+
+							<h:panelGroup
+								rendered="#{procesoEspecificoController.enEvaluados and proceso.abierto}">
+								<div id="navProceso">
+
+									<div id="buscarProceso">
+										<a class="btn btn-primary btn-small  pull-right"
+											data-toggle="modal" href="#myModalEvaluado"
+											title="Crear un evaluado nuevo" style="height: 20px;"> <i
+											class="icon-plus icon-white" style="margin-top: 3px;"
+											role="button"></i>
+										</a>
+									</div>
+
+								</div>
+							</h:panelGroup>
+
+
+							<h:panelGroup rendered="#{procesoEspecificoController.enPruebas}">
+								<div id="navProceso">
+									<div id="buscarProceso">
+										<a class="btn btn-primary btn-small  pull-right"
+											data-toggle="modal" href="#myModalPrueba"
+											title="Crear una prueba nueva" style="height: 20px;"> <i
+											class="icon-plus icon-white" style="margin-top: 3px;"
+											role="button"></i>
+										</a>
+									</div>
+
+								</div>
+							</h:panelGroup>
+
+							<h:form
+								rendered="#{procesoEspecificoController.enEvaluados and not empty procesoEspecificoController.participacionesProcesoEspecifico}"
+								binding="#{procesoEspecificoController.tableFormEvaluados}">
+								<h:dataTable
+									styleClass="table table-hover table-condensed table-striped"
+									binding="#{procesoEspecificoController.dataTableEvaluados }"
+									value="#{procesoEspecificoController.participacionesProcesoEspecifico }"
+									var="participacion">
+									<small> <h:column>
+											<h:selectBooleanCheckbox></h:selectBooleanCheckbox>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Cédula"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{participacion.usuarioBasico.cedula}"
+												style="color:black; "></h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Nombre del Evaluado"></h:outputText>
+											</f:facet>
+											<h:outputText
+												value="#{participacion.usuarioBasico.nombres} #{participacion.usuarioBasico.apellidos }"
+												style="color:black; "></h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Código"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{participacion.codigo_Acceso}"
+												style="color:black; "></h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="¿Notificado?"></h:outputText>
+											</f:facet>
+
+											<h:panelGroup styleClass="label label-success"
+												rendered="#{participacion.estaNotificado == 'correo_si'}">SI</h:panelGroup>
+											<h:panelGroup styleClass="label label-warning"
+												rendered="#{participacion.notificado == 'correo_no' }">NO</h:panelGroup>
+
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Estado"></h:outputText>
+											</f:facet>
+											<h:panelGroup styleClass="label label-success"
+												rendered="#{participacion.estado == 'participacion_inactiva' }">COMPLETA</h:panelGroup>
+											<h:panelGroup styleClass="label label-warning"
+												rendered="#{participacion.estado == 'participacion_espera'}">PENDIENTE</h:panelGroup>
+											<h:panelGroup styleClass="label label-info"
+												rendered="#{participacion.estado == 'participacion_ejecucion'}">EN PROCESO</h:panelGroup>
+
+										</h:column> <h:column>
+											<h:commandLink styleClass="btn btn-info btn-small "
+												rendered="#{not (participacion.estado == 'participacion_inactiva')}"
+												action="#{procesoEspecificoController.enviarNotificacion }"
+												title="#{participacion.usuarioBasico.correoElectronico }"
+												style="padding: 5;">
+												<i class="icon-envelope icon-white"></i>
+											</h:commandLink>
+										</h:column>
+									</small>
+								</h:dataTable>
+							</h:form>
+
+							<h:form
+								rendered="#{procesoEspecificoController.enPruebas and not empty procesoEspecificoController.pruebasProcesoEspecifico}"
+								binding="#{procesoEspecificoController.tableFormPruebas}">
+								<h:dataTable
+									styleClass="table table-hover table-condensed table-striped"
+									binding="#{procesoEspecificoController.dataTablePruebas }"
+									value="#{procesoEspecificoController.pruebasProcesoEspecifico }"
+									var="prueba">
+									<small> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Nombre"></h:outputText>
+											</f:facet>
+											<h:commandLink value="#{prueba.nombre}"
+												title="#{prueba.descripcion }" style="color:black; "
+												action="#{procesoEspecificoController.irAPrueba }"></h:commandLink>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Cantidad de Preguntas"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{prueba.cantidad}"
+												style="color:black; "></h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Duración (Minutos)"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{prueba.duracion}"
+												style="color:black; "></h:outputText>
+										</h:column>
+									</small>
+								</h:dataTable>
+							</h:form>
+
+							<h:form target="_blank"
+								rendered="#{procesoEspecificoController.enResultados and not empty procesoEspecificoController.resultadosProcesoEspecifico }"
+								binding="#{procesoEspecificoController.tableFormResultados}">
+								<h:dataTable
+									styleClass="table table-hover table-condensed table-striped"
+									binding="#{procesoEspecificoController.dataTableResultados }"
+									value="#{procesoEspecificoController.resultadosProcesoEspecifico }"
+									var="resultado">
+									<small><h:column>
+											<h:selectBooleanCheckbox></h:selectBooleanCheckbox>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Cédula"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{resultado.usuarioBasico.cedula}"
+												style="color:black; "></h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Nombre del Evaluado"></h:outputText>
+											</f:facet>
+											<h:outputText
+												value="#{resultado.usuarioBasico.nombres} #{resultado.usuarioBasico.apellidos }"
+												style="color:black; "></h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Código"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{resultado.codigo_Acceso}"
+												style="color:black; "></h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Estado"></h:outputText>
+											</f:facet>
+											<h:panelGroup styleClass="label label-success"
+												rendered="#{resultado.estado == 'participacion_inactiva' }">COMPLETA</h:panelGroup>
+											<h:panelGroup styleClass="label label-warning"
+												rendered="#{resultado.estado == 'participacion_espera'}">PENDIENTE</h:panelGroup>
+											<h:panelGroup styleClass="label label-info"
+												rendered="#{resultado.estado == 'participacion_ejecucion'}">EN PROCESO</h:panelGroup>
+
+										</h:column> <h:column>
+											<h:commandLink styleClass="btn btn-info btn-small "
+												title="Generar Reporte en PDF"
+												action="#{procesoEspecificoController.irAReportePDF }"
+												style="padding: 5;">
+												<i class="icon-file icon-white"></i>
+											</h:commandLink>
+
+										</h:column> </small>
+								</h:dataTable>
+							</h:form>
+							<h:outputText
+								rendered="#{procesoEspecificoController.enEvaluados and empty procesoEspecificoController.participacionesProcesoEspecifico }"
+								value="No se encontraron participaciones de evaluados.">
+							</h:outputText>
+							<h:outputText
+								rendered="#{procesoEspecificoController.enPruebas and empty procesoEspecificoController.pruebasProcesoEspecifico }"
+								value="No se encontraron pruebas.">
+							</h:outputText>
+							<h:outputText
+								rendered="#{procesoEspecificoController.enResultados and empty procesoEspecificoController.resultadosProcesoEspecifico }"
+								value="No se encontraron resultados.">
+							</h:outputText>
+
+							<div id="myModalPrueba" class="modal hide fade" tabindex="-1"
+								role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+								style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 320px;">
+								<div class="modal-header" style="height: 50px;">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">x</button>
+									<h3 id="myModalLabel"
+										style="margin-top: 5px; text-align: center;">
+										<img src="img/logoPruebasCrear.png" />Prueba
+									</h3>
+								</div>
+								<h:form>
+									<h:panelGroup id="modalPrueba">
+										<h:panelGroup styleClass="pull-right"
+											rendered="#{procesoEspecificoController.agregarPrueba or procesoEspecificoController.crearPrueba}">
+											<h:commandLink styleClass="btn btn-inverse"
+												id="botonesProcesoVolverPrueba">
+												<i class="icon-chevron-left icon-white" />
+												<f:ajax
+													listener="#{procesoEspecificoController.volverPrueba}"
+													render="modalPrueba"></f:ajax>
+											</h:commandLink>
+										</h:panelGroup>
+										<h:panelGroup id="panelPrueba"
+											rendered="#{(not procesoEspecificoController.agregarPrueba) and (not procesoEspecificoController.crearPrueba) }">
+											<div id="contenedorBotonesmodalProceso">
+												<h:commandLink styleClass="btn btn-primary"
+													id="botonesProcesoCrearPrueba">
+													<img src="img/crearNuevaPrueba.png" />
+													<br></br>
+													<h:outputText value="Crear"></h:outputText>
+													<f:ajax
+														listener="#{procesoEspecificoController.mostrarCrearPrueba}"
+														render="modalPrueba"></f:ajax>
+												</h:commandLink>
+												<h:commandLink styleClass="btn btn-inverse"
+													id="botonesProcesoAgregarPrueba">
+													<img src="img/agregarPrueba.png" />
+													<br></br>
+													<h:outputText value="Agregar"></h:outputText>
+													<f:ajax
+														listener="#{procesoEspecificoController.mostrarAgregarPrueba}"
+														render="modalPrueba"></f:ajax>
+												</h:commandLink>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{procesoEspecificoController.crearPrueba }">
+											<div id="contenedorBotonesCrearPrueba">
+												<div>
+													<p style="margin-left: 29px;">Nombre</p>
+													<h:inputText required="true" id="inputCrearPrueba"
+														value="#{procesoEspecificoController.nombrePruebaCrear }"></h:inputText>
+												</div>
+												<div style="margin-top: 5px;">
+													<p>Descripción</p>
+													<h:inputTextarea required="true" style="height: 100px;"
+														value="#{procesoEspecificoController.descripcionPruebaCrear }"></h:inputTextarea>
+												</div>
+
+												<h:commandButton styleClass="btn btn-primary"
+													id="botCrearPrueba"
+													action="#{procesoEspecificoController.crearPruebaEnProceso }"
+													value="Crear"></h:commandButton>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{procesoEspecificoController.agregarPrueba }">
+											<div id="contenedorBotonesAgregarPrueba">
+												<p>Pruebas</p>
+												<h:selectManyListbox
+													value="#{procesoEspecificoController.selectItemsPruebasRestantes}">
+													<f:selectItems
+														value="#{procesoEspecificoController.pruebasRestantes}"
+														var="p" itemLabel="#{p.nombre }" itemValue="#{p}" />
+												</h:selectManyListbox>
+												<h:commandButton styleClass="btn btn-primary"
+													action="#{procesoEspecificoController.agregarPruebasAProceso}"
+													value="Agregar"></h:commandButton>
+											</div>
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:form>
+							</div>
+
+							<div id="myModalEvaluado" class="modal hide fade" tabindex="-1"
+								role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+								style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 320px;">
+								<div class="modal-header" style="height: 50px;">
+									<button type="button" class="close" data-dismiss="modal"
+										aria-hidden="true">x</button>
+									<h3 id="myModalLabel"
+										style="margin-top: 5px; text-align: center;">
+										<img src="img/logoPruebasCrear.png" />Evaluado
+									</h3>
+								</div>
+								<h:form>
+									<h:panelGroup styleClass="pull-right"
+										rendered="#{procesoEspecificoController.agregarEvaluado or procesoEspecificoController.crearEvaluado}">
+										<h:commandLink styleClass="btn btn-inverse"
+											id="botonesProcesoVolverEvaluado">
+											<i class="icon-chevron-left icon-white" />
+											<f:ajax
+												listener="#{procesoEspecificoController.volverEvaluado}"
+												render="modalEvaluado"></f:ajax>
+										</h:commandLink>
+									</h:panelGroup>
+									<h:panelGroup id="modalEvaluado">
+										<h:panelGroup id="panelEvaluado"
+											rendered="#{(not procesoEspecificoController.agregarEvaluado) and (not procesoEspecificoController.crearEvaluado) }">
+											<div id="contenedorBotonesmodalProceso">
+												<h:commandLink styleClass="btn btn-primary"
+													id="botonesProcesoCrearEvaluado">
+													<img src="img/crearNuevoEvaluado.png" />
+													<br></br>
+													<h:outputText value="Crear"></h:outputText>
+													<f:ajax
+														listener="#{procesoEspecificoController.mostrarCrearEvaluado}"
+														render="modalEvaluado"></f:ajax>
+												</h:commandLink>
+												<h:commandLink styleClass="btn btn-inverse"
+													id="botonesProcesoAgregarEvaluado">
+													<img src="img/agregarPrueba.png" />
+													<br></br>
+													<h:outputText value="Agregar"></h:outputText>
+													<f:ajax
+														listener="#{procesoEspecificoController.mostrarAgregarEvaluado}"
+														render="modalEvaluado"></f:ajax>
+												</h:commandLink>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{procesoEspecificoController.agregarEvaluado}">
+											<div id="contenedorBotonesAgregarPrueba">
+												<p>Evaluados</p>
+												<h:selectManyListbox
+													value="#{procesoEspecificoController.selectItemsEvaluadosRestantes}">
+													<f:selectItems
+														value="#{procesoEspecificoController.evaluadosRestantes}"
+														var="e" itemLabel="#{e.nombres }" itemValue="#{e}" />
+												</h:selectManyListbox>
+												<h:commandButton styleClass="btn btn-primary"
+													action="#{procesoEspecificoController.agregarEvaluadosAProceso}"
+													value="Agregar"></h:commandButton>
+											</div>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{procesoEspecificoController.crearEvaluado}">
+											<div id="contenedorBotonesCrearPrueba">
+												<div style="margin-top: 4px;">
+													<p>Cedula</p>
+													<h:inputText id="inputCrearEvaluado3"
+														value="#{procesoEspecificoController.cedulaEvaluadoCrear}">
+														<f:validateLength maximum="10"></f:validateLength>
+														<f:convertNumber integerOnly="true" />
+													</h:inputText>
+												</div>
+												<div>
+													<p>Nombre</p>
+													<h:inputText id="inputCrearEvaluado0" required="true"
+														value="#{procesoEspecificoController.nombreEvaluadoCrear}">
+														<f:validateLength maximum="10"></f:validateLength>
+													</h:inputText>
+												</div>
+												<div style="margin-top: 4px;">
+													<p>Apellido</p>
+													<h:inputText required="true" id="inputCrearEvaluado"
+														value="#{procesoEspecificoController.apellidoEvaluadoCrear}">
+														<f:validateLength maximum="10"></f:validateLength>
+													</h:inputText>
+												</div>
+												<div style="margin-top: 4px;">
+													<p>Correo</p>
+													<h:inputText id="inputCrearEvaluado2"
+														value="#{procesoEspecificoController.correoEvaluadoCrear}">
+														<f:validateRegex
+															pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+													</h:inputText>
+												</div>
+												<h:commandButton styleClass="btn btn-primary"
+													action="#{procesoEspecificoController.crearEvaluadoEnProceso}"
+													id="botCrearEvaluado" value="Crear"></h:commandButton>
+											</div>
+										</h:panelGroup>
+									</h:panelGroup>
+								</h:form>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- Cierro Contenedor Principal -->
+				<hr></hr>
+				<footer>
+				<p>&copy; Mind Management 2013</p>
+				</footer>
+			</div>
+
+
+		</div>
+		<!--/.fluid-container-->
+	</f:view>
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.datepicker').datepicker();
+		});
+	</script>
+</body>
+</html>

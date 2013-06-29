@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+#infoGeneral p {
+	font-size: 9pt;
+	font-weight: bold;
+	font-family: arial;
+}
+
+#infoGeneral input {
+	margin-top: -10px;
+}
+</style>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
+    <![endif]-->
+	<title>Cuenta - Mind Management</title>
+</h:head>
+<body>
+	<f:view>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<h:form>
+
+						<h:commandLink action="#{indexController.irAIndex }"
+							styleClass="brand">
+							<img src="img/logo.png" />
+						</h:commandLink>
+
+						<div class="nav-collapse collapse">
+
+							<ul class="nav">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAProcesos }"
+											style="color:white; " value="Procesos"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink action="#{indexController.irAPruebas }"
+											value="Pruebas" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAEvaluados }" value="Evaluados"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink
+											action="#{indexController.irAProgramadores }"
+											value="Programadores" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.maestro }">
+									<li><h:commandLink
+											action="#{indexController.irAClientes }" value="Clientes"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+							</ul>
+							<ul class="navbar-text pull-right">
+								<div class="btn-group" id="barraUsuario">
+									<h:commandLink styleClass="btn btn-inverse"
+										style="margin-top:5px;" action="#{indexController.irACuenta }">
+										<i class="icon-user icon-white"></i>
+										<h:outputText value="#{cuentaController.nombreUsuario}"></h:outputText>
+									</h:commandLink>
+									<h:commandLink styleClass="btn btn-danger"
+										style="margin-top:5px;"
+										action="#{indexController.cerrarSesion }">
+										<i class="icon-remove icon-white"></i>
+									</h:commandLink>
+								</div>
+							</ul>
+						</div>
+					</h:form>
+					<!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="container contenedorProcesos">
+
+				<div class="container-fluid">
+					<div class="row-fluid">
+
+						<div class="span3" id="panelInfoProceso"
+							style="background-color: rgba(245, 245, 245, 0.8);">
+							<h:form>
+								<div id="tituloProceso"
+									style="text-align: center; margin-left: 13px; margin-bottom: 30px; width: 185px;">
+									<h4>
+										<h:outputText style="font-style:italic;"
+											value="Información de la Cuenta de Usario"></h:outputText>
+									</h4>
+								</div>
+								<div id="infoGeneral" style="width: 185px; margin-left: 13px;">
+									<p>Nombre</p>
+									<h:inputText styleClass="textoProceso" style="width: 170px;"
+										value="#{cuentaController.usuario.nombres }"></h:inputText>
+									<p>Apellidos</p>
+									<h:inputText styleClass="textoProceso" style="width: 170px;"
+										value="#{cuentaController.usuario.apellidos}"></h:inputText>
+									<p>Cédula</p>
+									<h:inputText styleClass="textoProceso" style="width: 170px;"
+										value="#{cuentaController.usuario.identificador}"
+										readonly="true" disabled="true">
+										<f:validateLength maximum="10"></f:validateLength>
+										<f:convertNumber integerOnly="true" />
+									</h:inputText>
+									<p>Mail</p>
+									<h:inputText styleClass="textoProceso" style="width: 170px;"
+										value="#{cuentaController.usuario.correo_Electronico}">
+										<f:validateRegex
+											pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+									</h:inputText>
+									<p>Empresa</p>
+									<h:inputText styleClass="textoProceso" style="width: 170px;"
+										value="#{cuentaController.usuario.empresa}"></h:inputText>
+									<p>Cargo</p>
+									<h:inputText styleClass="textoProceso" style="width: 170px;"
+										value="#{cuentaController.usuario.cargo }"></h:inputText>
+									<p>Teléfono</p>
+									<h:inputText styleClass="textoProceso" style="width: 170px;"
+										value="#{cuentaController.usuario.telefono}"></h:inputText>
+									<h:commandButton styleClass="btn btn-primary"
+										action="#{cuentaController.guardarCuenta}"
+										style="float: right; margin-right: 20px; margin-bottom: 15px;"
+										value="Guardar"></h:commandButton>
+								</div>
+							</h:form>
+						</div>
+
+						<div class="span9" id="parrillaInfoProceso">
+							<h:panelGroup rendered="#{autorizacionController.maestro}">
+								<legend>Procesos para Revisar</legend>
+
+								<h:form
+									rendered="#{not empty cuentaController.procesosRevisar }"
+									binding="#{cuentaController.tableForm}">
+									<h:dataTable
+										styleClass="table table-hover table-condensed table-striped"
+										binding="#{cuentaController.dataTable }"
+										value="#{cuentaController.procesosRevisar }" var="proceso">
+										<small> <h:column>
+												<f:facet name="header">
+													<h:outputText value="Nombre del Proceso"></h:outputText>
+												</f:facet>
+
+												<h:outputText value="#{proceso.nombre }"
+													style="color:black; " title="#{proceso.descripcion }"></h:outputText>
+
+											</h:column> <h:column>
+												<f:facet name="header">
+													<center>
+														<h:outputText value="Fecha de Creación"></h:outputText>
+													</center>
+												</f:facet>
+												<center>
+													<h:outputText value="#{proceso.fechaCreacion }">
+														<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+													</h:outputText>
+												</center>
+											</h:column> <h:column>
+												<f:facet name="header">
+													<center>
+														<h:outputText value="Solicitante"></h:outputText>
+													</center>
+												</f:facet>
+												<center>
+													<h:outputText value="#{proceso.usuario.nombres } ">
+													</h:outputText>
+												</center>
+											</h:column> <h:column>
+												<h:commandLink styleClass="btn btn-info btn-small "
+													title="Marcar como revisado." style="padding: 5;">
+													<i class="icon-ok icon-white"></i>
+												</h:commandLink>&nbsp;
+											<h:commandLink styleClass="btn btn-primary btn-small "
+													title="Generar reporte de evaluados en XLS"
+													style="padding: 5;">
+													<i class="icon-file icon-white"></i>
+												</h:commandLink>
+
+
+											</h:column>
+										</small>
+									</h:dataTable>
+								</h:form>
+								<h:outputText
+									rendered="#{empty cuentaController.procesosRevisar }"
+									value="No se encontraron procesos para revisar.">
+								</h:outputText>
+							</h:panelGroup>
+						</div>
+					</div>
+				</div>
+				<!-- Cierro Contenedor Principal -->
+			</div>
+			<hr />
+			<div class="container">
+				<footer style="margin-top:20px;">
+				<p>&copy; Mind Management 2013</p>
+				</footer>
+			</div>
+		</div>
+		<!--/.fluid-container-->
+	</f:view>
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+</body>
+</html>

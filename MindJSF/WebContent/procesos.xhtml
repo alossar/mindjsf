@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="css/2mstyle.css"></link>
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
+	<link rel="stylesheet" href="css/datepicker.css"></link>
+	<link rel="stylesheet" href="css/bootstrap-notify.css"></link>
+	<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+</style>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
+    <![endif]-->
+	<title>Procesos - Mind Management</title>
+</h:head>
+<body>
+	<f:view>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<h:form>
+
+						<h:commandLink action="#{indexController.irAIndex }"
+							styleClass="brand">
+							<img src="img/logo.png" />
+						</h:commandLink>
+
+						<div class="nav-collapse collapse">
+
+							<ul class="nav">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAProcesos }"
+											style="color:white; " value="Procesos"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink action="#{indexController.irAPruebas }"
+											value="Pruebas" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAEvaluados }" value="Evaluados"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink
+											action="#{indexController.irAProgramadores }"
+											value="Programadores" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.maestro }">
+									<li><h:commandLink
+											action="#{indexController.irAClientes }" value="Clientes"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+							</ul>
+							<ul class="navbar-text pull-right">
+								<div class="btn-group" id="barraUsuario">
+									<h:commandLink styleClass="btn btn-inverse"
+										style="margin-top:5px;" action="#{indexController.irACuenta }">
+										<i class="icon-user icon-white"></i>
+										<h:outputText value="#{procesosController.nombreUsuario}"></h:outputText>
+									</h:commandLink>
+									<h:commandLink styleClass="btn btn-danger"
+										style="margin-top:5px;"
+										action="#{indexController.cerrarSesion }">
+										<i class="icon-remove icon-white"></i>
+									</h:commandLink>
+								</div>
+							</ul>
+						</div>
+					</h:form>
+					<!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+
+			<div class="row">
+
+				<h:form styleClass="form-search pull-right">
+					<h:inputText styleClass="input-medium search-query "
+						value="#{procesosController.parametroBusqueda }" />
+					<h:commandLink styleClass="btn btn-info"
+						action="#{procesosController.buscarProcesos }">
+						<i class="icon-search icon-white"></i>
+					</h:commandLink>
+					<a data-toggle="modal" class="btn btn-primary"
+						href="#myModalCrearProceso"> <i class="icon-plus icon-white"></i>
+					</a>
+
+				</h:form>
+			</div>
+
+			<legend>Procesos</legend>
+			<h:form id="formPanelTablaProcesos">
+				<h:panelGroup layout="block" id="panelTablaProcesos">
+					<h:dataTable binding="#{procesosController.dataTable}"
+						rendered="#{not empty procesosController.procesos }"
+						styleClass="table table-hover table-condensed table-striped"
+						value="#{procesosController.procesos }" var="proceso">
+						<small> <h:column>
+								<f:facet name="header">
+									<h:outputText value="Nombre del Proceso"></h:outputText>
+								</f:facet>
+
+								<h:commandLink value="#{proceso.nombre }" style="color:black; "
+									title="#{proceso.descripcion }"
+									action="#{procesosController.irAProcesoEspecifico }"
+									rendered="#{not proceso.editar }"></h:commandLink>
+								<h:inputText styleClass="input-small" id="editarNombreProceso"
+									value="#{proceso.nombre }" required="true"
+									requiredMessage="El nombre es necesario."
+									rendered="#{proceso.editar }"></h:inputText>
+
+								<h:message for="editarNombreProceso"
+									styleClass="alert alert-error" />
+
+							</h:column> <h:column>
+								<center>
+									<f:facet name="header">
+										<center>
+											<h:outputText value="Cantidad (preguntas)"></h:outputText>
+										</center>
+									</f:facet>
+									<h:outputText value="#{proceso.cantidad }"></h:outputText>
+								</center>
+							</h:column> <h:column>
+								<center>
+									<f:facet name="header">
+										<center>
+											<h:outputText value="Duración (minutos)"></h:outputText>
+										</center>
+									</f:facet>
+									<h:outputText value="#{proceso.duracion }">
+									</h:outputText>
+								</center>
+							</h:column> <h:column>
+								<center>
+									<f:facet name="header">
+										<center>
+											<h:outputText value="Fecha de Creación"></h:outputText>
+										</center>
+									</f:facet>
+
+									<h:outputText value="#{proceso.fechaCreacion }">
+										<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+									</h:outputText>
+								</center>
+							</h:column> <h:column>
+								<center>
+									<f:facet name="header">
+										<center>
+											<h:outputText value="Estado"></h:outputText>
+										</center>
+									</f:facet>
+									<h:panelGroup styleClass="label label-info"
+										rendered="#{proceso.abierto}">ABIERTO</h:panelGroup>
+									<h:panelGroup styleClass="label label-warning"
+										rendered="#{not proceso.abierto }">CERRADO</h:panelGroup>
+									&nbsp;
+									<h:panelGroup styleClass="label label-info"
+										rendered="#{proceso.iniciado}">INICIADO</h:panelGroup>
+									<h:panelGroup styleClass="label label-warning"
+										rendered="#{not proceso.iniciado }">SIN INICIAR</h:panelGroup>
+								</center>
+							</h:column> <h:column>
+								<h:commandLink styleClass="btn btn-info btn-small "
+									action="#{procesosController.editarProceso }"
+									rendered="#{not proceso.editar }" style="padding: 5;">
+									<i class="icon-pencil icon-white"></i>
+								</h:commandLink>
+								<h:commandLink styleClass="btn btn-success btn-small "
+									action="#{procesosController.guardarEditarProceso }"
+									rendered="#{proceso.editar }" style="padding: 5;">
+									<i class="icon-ok icon-white"></i>
+								</h:commandLink>
+								&nbsp;
+								<h:commandLink styleClass="btn btn-warning btn-small "
+									onclick="$('#myModalDuplicarProceso').modal('show');"
+									rendered="#{not proceso.editar }">
+									<i class="icon-th-large icon-white"></i>
+									<f:ajax
+										listener="#{procesosController.seleccionarProcesoDuplicar }"></f:ajax>
+								</h:commandLink>
+								<h:commandLink styleClass="btn btn-danger btn-small "
+									action="#{procesosController.cancelarEditarProceso }"
+									rendered="#{proceso.editar }" style="padding: 5;">
+									<i class="icon-remove icon-white"></i>
+								</h:commandLink>
+								&nbsp;				
+								<h:commandLink styleClass="btn btn-danger btn-small "
+									onclick="$('#myModal').modal('show');"
+									rendered="#{not proceso.editar }">
+									<f:ajax
+										listener="#{procesosController.seleccionarProcesoEliminar }"></f:ajax>
+									<i class="icon-trash icon-white"></i>
+								</h:commandLink>
+
+							</h:column>
+						</small>
+					</h:dataTable>
+				</h:panelGroup>
+			</h:form>
+
+			<h:panelGroup styleClass="alert"
+				rendered="#{empty procesosController.procesos }">
+				<h:outputText value="No se encontraron procesos en tu cuenta."></h:outputText>
+				<a data-toggle="modal" href="#myModalCrearProceso">Crea un
+					proceso. </a>
+			</h:panelGroup>
+
+			<h:form>
+				<div id="myModal" class="modal hide fade" tabindex="-1"
+					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-body"
+						style="text-align: center; font-size: 18pt; font-weight: bold;">
+						<img src="img/dialogo.png" />
+						<h2>Borrar Proceso.</h2>
+						<p style="font-size: 12pt;">¿Estas Seguro que Deseas Borrar?</p>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-danger" data-dismiss="modal"
+							aria-hidden="true">No</button>
+						<h:commandLink styleClass="btn btn-primary show-notification"
+							actionListener="#{procesosController.eliminarProceso }"
+							onclick="closeDialog ();" rendered="#{not proceso.editar }"
+							style="padding: 5;" value="SI">
+							<f:ajax render=":formPanelTablaProcesos:panelTablaProcesos" />
+						</h:commandLink>
+					</div>
+
+				</div>
+			</h:form>
+
+			<h:form id="formMyModalCrearProceso">
+				<div id="myModalCrearProceso" class="modal hide fade" tabindex="-1"
+					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+					style="left: 30%; margin-left: auto; margin-right: auto; width: 450px;">
+					<div class="modal-header" style="height: 50px;">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">x</button>
+						<h3 id="myModalLabel" style="margin-top: 5px; text-align: center;">
+							<img src="img/logoPruebasCrear.png" />Crear Proceso
+						</h3>
+					</div>
+
+					<div class="modal-body">
+						<div id="modalCrearProceso">
+							<div class="control-group">
+								<label class="control-label" for="inputCrearPrueba">Nombre</label>
+								<div class="controls">
+									<h:inputText id="inputCrearPrueba"
+										value="#{procesosController.nombreProcesoCrear }"
+										required="true" requiredMessage="Campo necesario.">
+										<f:validateLength maximum="20"></f:validateLength>
+									</h:inputText>
+									<p>
+										<h:message for="inputCrearPrueba"
+											styleClass="alert alert-error" />
+									</p>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Descripción</label>
+								<div class="controls">
+									<h:inputTextarea style="height: 100px;" required="true"
+										id="descripcionProcesoTA" requiredMessage="Campo necesario."
+										value="#{procesosController.descripcionProcesoCrear }">
+										<f:validateLength maximum="100"></f:validateLength>
+									</h:inputTextarea>
+									<p>
+										<h:message for="descripcionProcesoTA"
+											styleClass="alert alert-error" />
+									</p>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<div class="controls">
+									<h:commandButton styleClass="btn btn-primary show-notification"
+										value="Agregar"
+										style=" margin-left:65px; width:100px; height:45px;"
+										id="botCrearPrueba" onclick="closeDialog ();"
+										actionListener="#{procesosController.crearProceso}">
+										<f:ajax execute="@form"
+											render=":formPanelTablaProcesos:panelTablaProcesos" />
+									</h:commandButton>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</h:form>
+
+			<h:form id="formMyModalDuplicarProceso">
+				<div id="myModalDuplicarProceso" class="modal hide fade"
+					tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+					aria-hidden="true"
+					style="left: 30%; margin-left: auto; margin-right: auto; width: 450px;">
+					<div class="modal-header" style="height: 50px;">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">x</button>
+						<h3 id="myModalLabel" style="margin-top: 5px; text-align: center;">
+							<img src="img/logoPruebasCrear.png" />Crear Proceso
+						</h3>
+					</div>
+
+					<div class="modal-body">
+						<div id="modalCrearProceso">
+							<div class="control-group">
+								<label class="control-label" for="inputDuplicarPrueba">Nombre</label>
+								<div class="controls">
+									<h:inputText id="inputDuplicarPrueba"
+										value="#{procesosController.nombreProcesoDuplicar }"
+										required="true" requiredMessage="Campo necesario.">
+										<f:validateLength maximum="20"></f:validateLength>
+									</h:inputText>
+									<p>
+										<h:message for="inputDuplicarPrueba"
+											styleClass="alert alert-error" />
+									</p>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<label class="control-label">Descripción</label>
+								<div class="controls">
+									<h:inputTextarea style="height: 100px;" required="true"
+										id="descripcionProcesoTAD" requiredMessage="Campo necesario."
+										value="#{procesosController.descripcionProcesoDuplicar }">
+										<f:validateLength maximum="100"></f:validateLength>
+									</h:inputTextarea>
+									<p>
+										<h:message for="descripcionProcesoTAD"
+											styleClass="alert alert-error" />
+									</p>
+								</div>
+							</div>
+
+							<div class="control-group">
+								<div class="controls">
+									<h:commandButton styleClass="btn btn-primary show-notification"
+										value="Duplicar"
+										style=" margin-left:65px; width:100px; height:45px;"
+										id="botDuplicarPrueba" onclick="closeDialog ();"
+										actionListener="#{procesosController.duplicarProceso}">
+										<f:ajax execute="@form"
+											render="@form :formPanelTablaProcesos:panelTablaProcesos"></f:ajax>
+									</h:commandButton>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+
+			</h:form>
+			<!-- Modal -->
+
+			<div class="notifications top-left"></div>
+			<hr></hr>
+			<footer>
+			<p>&copy; Mind Management 2013</p>
+			</footer>
+
+		</div>
+		<!--/.fluid-container-->
+	</f:view>
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script src="js/bootstrap-transition.js"></script>
+	<script src="js/bootstrap-alert.js"></script>
+	<script src="js/bootstrap-notify.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.datepicker').datepicker();
+		});
+	</script>
+	<script>
+		$('.show-notification').click(function(e) {
+			$('.top-left').notify({
+				message : {
+					text : 'Aw yeah, It works!'
+				}
+			}).show();
+		});
+	</script>
+	<script>
+		function closeDialog() {
+			$('#myModalCrearProceso').modal('hide');
+			$('#myModal').modal('hide');
+			$('#myModalDuplicarProceso').modal('hide');
+		};
+	</script>
+</body>
+</html>

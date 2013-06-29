@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+</style>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
+    <![endif]-->
+	<title>Proceso de Evaluación - Mind Management</title>
+</h:head>
+<body>
+	<f:view>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<h:form>
+
+						<h:commandLink action="#{indexController.irAIndex }"
+							styleClass="brand">
+							<img src="img/logo.png" />
+						</h:commandLink>
+
+						<div class="nav-collapse collapse">
+
+							<ul class="nav">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAProcesos }"
+											style="color:white; " value="Procesos"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink action="#{indexController.irAPruebas }"
+											value="Pruebas" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAEvaluados }" value="Evaluados"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink
+											action="#{indexController.irAProgramadores }"
+											value="Programadores" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.maestro }">
+									<li><h:commandLink
+											action="#{indexController.irAClientes }" value="Clientes"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+							</ul>
+							<ul class="navbar-text pull-right">
+								<div class="btn-group" id="barraUsuario">
+									<h:commandLink styleClass="btn btn-inverse"
+										style="margin-top:5px;" action="#{indexController.irACuenta }">
+										<i class="icon-user icon-white"></i>
+										<h:outputText
+											value="#{programadorEspecificoController.nombreUsuario}"></h:outputText>
+									</h:commandLink>
+									<h:commandLink styleClass="btn btn-danger"
+										style="margin-top:5px;"
+										action="#{indexController.cerrarSesion }">
+										<i class="icon-remove icon-white"></i>
+									</h:commandLink>
+								</div>
+							</ul>
+						</div>
+					</h:form>
+					<!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="container contenedorProcesos">
+				<h:form>
+					<ul class="breadcrumb">
+						<li><h:commandLink
+								action="#{indexController.irAProgramadores}">Programadores</h:commandLink>
+							<span class="divider">/</span></li>
+						<li class="active"><h:outputText
+								value="#{programadorEspecificoController.nombreProgramador }"></h:outputText></li>
+					</ul>
+				</h:form>
+
+				<div class="container-fluid">
+					<div class="row-fluid">
+
+						<div class="span3" id="panelInfoProceso">
+							<h:form>
+								<div id="tituloProceso">
+									<h4>
+										<h:outputText
+											value="#{programadorEspecificoController.nombreProgramador }"></h:outputText>
+									</h4>
+								</div>
+								<div id="infoGeneral">
+									<p>Cédula</p>
+									<h:inputText styleClass="textoProceso" style="width: 180px;"
+										readonly="true"
+										value="#{programadorEspecificoController.programador.identificador }"></h:inputText>
+									<p>Correo Electrónico</p>
+									<h:inputText styleClass="textoProceso" style="width: 180px;"
+										readonly="true"
+										value="#{programadorEspecificoController.programador.correo_Electronico }"></h:inputText>
+									<p>Teléfono</p>
+									<h:inputText styleClass="textoProceso" style="width: 180px;"
+										readonly="true"
+										value="#{programadorEspecificoController.programador.telefono }"></h:inputText>
+								</div>
+							</h:form>
+						</div>
+
+						<div class="span9" id="parrillaInfoProceso">
+							<legend>Procesos del Programador</legend>
+
+							<h:form
+								rendered="#{not empty programadorEspecificoController.procesos }"
+								binding="#{programadorEspecificoController.tableForm}">
+								<h:dataTable
+									styleClass="table table-hover table-condensed table-striped"
+									binding="#{programadorEspecificoController.dataTable }"
+									value="#{programadorEspecificoController.procesos }"
+									var="proceso">
+									<small> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Nombre del Proceso"></h:outputText>
+											</f:facet>
+
+											<h:outputText value="#{proceso.nombre }"
+												style="color:black; " title="#{proceso.descripcion }"></h:outputText>
+
+										</h:column> <h:column>
+											<center>
+												<f:facet name="header">
+													<h:outputText value="Cantidad (preguntas)"></h:outputText>
+												</f:facet>
+												<h:outputText value="#{proceso.cantidad }">
+												</h:outputText>
+											</center>
+										</h:column> <h:column>
+											<center>
+												<f:facet name="header">
+													<h:outputText value="Duración (minutos)"></h:outputText>
+												</f:facet>
+												<h:outputText value="#{proceso.duracion }">
+												</h:outputText>
+											</center>
+										</h:column> <h:column>
+
+											<f:facet name="header">
+												<center>
+													<h:outputText value="Fecha de Creación"></h:outputText>
+												</center>
+											</f:facet>
+											<center>
+												<h:outputText value="#{proceso.fechaCreacion }">
+													<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+												</h:outputText>
+											</center>
+										</h:column>
+									</small>
+								</h:dataTable>
+							</h:form>
+
+							<h:outputText
+								rendered="#{empty programadorEspecificoController.procesos }"
+								value="No se encontraron procesos del programdador.">
+							</h:outputText>
+						</div>
+					</div>
+				</div>
+				<!-- Cierro Contenedor Principal -->
+			</div>
+			<hr />
+			<footer>
+			<p>&copy; Mind Management 2013</p>
+			</footer>
+
+		</div>
+		<!--/.fluid-container-->
+	</f:view>
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+</body>
+</html>

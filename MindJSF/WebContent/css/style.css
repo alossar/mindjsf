@@ -1,0 +1,240 @@
+*{
+	margin:0px;
+	padding:0px;  
+}
+header,section,footer{
+	display: block;
+
+}
+body{
+	background:white;
+	background: rgb(58,167,201);
+	margin:auto auto;
+}
+#cuerpo{
+	position:relative;
+	width:600px;
+	height:600px;
+	margin: 20px auto;
+}
+#registro{
+	box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+	position:absolute;
+	width:300px;
+	height:250px;
+	border-radius:5px;	
+	top:200px;
+	left:150px;
+	background-color: white;
+}
+#ingresar{
+	margin-top:60px;
+}
+#ingresar li{
+	list-style: none;
+	margin:20px auto;
+	width:150px;
+}
+#ingresar p{
+	font-family:Arial;
+	font-weight: bold;
+	font-size: 12px;
+}
+#entrar{
+	margin-left: 25px;
+	width: 100px;
+	height:40px;
+}
+#entrar:hover{
+	cursor: pointer;
+	box-shadow: 0px 0px 10px rgba(58,167,201,1);
+}
+#titulo{
+	position: absolute;
+	top:125px;
+	left:170px;
+}
+/*Animaciones*/
+#fondo{
+	margin: 25px 25px;
+	-webkit-transition: all 3s ease-in-out;	
+	-moz-transition: all 3s ease-in-out;
+	-o-transition: all 3s ease-in-out;
+}
+#fondo:hover{
+	-webkit-transform: rotate(360deg);
+	-moz-transform: rotate(360deg);
+	-o-transform: rotate(360deg);
+}
+/*footer*/
+#footer{
+	width:200px;
+	height:15px;
+	margin-left: 200px;
+	/*background-color:white;*/
+}
+#footer p{
+	font-family: Arial;
+	font-size: 12px;
+	margin-left:25%;
+	color:white;
+}
+/*----------------INSTRUCCIONES------------------*/
+#fondoBlanco{
+	position:absolute;
+	width: 100%;
+	height: 100%;
+	top:0px;
+	left:0px;
+	background-color: rgba(255,255,255,0.6);
+}
+#instrucciones{
+	position:absolute;
+	width:900px;
+	height:600px;
+	top:0px;
+	left:-150px;
+	background-color:rgb(255,255,255);
+	box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+}
+#entrarEvaluacion{
+	position:absolute;
+	top:550px;
+	left:403px;
+	width:88px;
+	height:41px;
+}
+#entrarEvaluacion:hover{
+	box-shadow: 0px 0px 10px rgba(58,167,201,1);
+}
+
+/*-----------------Evaluacion------------------*/
+
+#evaluacion{
+	position:absolute;
+	width:900px;
+	height:600px;
+	top:0px;
+	left:-150px;
+	background-color:rgb(255,255,255);
+	box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+}
+#enviar{
+	position:absolute;
+	top:530px;
+	left:750px;
+	width:88px;
+	height:31px;
+}
+#enviar:hover{
+	box-shadow: 0px 0px 10px rgba(58,167,250,1);
+}
+#ventAyuda{
+	position: absolute;
+	width:900px;
+	height:600px;
+	top:0px;
+	left:-150px;
+}
+#ayuda{
+	position: absolute;
+	width:69px;
+	height:61px;
+	top:12px;
+	left:821px;
+
+}
+#ayuda:hover{
+	top:14px;
+
+}
+
+#botPagina{
+	position: absolute;
+	top:10px;
+	left:10px;
+}
+#ventanaRespuesta{
+	position: absolute;
+	width:900px;
+	height: 120px;
+	top:480px;
+	left:0px;
+	background-color: rgba(255,255,255,0.3);
+}
+#respuesta{
+	position:absolute;
+	top:500px;
+	left:50px;
+	resize:none;
+	width:690px;
+	height: 90px;
+	max-width:690px;
+	max-height: 100px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgba(100,100,100,0.5);
+	border-radius: 2px;
+}
+#contador{
+	position: absolute;
+	top:566px;
+	left:790px;
+}
+/*--------Final---------*/
+
+#finalPrueba{
+	position:absolute;
+	top:0px;
+	left:-150px;
+}
+
+#volverHome{
+	position:absolute;
+	top:350px;
+	left:260px;
+	width:88px;
+	height:41px;
+}
+#volverHome:hover{
+	background-color: grey;
+}
+/*--Ventanas Emergentes--*/
+
+.vents{
+	position:absolute;
+	width:273px;
+	height:104px;
+	box-shadow: 0px 0px 20px rgba(0,0,0,0.6);
+	border-radius: 3px;	
+}
+#ventEmerEva{
+	left:190px;
+	top:240px;
+	background-color:white; 	
+}
+/*------*/
+#pregunta{
+	position: absolute;
+	width:320px;
+	height:250px;
+	left:20px;
+	top:30px;
+	background-color:rgba(255,255,255,0.5);
+}
+#tiempo{
+	position: absolute;
+	width:60px;
+	height:40px;
+	left:424px;
+	background-color:red;
+}
+#tiempo p{
+	width:45px;
+	height: 25px;
+	background-color: black;
+	font-family: Arial;
+	font-size: 18px;
+	color:white;
+	margin: 0px auto;
+}

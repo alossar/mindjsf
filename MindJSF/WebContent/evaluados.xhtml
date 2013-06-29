@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="css/2mstyle.css"></link>
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
+	<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+</style>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
+    <![endif]-->
+	<title>Evaluados - Mind Management</title>
+</h:head>
+<body>
+	<f:view>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<h:form>
+
+						<h:commandLink action="#{indexController.irAIndex }"
+							styleClass="brand">
+							<img src="img/logo.png" />
+						</h:commandLink>
+
+						<div class="nav-collapse collapse">
+
+							<ul class="nav">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAProcesos }"
+											style="color:white; " value="Procesos"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink action="#{indexController.irAPruebas }"
+											value="Pruebas" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAEvaluados }" value="Evaluados"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink
+											action="#{indexController.irAProgramadores }"
+											value="Programadores" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.maestro }">
+									<li><h:commandLink
+											action="#{indexController.irAClientes }" value="Clientes"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+							</ul>
+							<ul class="navbar-text pull-right">
+								<div class="btn-group" id="barraUsuario">
+									<h:commandLink styleClass="btn btn-inverse"
+										style="margin-top:5px;" action="#{indexController.irACuenta }">
+										<i class="icon-user icon-white"></i>
+										<h:outputText value="#{evaluadosController.nombreUsuario}"></h:outputText>
+									</h:commandLink>
+									<h:commandLink styleClass="btn btn-danger"
+										style="margin-top:5px;"
+										action="#{indexController.cerrarSesion }">
+										<i class="icon-remove icon-white"></i>
+									</h:commandLink>
+								</div>
+							</ul>
+						</div>
+					</h:form>
+				</div>
+				<!--/.nav-collapse -->
+			</div>
+		</div>
+		<div class="container-fluid">
+
+			<div class="row">
+
+				<h:form styleClass="form-search pull-right">
+					<h:inputText styleClass="input-medium search-query "
+						value="#{evaluadosController.parametroBusqueda }" />
+					<h:commandLink styleClass="btn btn-info "
+						action="#{evaluadosController.buscarEvaluados }">
+						<i class="icon-search icon-white"></i>
+					</h:commandLink>
+					<a data-toggle="modal" class="btn btn-info "
+						href="#myModalCrearEvaluado"> <i class="icon-plus icon-white"></i>
+					</a>
+				</h:form>
+			</div>
+
+
+			<legend>Evaluados</legend>
+			<h:form id="formPanelTablaEvaluados">
+				<h:dataTable id="panelTablaEvaluados"
+					rendered="#{not empty evaluadosController.evaluados }"
+					styleClass="table table-hover table-condensed table-striped"
+					binding="#{evaluadosController.dataTable }"
+					value="#{evaluadosController.evaluados }" var="evaluado">
+					<small> <h:column>
+
+							<f:facet name="header">
+								<h:outputText value="Cédula"></h:outputText>
+							</f:facet>
+							<h:outputText value="#{evaluado.cedula }">
+							</h:outputText>
+
+						</h:column> <h:column>
+							<f:facet name="header">
+								<h:outputText value="Nombre del Evaluado"></h:outputText>
+							</f:facet>
+							<h:commandLink
+								value="#{evaluado.nombres } #{evaluado.apellidos }"
+								style="color:black; "
+								action="#{evaluadosController.irAEvaluadoEspecifico }"
+								rendered="#{not evaluado.editar }"></h:commandLink>
+							<h:inputText styleClass="input-small"
+								value="#{evaluado.nombres }" rendered="#{evaluado.editar }"
+								required="true" requiredMessage="El nombre es necesario."></h:inputText>
+							<h:inputText styleClass="input-small"
+								value="#{evaluado.apellidos }" rendered="#{evaluado.editar }"
+								required="true" requiredMessage="Los apellidos es necesario."></h:inputText>
+						</h:column> <h:column>
+
+							<f:facet name="header">
+								<h:outputText value="Correo Electrónico"></h:outputText>
+							</f:facet>
+							<h:outputText value="#{evaluado.correoElectronico }"
+								rendered="#{not evaluado.editar }">
+							</h:outputText>
+							<h:inputText styleClass="input-medium"
+								value="#{evaluado.correoElectronico }"
+								rendered="#{evaluado.editar }" required="true"
+								requiredMessage="El correo es necesario.">
+								<f:validateRegex
+									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+							</h:inputText>
+						</h:column> <h:column>
+							<h:commandLink styleClass="btn btn-info btn-small "
+								action="#{evaluadosController.editarEvaluado }"
+								rendered="#{not evaluado.editar }" style="padding: 5;">
+								<i class="icon-pencil icon-white"></i>
+							</h:commandLink>
+							<h:commandLink styleClass="btn btn-success btn-small "
+								action="#{evaluadosController.guardarEditarEvaluado }"
+								rendered="#{evaluado.editar }" style="padding: 5;">
+								<i class="icon-ok icon-white"></i>
+							</h:commandLink>
+								&nbsp;						
+								<h:commandLink styleClass="btn btn-danger btn-small "
+								action="#{evaluadosController.cancelarEditarEvaluado }"
+								rendered="#{evaluado.editar }" style="padding: 5;">
+								<i class="icon-remove icon-white"></i>
+							</h:commandLink>
+							<h:commandLink styleClass="btn btn-danger btn-small "
+								onclick="$('#myModal').modal('show');"
+								rendered="#{not evaluado.editar and false}">
+								<f:ajax
+									listener="#{evaluadosController.seleccionarEvaluadoEliminar }"></f:ajax>
+								<i class="icon-trash icon-white"></i>
+							</h:commandLink>
+						</h:column>
+					</small>
+				</h:dataTable>
+				<h:panelGroup styleClass="alert"
+					rendered="#{empty evaluadosController.evaluados }">
+					<h:outputText value="No se encontraron evaluados en tu cuenta."></h:outputText>
+					<a data-toggle="modal" href="#myModalCrearEvaluado">Crea un
+						evaluado. </a>
+				</h:panelGroup>
+			</h:form>
+
+			<div id="myModalCrearEvaluado" class="modal hide fade" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 370px;">
+				<div class="modal-header" style="height: 50px;">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h3 id="myModalLabel" style="margin-top: 5px; text-align: center;">
+						<img src="img/logoPruebasCrear.png" />Crear Evaluado
+					</h3>
+				</div>
+				<h:form>
+					<div id="contenedorBotonesCrearPrueba">
+						<div>
+							<p>Nombre</p>
+							<h:inputText id="inputCrearEvaluado0" required="true"
+								style="margin-left:-8px;"
+								value="#{evaluadosController.nombreEvaluadoCrear }">
+								<f:validateLength maximum="20"></f:validateLength>
+							</h:inputText>
+						</div>
+						<div style="margin-top: 4px;">
+							<p>Apellido</p>
+							<h:inputText required="true" id="inputCrearEvaluado"
+								style="margin-left:-8px;"
+								value="#{evaluadosController.apellidoEvaluadoCrear }">
+								<f:validateLength maximum="20"></f:validateLength>
+							</h:inputText>
+						</div>
+						<div style="margin-top: 4px;">
+							<p>Correo</p>
+							<h:inputText id="inputCrearEvaluado2"
+								value="#{evaluadosController.correoEvaluadoCrear }">
+								<f:validateRegex
+									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+							</h:inputText>
+						</div>
+						<div style="margin-top: 4px;">
+							<p>Cedula</p>
+							<h:inputText id="inputCrearEvaluado3"
+								value="#{evaluadosController.cedulaEvaluadoCrear }">
+								<f:validateLength maximum="10"></f:validateLength>
+								<f:convertNumber integerOnly="true" />
+							</h:inputText>
+						</div>
+						<h:commandButton styleClass="btn btn-primary"
+							id="botCrearEvaluado" value="Crear"
+							action="#{evaluadosController.crearEvaluado }"></h:commandButton>
+					</div>
+				</h:form>
+			</div>
+
+			<h:form id="formModalEliminarEvaluado">
+				<div id="myModal" class="modal hide fade" tabindex="-1"
+					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-body"
+						style="text-align: center; font-size: 18pt; font-weight: bold;">
+						<img src="img/dialogo.png" />
+						<h2>Borrar Evaluado.</h2>
+						<p style="font-size: 12pt;">¿Estas Seguro que Deseas Borrar?</p>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-danger" data-dismiss="modal"
+							aria-hidden="true">No</button>
+						<h:commandLink styleClass="btn btn-primary show-notification"
+							actionListener="#{evaluadosController.eliminarEvaluado }"
+							onclick="closeDialog ();" rendered="#{not evaluado.editar }"
+							style="padding: 5;" value="SI">
+							<f:ajax render=":formPanelTablaEvaluados:panelTablaEvaluados" />
+						</h:commandLink>
+					</div>
+
+				</div>
+			</h:form>
+
+			<hr></hr>
+			<footer>
+			<p>&copy; Mind Management 2013</p>
+			</footer>
+
+		</div>
+		<!--/.fluid-container-->
+	</f:view>
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap-transition.js"></script>
+	<script src="js/bootstrap-alert.js"></script>
+	<script src="js/bootstrap-notify.js"></script>
+	<script>
+		$('.show-notification').click(function(e) {
+			$('.top-left').notify({
+				message : {
+					text : 'Aw yeah, It works!'
+				}
+			}).show();
+		});
+	</script>
+	<script>
+		function closeDialog() {
+			$('#myModalCrearProceso').modal('hide');
+			$('#myModal').modal('hide');
+			$('#myModalDuplicarProceso').modal('hide');
+		};
+	</script>
+</body>
+</html>

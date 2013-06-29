@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="css/2mstyle.css" />
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<link rel="stylesheet" href="css/datepicker.css" />
+	<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+</style>
+
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
+    <![endif]-->
+	<title>Cliente - Mind Management</title>
+</h:head>
+<body>
+	<f:view>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container-fluid">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse"
+						data-target=".nav-collapse">
+						<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<h:form>
+
+						<h:commandLink action="#{indexController.irAIndex }"
+							styleClass="brand">
+							<img src="img/logo.png" />
+						</h:commandLink>
+
+						<div class="nav-collapse collapse">
+
+							<ul class="nav">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAProcesos }"
+											style="color:white; " value="Procesos"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink action="#{indexController.irAPruebas }"
+											value="Pruebas" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.programador }">
+									<li><h:commandLink
+											action="#{indexController.irAEvaluados }" value="Evaluados"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.cliente }">
+									<li><h:commandLink
+											action="#{indexController.irAProgramadores }"
+											value="Programadores" style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+								<h:panelGroup rendered="#{autorizacionController.maestro }">
+									<li><h:commandLink
+											action="#{indexController.irAClientes }" value="Clientes"
+											style="color:white;"></h:commandLink></li>
+								</h:panelGroup>
+							</ul>
+							<ul class="navbar-text pull-right">
+								<div class="btn-group" id="barraUsuario">
+									<h:commandLink styleClass="btn btn-inverse"
+										style="margin-top:5px;" action="#{indexController.irACuenta }">
+										<i class="icon-user icon-white"></i>
+										<h:outputText
+											value="#{clienteEspecificoController.nombreUsuario}"></h:outputText>
+									</h:commandLink>
+									<h:commandLink styleClass="btn btn-danger"
+										style="margin-top:5px;"
+										action="#{indexController.cerrarSesion }">
+										<i class="icon-remove icon-white"></i>
+									</h:commandLink>
+								</div>
+							</ul>
+						</div>
+					</h:form>
+					<!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+
+		<div class="container-fluid">
+			<div class="container contenedorProcesos">
+				<h:form>
+					<ul class="breadcrumb">
+						<li><h:commandLink action="#{indexController.irAClientes}">Clientes</h:commandLink>
+							<span class="divider">/</span></li>
+						<li class="active"><h:outputText
+								value="#{clienteEspecificoController.nombreCliente }"></h:outputText></li>
+					</ul>
+				</h:form>
+
+				<div class="container-fluid">
+					<div class="row-fluid">
+
+						<div class="span3" id="panelInfoProceso">
+							<h:form>
+								<div id="tituloProceso">
+									<h4>
+										<h:outputText
+											value="#{clienteEspecificoController.nombreCliente }"></h:outputText>
+									</h4>
+								</div>
+								<div id="infoGeneral">
+									<p>Cédula</p>
+									<h:inputText styleClass="textoProceso" style="width: 180px;"
+										readonly="true"
+										value="#{clienteEspecificoController.cliente.identificador }"></h:inputText>
+									<p>Correo Electrónico</p>
+									<h:inputText styleClass="textoProceso" style="width: 180px;"
+										readonly="true"
+										value="#{clienteEspecificoController.cliente.correo_Electronico }"></h:inputText>
+									<p>Teléfono</p>
+									<h:inputText styleClass="textoProceso" style="width: 180px;"
+										readonly="true"
+										value="#{clienteEspecificoController.cliente.telefono }"></h:inputText>
+									<p>Empresa</p>
+									<h:inputText styleClass="textoProceso" style="width: 180px;"
+										readonly="true"
+										value="#{clienteEspecificoController.cliente.empresa }"></h:inputText>
+									<p>Cargo</p>
+									<h:inputText styleClass="textoProceso" style="width: 180px;"
+										readonly="true"
+										value="#{clienteEspecificoController.cliente.cargo }"></h:inputText>
+									<p>Ciudad</p>
+									<h:inputText styleClass="textoProceso" style="width: 180px;"
+										readonly="true"
+										value="#{clienteEspecificoController.cliente.ciudad }"></h:inputText>
+								</div>
+							</h:form>
+						</div>
+
+						<div class="span9" id="parrillaInfoProceso">
+							<div id="navProceso">
+								<div id="buscarProceso">
+									<h:form styleClass="form-inline pull-right" target="_blank">
+										<h:outputText value="Fecha Inicial: "></h:outputText>
+										<h:inputText styleClass="datepicker" title="Fecha Inicial"
+											style="width: 180px;"
+											value="#{clienteEspecificoController.parametroFechaInicial}"
+											valueChangeListener="#{clienteEspecificoController.formatoFechaInicial }"></h:inputText>
+										<h:outputText value="Fecha Final: "></h:outputText>
+										<h:inputText styleClass="datepicker" title="Fecha Final"
+											style="width: 180px;"
+											value="#{clienteEspecificoController.parametroFechaFinal}"
+											valueChangeListener="#{clienteEspecificoController.formatoFechaFinal }"></h:inputText>
+										<h:commandLink styleClass="btn btn-primary btn-small  "
+											title="Generar Reporte de Usos" style="height: 20px;"
+											action="#{clienteEspecificoController.generarReporteUsos }">
+											<i class="icon-file icon-white" style="margin-top: 3px;"></i>
+										</h:commandLink>
+										<a class="btn btn-primary btn-small" data-toggle="modal"
+											href="#myModalCrearUso" style="height: 20px;"><i
+											class="icon-plus icon-white" style="margin-top: 3px;"></i></a>
+									</h:form>
+								</div>
+							</div>
+							<legend>Historial de Usos</legend>
+
+							<h:form rendered="#{not empty clienteEspecificoController.usos }"
+								binding="#{clienteEspecificoController.tableFormUsos}">
+								<h:dataTable
+									styleClass="table table-hover table-condensed table-striped"
+									binding="#{clienteEspecificoController.dataTableUsos }"
+									value="#{clienteEspecificoController.usos }" var="uso">
+									<small> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Usos Asignados"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{uso.usosAsignados}"
+												style="color:black; "></h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Usos Gastados"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{uso.usosRedimidos}"
+												style="color:black; "></h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Fecha de Asignación"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{uso.fechaAsignacion}"
+												style="color:black; ">
+												<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+											</h:outputText>
+										</h:column> <h:column>
+											<f:facet name="header">
+												<h:outputText value="Fecha de Vencimiento"></h:outputText>
+											</f:facet>
+											<h:outputText value="#{uso.fechaVencimiento}"
+												style="color:black; ">
+												<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+											</h:outputText>
+										</h:column>
+									</small>
+								</h:dataTable>
+							</h:form>
+
+							<h:outputText
+								rendered="#{empty clienteEspecificoController.usos }"
+								value="No se encontraron usos del cliente.">
+							</h:outputText>
+						</div>
+					</div>
+				</div>
+
+				<div id="myModalCrearUso" class="modal hide fade" tabindex="-1"
+					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+					style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 300px;">
+					<div class="modal-header" style="height: 50px;">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">x</button>
+						<h3 id="myModalLabel" style="margin-top: 5px; text-align: center;">
+							<img src="img/logoPruebasCrear.png" />Agregar Usos
+						</h3>
+					</div>
+					<h:form>
+						<div id="contenedorBotonesCrearPrueba">
+							<div>
+								<p style="margin-left: 29px;">Cantidad</p>
+								<h:inputText required="true" id="inputCrearPrueba"
+									value="#{clienteEspecificoController.cantidadUsos }"></h:inputText>
+							</div>
+
+							<h:commandButton styleClass="btn btn-primary" id="botCrearPrueba"
+								action="#{clienteEspecificoController.agregarUsos }"
+								value="Crear"></h:commandButton>
+						</div>
+					</h:form>
+				</div>
+
+				<!-- Cierro Contenedor Principal -->
+				<hr />
+				<footer>
+				<p>&copy; Mind Management 2013</p>
+				</footer>
+
+			</div>
+
+
+
+		</div>
+		<!--/.fluid-container-->
+	</f:view>
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+	<script src="js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('.datepicker').datepicker();
+		});
+	</script>
+</body>
+</html>

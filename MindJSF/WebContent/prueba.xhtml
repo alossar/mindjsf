@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen"></link>
+	<style type="text/css">
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+</style>
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
+    <![endif]-->
+	<title>Mind Management</title>
+	<link rel="stylesheet" href="css/2mstyle.css" />
+	<script src="js/bootstrap.min.js"></script>
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<link href="css/bootstrap-responsive.css" rel="stylesheet" />
+	<style>
+</style>
+
+
+</h:head>
+<body>
+	<f:view>
+		<div id="wrap">
+			<div class="container">
+				<div class="navbar navbar-inverse navbar-fixed-top">
+					<div class="navbar-inner">
+						<div class="container-fluid">
+							<button type="button" class="btn btn-navbar"
+								data-toggle="collapse" data-target=".nav-collapse">
+								<span class="icon-bar"></span> <span class="icon-bar"></span> <span
+									class="icon-bar"></span>
+							</button>
+							<h:form>
+
+								<h:commandLink action="#{indexController.irAIndex }"
+									styleClass="brand">
+									<img src="img/logo.png" />
+								</h:commandLink>
+
+								<div class="nav-collapse collapse">
+
+									<ul class="nav">
+										<h:panelGroup
+											rendered="#{autorizacionController.programador }">
+											<li><h:commandLink
+													action="#{indexController.irAProcesos }"
+													style="color:white; " value="Procesos"></h:commandLink></li>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{autorizacionController.cliente }">
+											<li><h:commandLink
+													action="#{indexController.irAPruebas }" value="Pruebas"
+													style="color:white;"></h:commandLink></li>
+										</h:panelGroup>
+										<h:panelGroup
+											rendered="#{autorizacionController.programador }">
+											<li><h:commandLink
+													action="#{indexController.irAEvaluados }" value="Evaluados"
+													style="color:white;"></h:commandLink></li>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{autorizacionController.cliente }">
+											<li><h:commandLink
+													action="#{indexController.irAProgramadores }"
+													value="Programadores" style="color:white;"></h:commandLink></li>
+										</h:panelGroup>
+										<h:panelGroup rendered="#{autorizacionController.maestro }">
+											<li><h:commandLink
+													action="#{indexController.irAClientes }" value="Clientes"
+													style="color:white;"></h:commandLink></li>
+										</h:panelGroup>
+									</ul>
+									<ul class="navbar-text pull-right">
+										<div class="btn-group" id="barraUsuario">
+											<h:commandLink styleClass="btn btn-inverse"
+												style="margin-top:5px;"
+												action="#{indexController.irACuenta }">
+												<i class="icon-user icon-white"></i>
+												<h:outputText
+													value="#{pruebaEspecificaController.nombreUsuario}"></h:outputText>
+											</h:commandLink>
+											<h:commandLink styleClass="btn btn-danger"
+												style="margin-top:5px;"
+												action="#{indexController.cerrarSesion }">
+												<i class="icon-remove icon-white"></i>
+											</h:commandLink>
+										</div>
+									</ul>
+								</div>
+							</h:form>
+							<!--/.nav-collapse -->
+						</div>
+					</div>
+				</div>
+				<!--Cierro Navegador-->
+
+				<div class="container contenedorVerLaminas">
+					<h:form>
+						<ul class="breadcrumb">
+							<li><h:commandLink value="Procesos"
+									rendered="#{pruebaEspecificaController.mostrarBreadcrumbProceso }"
+									action="#{indexController.irAProcesos }"></h:commandLink> <h:panelGroup
+									styleClass="divider"
+									rendered="#{pruebaEspecificaController.mostrarBreadcrumbProceso }">/</h:panelGroup></li>
+							<li><h:commandLink
+									value="Proceso: #{pruebaEspecificaController.nombreProceso }"
+									rendered="#{pruebaEspecificaController.mostrarBreadcrumbProceso }"
+									action="#{pruebaEspecificaController.irAProcesoEspecifico }"></h:commandLink>
+								<h:panelGroup styleClass="divider"
+									rendered="#{pruebaEspecificaController.mostrarBreadcrumbProceso }">/</h:panelGroup></li>
+							<li><h:commandLink action="#{indexController.irAPruebas }"
+									value="Pruebas"></h:commandLink> <span class="divider">/</span></li>
+							<li class="active"><h:outputText
+									value="#{pruebaEspecificaController.nombrePrueba }"></h:outputText></li>
+						</ul>
+					</h:form>
+					<h:form>
+
+						<div id="contenedorLaminas">
+							<h:panelGroup rendered="#{autorizacionController.cliente}">
+								<button class="btn btn-info" id="botCrearPregunta"
+									style="width: 150px; height: 100px; margin-top: -10px;"
+									href="#myModal" data-toggle="modal">+</button>
+							</h:panelGroup>
+							<c:forEach items="#{pruebaEspecificaController.preguntas}"
+								var="preg">
+								<h:commandLink>
+									<h:graphicImage title="#{preg.pregunta}" width="150"
+										height="100" styleClass="img-polaroid"
+										value="images/Thumbnails/#{preg.imagenesUsuario.imagen.imagenURI }">
+
+									</h:graphicImage>
+									<f:ajax render="contenedorPanelInfo"
+										listener="#{pruebaEspecificaController.mostrarInformacionPregunta }" />
+									<f:attribute name="pregunta" value="#{preg }" />
+								</h:commandLink>
+							</c:forEach>
+
+						</div>
+						<h:panelGroup id="contenedorPanelInfo">
+							<div id="panelInfoLaminas">
+								<div id="centrarInfo">
+									<h5>
+										<strong>Información</strong> General
+									</h5>
+									<div id="imgInfoZona">
+										<h:graphicImage title="#{preg.pregunta}" width="150"
+											height="100"
+											value="images/Thumbnails/#{pruebaEspecificaController.pregunta.imagenesUsuario.imagen.imagenURI }"></h:graphicImage>
+
+									</div>
+									<h6>Pregunta</h6>
+									<h:inputTextarea id="infoLaminaEscogida"
+										value="#{pruebaEspecificaController.pregunta.pregunta }"></h:inputTextarea>
+
+									<div id="tiempoLamina">
+										<p>Tiempo (Segundos)</p>
+
+										<h:inputText title="Tiempo máximo en segundos."
+											styleClass="input-small"
+											value="#{pruebaEspecificaController.pregunta.tiempoMaximo }"></h:inputText>
+
+									</div>
+									<div id="cantidadCaracteresLamina">
+										<p>Cantidad de Caracteres</p>
+										<h:inputText title="Máxima cantidad de caracteres."
+											styleClass="input-small"
+											value="#{pruebaEspecificaController.pregunta.caracteresMaximo }"></h:inputText>
+									</div>
+									<h:panelGroup layout="block"
+										rendered="#{autorizacionController.cliente}" id="panelBotones">
+										<h:commandLink styleClass="btn btn-info" value="Editar"
+											actionListener="#{pruebaEspecificaController.editarPregunta }"></h:commandLink>
+										<h:commandLink styleClass="btn btn-danger" value="Eliminar"
+											actionListener="#{pruebaEspecificaController.eliminarPregunta }"></h:commandLink>
+										<!--Modal de seguridad-->
+									</h:panelGroup>
+								</div>
+							</div>
+						</h:panelGroup>
+					</h:form>
+				</div>
+				<!-- Cierro contenedor ver Laminas -->
+
+				<div id="myModal" class="modal hide fade" tabindex="-1"
+					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+					style="width: 840px; height: 600px; margin-top: -45px;">
+					<div class="modal-header" style="height: 50px;">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">x</button>
+						<h3 id="myModalLabel" style="margin-top: 5px;">
+							<img src="img/logoEditar.png" />Editar Laminas
+						</h3>
+					</div>
+					<h:form>
+						<div class="contenedorEditarLaminas" style="height: 530px;">
+
+							<h:panelGroup id="contenedorPanelEditarLamina">
+								<div id="panelEditarLaminas">
+									<div id="verLaminaEditar">
+										<div id="relojDeTiempo">
+											<p>0 m</p>
+										</div>
+										<div id="mostradorEditarLaminas">
+											<h:graphicImage width="600" height="400"
+												value="images/#{pruebaEspecificaController.imagen.imagen.imagenURI }">
+											</h:graphicImage>
+										</div>
+										<div id="panelEdicionLamina">
+											<div id="espacioPreguntaEditar">
+												<p>Pregunta</p>
+												<h:inputTextarea id="espacioTextoPregunta" required="true"
+													value="#{pruebaEspecificaController.preguntaCrear}">
+													<f:validateLength maximum="2000"></f:validateLength>
+												</h:inputTextarea>
+											</div>
+											<div id="espacioTiempoYCantidad">
+												<div id="editarTiempo">
+													<p>Tiempo</p>
+													<h:inputText styleClass="inputTiempoCaracteres"
+														required="true"
+														value="#{pruebaEspecificaController.tiempoCrear}">
+														<f:convertNumber integerOnly="true">
+														</f:convertNumber>
+													</h:inputText>
+												</div>
+												<div id="editarCaracteres">
+													<p>Caracteres</p>
+													<h:inputText styleClass="inputTiempoCaracteres"
+														required="true"
+														value="#{pruebaEspecificaController.caracteresCrear}">
+														<f:convertNumber integerOnly="true">
+														</f:convertNumber>
+													</h:inputText>
+												</div>
+											</div>
+											<div id="botCrearLamina">
+												<h:commandButton styleClass="btn btn-inverse" value="Crear"
+													action="#{pruebaEspecificaController.crearPregunta}"></h:commandButton>
+											</div>
+										</div>
+									</div>
+								</div>
+							</h:panelGroup>
+							<div id="panelEditarGaleria">
+
+								<div id="contenedorDeLaminasGaleria">
+									<h5>Galeria de Imágenes</h5>
+									<c:forEach items="#{pruebaEspecificaController.imagenes}"
+										var="image">
+										<h:commandLink>
+											<h:graphicImage width="150" height="100"
+												styleClass="img-polaroid"
+												value="images/Thumbnails/#{image.imagen.imagenURI }">
+											</h:graphicImage>
+											<f:ajax render="contenedorPanelEditarLamina"
+												listener="#{pruebaEspecificaController.actualizarImagenModal }" />
+
+											<f:attribute name="imagen" value="#{image }" />
+
+										</h:commandLink>
+
+									</c:forEach>
+								</div>
+							</div>
+						</div>
+					</h:form>
+				</div>
+				<!-- cierro MOdal -->
+
+
+				<!-- Modal -->
+
+
+			</div>
+		</div>
+	</f:view>
+
+	<!-- Le javascript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="js/jquery.js"></script>
+	<script src="js/bootstrap-transition.js"></script>
+	<script src="js/bootstrap-alert.js"></script>
+	<script src="js/bootstrap-modal.js"></script>
+	<script src="js/bootstrap-dropdown.js"></script>
+	<script src="js/bootstrap-scrollspy.js"></script>
+	<script src="js/bootstrap-tab.js"></script>
+	<script src="js/bootstrap-tooltip.js"></script>
+	<script src="js/bootstrap-popover.js"></script>
+	<script src="js/bootstrap-button.js"></script>
+	<script src="js/bootstrap-collapse.js"></script>
+	<script src="js/bootstrap-carousel.js"></script>
+	<script src="js/bootstrap-typeahead.js"></script>
+</body>
+</html>
