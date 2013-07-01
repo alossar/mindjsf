@@ -77,7 +77,7 @@
 	<managed-bean>
 		<managed-bean-name>procesoEspecificoController</managed-bean-name>
 		<managed-bean-class>co.mind.web.procesos.ProcesoEspecificoController</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
+		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>evaluadosController</managed-bean-name>

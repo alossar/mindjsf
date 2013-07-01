@@ -206,10 +206,10 @@ body {
 								</div>
 							</h:panelGroup>
 
-							<h:form
+							<h:form id="formTablaParticipacionesProceso"
 								rendered="#{procesoEspecificoController.enEvaluados and not empty procesoEspecificoController.participacionesProcesoEspecifico}"
 								binding="#{procesoEspecificoController.tableFormEvaluados}">
-								<h:dataTable
+								<h:dataTable id="tablaParticipacionesProceso"
 									styleClass="table table-hover table-condensed table-striped"
 									binding="#{procesoEspecificoController.dataTableEvaluados }"
 									value="#{procesoEspecificoController.participacionesProcesoEspecifico }"
@@ -269,10 +269,10 @@ body {
 								</h:dataTable>
 							</h:form>
 
-							<h:form
+							<h:form id="formTablaPruebasProceso"
 								rendered="#{procesoEspecificoController.enPruebas and not empty procesoEspecificoController.pruebasProcesoEspecifico}"
 								binding="#{procesoEspecificoController.tableFormPruebas}">
-								<h:dataTable
+								<h:dataTable id="tablaPruebasProceso"
 									styleClass="table table-hover table-condensed table-striped"
 									binding="#{procesoEspecificoController.dataTablePruebas }"
 									value="#{procesoEspecificoController.pruebasProcesoEspecifico }"
@@ -365,193 +365,7 @@ body {
 								value="No se encontraron resultados.">
 							</h:outputText>
 
-							<div id="myModalPrueba" class="modal hide fade" tabindex="-1"
-								role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-								style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 320px;">
-								<div class="modal-header" style="height: 50px;">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-hidden="true">x</button>
-									<h3 id="myModalLabel"
-										style="margin-top: 5px; text-align: center;">
-										<img src="img/logoPruebasCrear.png" />Prueba
-									</h3>
-								</div>
-								<h:form>
-									<h:panelGroup id="modalPrueba">
-										<h:panelGroup styleClass="pull-right"
-											rendered="#{procesoEspecificoController.agregarPrueba or procesoEspecificoController.crearPrueba}">
-											<h:commandLink styleClass="btn btn-inverse"
-												id="botonesProcesoVolverPrueba">
-												<i class="icon-chevron-left icon-white" />
-												<f:ajax
-													listener="#{procesoEspecificoController.volverPrueba}"
-													render="modalPrueba"></f:ajax>
-											</h:commandLink>
-										</h:panelGroup>
-										<h:panelGroup id="panelPrueba"
-											rendered="#{(not procesoEspecificoController.agregarPrueba) and (not procesoEspecificoController.crearPrueba) }">
-											<div id="contenedorBotonesmodalProceso">
-												<h:commandLink styleClass="btn btn-primary"
-													id="botonesProcesoCrearPrueba">
-													<img src="img/crearNuevaPrueba.png" />
-													<br></br>
-													<h:outputText value="Crear"></h:outputText>
-													<f:ajax
-														listener="#{procesoEspecificoController.mostrarCrearPrueba}"
-														render="modalPrueba"></f:ajax>
-												</h:commandLink>
-												<h:commandLink styleClass="btn btn-inverse"
-													id="botonesProcesoAgregarPrueba">
-													<img src="img/agregarPrueba.png" />
-													<br></br>
-													<h:outputText value="Agregar"></h:outputText>
-													<f:ajax
-														listener="#{procesoEspecificoController.mostrarAgregarPrueba}"
-														render="modalPrueba"></f:ajax>
-												</h:commandLink>
-											</div>
-										</h:panelGroup>
-										<h:panelGroup
-											rendered="#{procesoEspecificoController.crearPrueba }">
-											<div id="contenedorBotonesCrearPrueba">
-												<div>
-													<p style="margin-left: 29px;">Nombre</p>
-													<h:inputText required="true" id="inputCrearPrueba"
-														value="#{procesoEspecificoController.nombrePruebaCrear }"></h:inputText>
-												</div>
-												<div style="margin-top: 5px;">
-													<p>Descripción</p>
-													<h:inputTextarea required="true" style="height: 100px;"
-														value="#{procesoEspecificoController.descripcionPruebaCrear }"></h:inputTextarea>
-												</div>
 
-												<h:commandButton styleClass="btn btn-primary"
-													id="botCrearPrueba"
-													action="#{procesoEspecificoController.crearPruebaEnProceso }"
-													value="Crear"></h:commandButton>
-											</div>
-										</h:panelGroup>
-										<h:panelGroup
-											rendered="#{procesoEspecificoController.agregarPrueba }">
-											<div id="contenedorBotonesAgregarPrueba">
-												<p>Pruebas</p>
-												<h:selectManyListbox
-													value="#{procesoEspecificoController.selectItemsPruebasRestantes}">
-													<f:selectItems
-														value="#{procesoEspecificoController.pruebasRestantes}"
-														var="p" itemLabel="#{p.nombre }" itemValue="#{p}" />
-												</h:selectManyListbox>
-												<h:commandButton styleClass="btn btn-primary"
-													action="#{procesoEspecificoController.agregarPruebasAProceso}"
-													value="Agregar"></h:commandButton>
-											</div>
-										</h:panelGroup>
-									</h:panelGroup>
-								</h:form>
-							</div>
-
-							<div id="myModalEvaluado" class="modal hide fade" tabindex="-1"
-								role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-								style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 320px;">
-								<div class="modal-header" style="height: 50px;">
-									<button type="button" class="close" data-dismiss="modal"
-										aria-hidden="true">x</button>
-									<h3 id="myModalLabel"
-										style="margin-top: 5px; text-align: center;">
-										<img src="img/logoPruebasCrear.png" />Evaluado
-									</h3>
-								</div>
-								<h:form>
-									<h:panelGroup styleClass="pull-right"
-										rendered="#{procesoEspecificoController.agregarEvaluado or procesoEspecificoController.crearEvaluado}">
-										<h:commandLink styleClass="btn btn-inverse"
-											id="botonesProcesoVolverEvaluado">
-											<i class="icon-chevron-left icon-white" />
-											<f:ajax
-												listener="#{procesoEspecificoController.volverEvaluado}"
-												render="modalEvaluado"></f:ajax>
-										</h:commandLink>
-									</h:panelGroup>
-									<h:panelGroup id="modalEvaluado">
-										<h:panelGroup id="panelEvaluado"
-											rendered="#{(not procesoEspecificoController.agregarEvaluado) and (not procesoEspecificoController.crearEvaluado) }">
-											<div id="contenedorBotonesmodalProceso">
-												<h:commandLink styleClass="btn btn-primary"
-													id="botonesProcesoCrearEvaluado">
-													<img src="img/crearNuevoEvaluado.png" />
-													<br></br>
-													<h:outputText value="Crear"></h:outputText>
-													<f:ajax
-														listener="#{procesoEspecificoController.mostrarCrearEvaluado}"
-														render="modalEvaluado"></f:ajax>
-												</h:commandLink>
-												<h:commandLink styleClass="btn btn-inverse"
-													id="botonesProcesoAgregarEvaluado">
-													<img src="img/agregarPrueba.png" />
-													<br></br>
-													<h:outputText value="Agregar"></h:outputText>
-													<f:ajax
-														listener="#{procesoEspecificoController.mostrarAgregarEvaluado}"
-														render="modalEvaluado"></f:ajax>
-												</h:commandLink>
-											</div>
-										</h:panelGroup>
-										<h:panelGroup
-											rendered="#{procesoEspecificoController.agregarEvaluado}">
-											<div id="contenedorBotonesAgregarPrueba">
-												<p>Evaluados</p>
-												<h:selectManyListbox
-													value="#{procesoEspecificoController.selectItemsEvaluadosRestantes}">
-													<f:selectItems
-														value="#{procesoEspecificoController.evaluadosRestantes}"
-														var="e" itemLabel="#{e.nombres }" itemValue="#{e}" />
-												</h:selectManyListbox>
-												<h:commandButton styleClass="btn btn-primary"
-													action="#{procesoEspecificoController.agregarEvaluadosAProceso}"
-													value="Agregar"></h:commandButton>
-											</div>
-										</h:panelGroup>
-										<h:panelGroup
-											rendered="#{procesoEspecificoController.crearEvaluado}">
-											<div id="contenedorBotonesCrearPrueba">
-												<div style="margin-top: 4px;">
-													<p>Cedula</p>
-													<h:inputText id="inputCrearEvaluado3"
-														value="#{procesoEspecificoController.cedulaEvaluadoCrear}">
-														<f:validateLength maximum="10"></f:validateLength>
-														<f:convertNumber integerOnly="true" />
-													</h:inputText>
-												</div>
-												<div>
-													<p>Nombre</p>
-													<h:inputText id="inputCrearEvaluado0" required="true"
-														value="#{procesoEspecificoController.nombreEvaluadoCrear}">
-														<f:validateLength maximum="10"></f:validateLength>
-													</h:inputText>
-												</div>
-												<div style="margin-top: 4px;">
-													<p>Apellido</p>
-													<h:inputText required="true" id="inputCrearEvaluado"
-														value="#{procesoEspecificoController.apellidoEvaluadoCrear}">
-														<f:validateLength maximum="10"></f:validateLength>
-													</h:inputText>
-												</div>
-												<div style="margin-top: 4px;">
-													<p>Correo</p>
-													<h:inputText id="inputCrearEvaluado2"
-														value="#{procesoEspecificoController.correoEvaluadoCrear}">
-														<f:validateRegex
-															pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-													</h:inputText>
-												</div>
-												<h:commandButton styleClass="btn btn-primary"
-													action="#{procesoEspecificoController.crearEvaluadoEnProceso}"
-													id="botCrearEvaluado" value="Crear"></h:commandButton>
-											</div>
-										</h:panelGroup>
-									</h:panelGroup>
-								</h:form>
-							</div>
 
 						</div>
 					</div>
@@ -562,7 +376,209 @@ body {
 				<p>&copy; Mind Management 2013</p>
 				</footer>
 			</div>
+			<div id="myModalPrueba" class="modal hide fade" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 320px;">
+				<div class="modal-header" style="height: 50px;">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h3 id="myModalLabel" style="margin-top: 5px; text-align: center;">
+						<img src="img/logoPruebasCrear.png" />Prueba
+					</h3>
+				</div>
+				<h:panelGroup id="modalPrueba">
+					<h:form id="modalPruebaVolver">
+						<h:panelGroup styleClass="pull-right"
+							rendered="#{procesoEspecificoController.agregarPrueba or procesoEspecificoController.crearPrueba}">
+							<h:commandLink styleClass="btn btn-inverse"
+								id="botonesProcesoVolverPrueba">
+								<i class="icon-chevron-left icon-white" />
+								<f:ajax listener="#{procesoEspecificoController.volverPrueba}"
+									render=":modalPrueba"></f:ajax>
+							</h:commandLink>
+						</h:panelGroup>
+					</h:form>
+					<h:form id="modalPruebaPrincipal">
+						<h:panelGroup id="panelPrueba"
+							rendered="#{(not procesoEspecificoController.agregarPrueba) and (not procesoEspecificoController.crearPrueba) }">
+							<div id="contenedorBotonesmodalProceso">
+								<h:commandLink styleClass="btn btn-primary"
+									id="botonesProcesoCrearPrueba">
+									<img src="img/crearNuevaPrueba.png" />
+									<br></br>
+									<h:outputText value="Crear"></h:outputText>
+									<f:ajax
+										listener="#{procesoEspecificoController.mostrarCrearPrueba}"
+										render=":modalPrueba"></f:ajax>
+								</h:commandLink>
+								<h:commandLink styleClass="btn btn-inverse"
+									id="botonesProcesoAgregarPrueba">
+									<img src="img/agregarPrueba.png" />
+									<br></br>
+									<h:outputText value="Agregar"></h:outputText>
+									<f:ajax
+										listener="#{procesoEspecificoController.mostrarAgregarPrueba}"
+										render=":modalPrueba"></f:ajax>
+								</h:commandLink>
+							</div>
+						</h:panelGroup>
+					</h:form>
+					<h:form id="modalPruebaCrear">
+						<h:panelGroup
+							rendered="#{procesoEspecificoController.crearPrueba }">
+							<div id="contenedorBotonesCrearPrueba">
+								<div>
+									<p style="margin-left: 29px;">Nombre</p>
+									<h:inputText required="true" id="inputCrearPrueba"
+										value="#{procesoEspecificoController.nombrePruebaCrear }"></h:inputText>
+								</div>
+								<div style="margin-top: 5px;">
+									<p>Descripción</p>
+									<h:inputTextarea required="true" style="height: 100px;"
+										value="#{procesoEspecificoController.descripcionPruebaCrear }"></h:inputTextarea>
+								</div>
 
+								<h:commandLink styleClass="btn btn-primary" id="botCrearPrueba"
+									value="Crear" onclick="closeDialog ();">
+									<f:ajax execute="@form"
+										render=":modalPruebaCrear :formTablaPruebasProceso:tablaPruebasProceso"
+										listener="#{procesoEspecificoController.crearPruebaEnProceso}" />
+								</h:commandLink>
+							</div>
+						</h:panelGroup>
+					</h:form>
+					<h:form id="modalPruebaAgregar">
+						<h:panelGroup
+							rendered="#{procesoEspecificoController.agregarPrueba }">
+							<div id="contenedorBotonesAgregarPrueba">
+								<p>Pruebas</p>
+								<h:selectManyListbox converter="javax.faces.Integer"
+									value="#{procesoEspecificoController.selectItemsPruebasRestantes}">
+									<f:selectItems
+										value="#{procesoEspecificoController.pruebasRestantes}"
+										var="p" itemLabel="#{p.nombre }"
+										itemValue="#{p.identificador}" />
+								</h:selectManyListbox>
+							</div>
+							<h:commandButton styleClass="btn btn-primary" value="Agregar"
+								action="#{procesoEspecificoController.agregarPruebasAProceso}">
+							</h:commandButton>
+						</h:panelGroup>
+					</h:form>
+				</h:panelGroup>
+			</div>
+
+			<div id="myModalEvaluado" class="modal hide fade" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 320px;">
+				<div class="modal-header" style="height: 50px;">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h3 id="myModalLabel" style="margin-top: 5px; text-align: center;">
+						<img src="img/logoPruebasCrear.png" />Evaluado
+					</h3>
+				</div>
+
+				<h:panelGroup id="modalEvaluado">
+					<h:form id="modalEvaluadoVolver">
+						<h:panelGroup styleClass="pull-right"
+							rendered="#{procesoEspecificoController.agregarEvaluado or procesoEspecificoController.crearEvaluado}">
+							<h:commandLink styleClass="btn btn-inverse"
+								id="botonesProcesoVolverEvaluado">
+								<i class="icon-chevron-left icon-white" />
+								<f:ajax listener="#{procesoEspecificoController.volverEvaluado}"
+									render=":modalEvaluado"></f:ajax>
+							</h:commandLink>
+						</h:panelGroup>
+					</h:form>
+					<h:form id="modalEvaluadoPrincipal">
+						<h:panelGroup id="panelEvaluado"
+							rendered="#{(not procesoEspecificoController.agregarEvaluado) and (not procesoEspecificoController.crearEvaluado) }">
+							<div id="contenedorBotonesmodalProceso">
+								<h:commandLink styleClass="btn btn-primary"
+									id="botonesProcesoCrearEvaluado">
+									<img src="img/crearNuevoEvaluado.png" />
+									<br></br>
+									<h:outputText value="Crear"></h:outputText>
+									<f:ajax
+										listener="#{procesoEspecificoController.mostrarCrearEvaluado}"
+										render=":modalEvaluado"></f:ajax>
+								</h:commandLink>
+								<h:commandLink styleClass="btn btn-inverse"
+									id="botonesProcesoAgregarEvaluado">
+									<img src="img/agregarPrueba.png" />
+									<br></br>
+									<h:outputText value="Agregar"></h:outputText>
+									<f:ajax
+										listener="#{procesoEspecificoController.mostrarAgregarEvaluado}"
+										render=":modalEvaluado"></f:ajax>
+								</h:commandLink>
+							</div>
+						</h:panelGroup>
+					</h:form>
+					<h:form id="modalEvaluadoAgregar">
+						<h:panelGroup
+							rendered="#{procesoEspecificoController.agregarEvaluado}">
+							<div id="contenedorBotonesAgregarPrueba">
+								<p>Evaluados</p>
+								<h:selectManyListbox converter="javax.faces.Integer"
+									value="#{procesoEspecificoController.selectItemsEvaluadosRestantes}">
+									<f:selectItems
+										value="#{procesoEspecificoController.evaluadosRestantes}"
+										var="e" itemLabel="#{e.nombres }"
+										itemValue="#{e.identificador}" />
+								</h:selectManyListbox>
+							</div>
+							<h:commandButton styleClass="btn btn-primary" value="Agregar"
+								action="#{procesoEspecificoController.agregarEvaluadosAProceso}">
+							</h:commandButton>
+						</h:panelGroup>
+					</h:form>
+					<h:form id="modalEvaluadoCrear">
+						<h:panelGroup
+							rendered="#{procesoEspecificoController.crearEvaluado}">
+							<div id="contenedorBotonesCrearPrueba">
+								<div style="margin-top: 4px;">
+									<p>Cedula</p>
+									<h:inputText id="inputCrearEvaluado3"
+										value="#{procesoEspecificoController.cedulaEvaluadoCrear}">
+										<f:validateLength maximum="10"></f:validateLength>
+										<f:convertNumber integerOnly="true" />
+									</h:inputText>
+								</div>
+								<div>
+									<p>Nombre</p>
+									<h:inputText id="inputCrearEvaluado0" required="true"
+										value="#{procesoEspecificoController.nombreEvaluadoCrear}">
+										<f:validateLength maximum="10"></f:validateLength>
+									</h:inputText>
+								</div>
+								<div style="margin-top: 4px;">
+									<p>Apellido</p>
+									<h:inputText required="true" id="inputCrearEvaluado"
+										value="#{procesoEspecificoController.apellidoEvaluadoCrear}">
+										<f:validateLength maximum="10"></f:validateLength>
+									</h:inputText>
+								</div>
+								<div style="margin-top: 4px;">
+									<p>Correo</p>
+									<h:inputText id="inputCrearEvaluado2" required="true"
+										value="#{procesoEspecificoController.correoEvaluadoCrear}">
+										<f:validateRegex
+											pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+									</h:inputText>
+								</div>
+								<h:commandButton styleClass="btn btn-primary"
+									id="botCrearEvaluado" value="Crear" onclick="closeDialog ();">
+									<f:ajax execute="@form"
+										render=":modalEvaluadoCrear :formTablaParticipacionesProceso:tablaParticipacionesProceso"
+										listener="#{procesoEspecificoController.crearEvaluadoEnProceso}" />
+								</h:commandButton>
+							</div>
+						</h:panelGroup>
+					</h:form>
+				</h:panelGroup>
+			</div>
 
 		</div>
 		<!--/.fluid-container-->
@@ -574,6 +590,12 @@ body {
 		$(document).ready(function() {
 			$('.datepicker').datepicker();
 		});
+	</script>
+	<script>
+		function closeDialog() {
+			$('#myModalEvaluado').modal('hide');
+			$('#myModalPrueba').modal('hide');
+		};
 	</script>
 </body>
 </html>

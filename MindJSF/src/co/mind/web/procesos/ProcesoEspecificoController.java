@@ -9,7 +9,9 @@ import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -62,8 +64,8 @@ public class ProcesoEspecificoController {
 	private PruebaUsuarioBO[] pruebasRestantes;
 	private EvaluadoBO[] evaluadosRestantes;
 
-	private PruebaUsuarioBO[] selectItemsPruebasRestantes;
-	private EvaluadoBO[] selectItemsEvaluadosRestantes;
+	private Integer[] selectItemsPruebasRestantes;
+	private Integer[] selectItemsEvaluadosRestantes;
 
 	boolean continuar = true;
 
@@ -301,7 +303,8 @@ public class ProcesoEspecificoController {
 		setCrearEvaluado(true);
 	}
 
-	public String crearEvaluadoEnProceso() {
+	public void crearEvaluadoEnProceso(AjaxBehaviorEvent event) {
+		System.out.println("Creando evaluado");
 		EvaluadoBO eva = new EvaluadoBO();
 		eva.setApellidos(apellidoEvaluadoCrear);
 		eva.setCedula(cedulaEvaluadoCrear);
@@ -329,10 +332,10 @@ public class ProcesoEspecificoController {
 								proceso.getIdentificador()));
 			}
 		}
-		return null;
 	}
 
-	public String crearPruebaEnProceso() {
+	public void crearPruebaEnProceso(AjaxBehaviorEvent event) {
+		System.out.println("Creando prueba");
 		PruebaUsuarioBO prueba = new PruebaUsuarioBO();
 		prueba.setNombre(nombrePruebaCrear);
 		prueba.setDescripcion(descripcionPruebaCrear);
@@ -352,16 +355,16 @@ public class ProcesoEspecificoController {
 			}
 			setPruebasProcesoEspecifico(pruebas);
 		}
-		return null;
 	}
 
 	public String agregarEvaluadosAProceso() {
-		System.out.println(selectItemsEvaluadosRestantes.length);
 		GestionUsos gUsos = new GestionUsos();
 		if (gUsos.consultarCapacidadUsos(usuario.getIdentificador(),
 				selectItemsEvaluadosRestantes.length)) {
 			GestionEvaluacion gEvaluacion = new GestionEvaluacion();
-			for (EvaluadoBO eva : selectItemsEvaluadosRestantes) {
+			for (Integer id : selectItemsEvaluadosRestantes) {
+				EvaluadoBO eva = new EvaluadoBO();
+				eva.setIdentificador(id);
 				ParticipacionEnProcesoBO p = new ParticipacionEnProcesoBO();
 				p.setUsuarioBasico(eva);
 				p.setFechaFinalizacion(proceso.getFechaFinalizacion());
@@ -380,10 +383,11 @@ public class ProcesoEspecificoController {
 	}
 
 	public String agregarPruebasAProceso() {
-		System.out.println(selectItemsPruebasRestantes.length);
 		GestionPruebas gPruebas = new GestionPruebas();
 
-		for (PruebaUsuarioBO prueba : selectItemsPruebasRestantes) {
+		for (Integer id : selectItemsPruebasRestantes) {
+			PruebaUsuarioBO prueba = new PruebaUsuarioBO();
+			prueba.setIdentificador(id);
 			gPruebas.agregarPruebaAProceso(usuario.getIdentificador(), prueba,
 					proceso);
 		}
@@ -470,6 +474,13 @@ public class ProcesoEspecificoController {
 			evaluados[i] = evaluadosRestantes.get(i);
 		}
 		return evaluados;
+	}
+
+	public void selectedPruebasChanged(ValueChangeEvent event) {
+		Integer[] oldValue = (Integer[]) event.getOldValue();
+		Integer[] newValue = (Integer[]) event.getNewValue();
+		System.out.println(oldValue);
+		System.out.println(newValue);
 	}
 
 	public List<PruebaUsuarioBO> getPruebasProcesoEspecifico() {
@@ -707,21 +718,23 @@ public class ProcesoEspecificoController {
 		this.crearEvaluado = crearEvaluado;
 	}
 
-	public PruebaUsuarioBO[] getSelectItemsPruebasRestantes() {
+	public Integer[] getSelectItemsPruebasRestantes() {
 		return selectItemsPruebasRestantes;
 	}
 
 	public void setSelectItemsPruebasRestantes(
-			PruebaUsuarioBO[] selectItemsPruebasRestantes) {
+			Integer[] selectItemsPruebasRestantes) {
+		System.out.println(selectItemsPruebasRestantes);
 		this.selectItemsPruebasRestantes = selectItemsPruebasRestantes;
 	}
 
-	public EvaluadoBO[] getSelectItemsEvaluadosRestantes() {
+	public Integer[] getSelectItemsEvaluadosRestantes() {
 		return selectItemsEvaluadosRestantes;
 	}
 
 	public void setSelectItemsEvaluadosRestantes(
-			EvaluadoBO[] selectItemsEvaluadosRestantes) {
+			Integer[] selectItemsEvaluadosRestantes) {
+		System.out.println(selectItemsEvaluadosRestantes);
 		this.selectItemsEvaluadosRestantes = selectItemsEvaluadosRestantes;
 	}
 
