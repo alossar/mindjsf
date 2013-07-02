@@ -164,7 +164,8 @@ body {
 											<i class="icon-file icon-white" style="margin-top: 3px;"></i>
 										</h:commandLink>
 										<a class="btn btn-primary btn-small" data-toggle="modal"
-											href="#myModalCrearUso" style="height: 20px;"><i
+											href="#myModalCrearUso" style="height: 20px;"
+											title="Agregar usos al cliente."><i
 											class="icon-plus icon-white" style="margin-top: 3px;"></i></a>
 									</h:form>
 								</div>
@@ -235,10 +236,9 @@ body {
 								<h:inputText required="true" id="inputCrearPrueba"
 									value="#{clienteEspecificoController.cantidadUsos }"></h:inputText>
 							</div>
-
-							<h:commandButton styleClass="btn btn-primary" id="botCrearPrueba"
+							<h:commandLink styleClass="btn btn-primary" id="botCrearPrueba"
 								action="#{clienteEspecificoController.agregarUsos }"
-								value="Crear"></h:commandButton>
+								value="Crear"></h:commandLink>
 						</div>
 					</h:form>
 				</div>

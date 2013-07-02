@@ -134,6 +134,9 @@ public class PruebasController {
 	public String cancelarEditarPrueba() {
 		prueba = (PruebaUsuarioBO) dataTable.getRowData();
 		prueba.setEditar(false);
+		GestionPruebas gPruebas = new GestionPruebas();
+		setPruebas(gPruebas.listarPruebasUsuarioAdministrador(usuario
+				.getIdentificador()));
 		return null;
 	}
 

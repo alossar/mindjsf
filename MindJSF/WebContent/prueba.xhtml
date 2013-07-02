@@ -32,6 +32,10 @@ body {
 
 
 </h:head>
+<f:event
+	listener="#{pruebaEspecificaController.preRenderPruebaEspecifica}"
+	type="preRenderView" />
+
 <body>
 	<f:view>
 		<div id="wrap">
@@ -181,9 +185,12 @@ body {
 									</div>
 									<h:panelGroup layout="block"
 										rendered="#{autorizacionController.cliente}" id="panelBotones">
-										<h:commandLink styleClass="btn btn-info" value="Editar"
+										<h:commandLink styleClass="btn btn-info show-notification"
+											value="Guardar"
+											rendered="#{not empty pruebaEspecificaController.pregunta}"
 											actionListener="#{pruebaEspecificaController.editarPregunta }"></h:commandLink>
 										<h:commandLink styleClass="btn btn-danger" value="Eliminar"
+											rendered="#{not empty pruebaEspecificaController.pregunta}"
 											actionListener="#{pruebaEspecificaController.eliminarPregunta }"></h:commandLink>
 										<!--Modal de seguridad-->
 									</h:panelGroup>
@@ -304,5 +311,17 @@ body {
 	<script src="js/bootstrap-collapse.js"></script>
 	<script src="js/bootstrap-carousel.js"></script>
 	<script src="js/bootstrap-typeahead.js"></script>
+	<script src="js/bootstrap-notify.js"></script>
+	<script>
+		$('.show-notification').click(function(e) {
+			$('.top-left').notify({
+				message : {
+					text : 'Proceso agregado'
+				}
+			}).show();
+		});
+	</script>
+
+
 </body>
 </html>

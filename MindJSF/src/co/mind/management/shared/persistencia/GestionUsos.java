@@ -47,7 +47,6 @@ public class GestionUsos implements IGestionUsos {
 				entityManager.persist(u);
 				entityManager.flush();
 				userTransaction.commit();
-				entityManager.refresh(u);
 				return Convencion.CORRECTO;
 			} else {
 				return Convencion.INCORRECTO;
@@ -56,7 +55,7 @@ public class GestionUsos implements IGestionUsos {
 			// Exception has occurred, roll-back the transaction.
 			exception.printStackTrace();
 			userTransaction.rollback();
-			return 1;
+			return Convencion.INCORRECTO;
 		}
 	}
 

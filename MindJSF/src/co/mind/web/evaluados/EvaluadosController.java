@@ -114,6 +114,10 @@ public class EvaluadosController {
 
 	public String cancelarEditarEvaluado() {
 		evaluado.setEditar(false);
+		GestionEvaluados gEvaluados = new GestionEvaluados();
+		setEvaluados(gEvaluados.listarUsuariosBasicos(usuario
+				.getIdentificador()));
+		evaluadosTemp = evaluados;
 		return null;
 	}
 

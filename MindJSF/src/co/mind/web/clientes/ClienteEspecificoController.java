@@ -108,6 +108,7 @@ public class ClienteEspecificoController {
 	}
 
 	public String agregarUsos() {
+		System.out.print("agregando usos...");
 		UsoBO uso = new UsoBO();
 		uso.setFechaAsignacion(new Date());
 		uso.setUsosAsignados(cantidadUsos);
@@ -115,7 +116,10 @@ public class ClienteEspecificoController {
 		GestionUsos gUsos = new GestionUsos();
 		int result = gUsos.agregarUso(usuario.getIdentificador(), uso);
 		if (result == Convencion.CORRECTO) {
+			System.out.println("EXITO");
 			setUsos(gUsos.listarUsos(cliente.getIdentificador()));
+		} else {
+			System.out.println("FRACASo");
 		}
 		return null;
 	}

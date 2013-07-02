@@ -25,6 +25,9 @@ body {
     <![endif]-->
 	<title>Proceso de Evaluación - Mind Management</title>
 </h:head>
+<f:event
+	listener="#{procesoEspecificoController.preRenderProcesoEspecifico}"
+	type="preRenderView" />
 <body>
 	<f:view>
 		<div class="navbar navbar-inverse navbar-fixed-top">
@@ -94,6 +97,7 @@ body {
 
 		<div class="container-fluid">
 			<div class="container contenedorProcesos">
+
 				<h:form>
 					<ul class="breadcrumb">
 						<li><h:commandLink action="#{indexController.irAProcesos}">Procesos</h:commandLink>
@@ -107,57 +111,65 @@ body {
 					<div class="row-fluid">
 
 						<div class="span3" id="panelInfoProceso">
+
+							<div id="tituloProceso">
+								<h4>
+									<h:outputText
+										value="#{procesoEspecificoController.nombreProceso }"></h:outputText>
+								</h4>
+								<h:panelGroup styleClass=" pull-right">
+									<h:form>
+
+										<h:commandLink styleClass="btn btn-info"
+											rendered="#{procesoEspecificoController.proceso.estadoValoracion == 'no_realizada' or (empty procesoEspecificoController.proceso.estadoValoracion)}"
+											title="Solicitar revisión de experto.">
+											<i class="icon-comment icon-white"></i>
+										</h:commandLink>
+										<h:commandLink styleClass="btn btn-info" disabled="true"
+											rendered="#{procesoEspecificoController.proceso.estadoValoracion == 'realizada'}"
+											title="Solicitar revisión de experto.">
+											<i class="icon-thumbs-up icon-white"></i>
+										</h:commandLink>
+										<h:commandLink styleClass="btn btn-info" disabled="true"
+											rendered="#{procesoEspecificoController.proceso.estadoValoracion == 'rechazada'}"
+											title="Solicitar revisión de experto.">
+											<i class="icon-thumbs-down icon-white"></i>
+										</h:commandLink>
+
+									</h:form>
+								</h:panelGroup>
+							</div>
 							<h:form>
-								<div id="tituloProceso">
-									<h4>
-										<h:outputText
-											value="#{procesoEspecificoController.nombreProceso }"></h:outputText>
-									</h4>
-								</div>
 								<div id="infoGeneral">
 									<p>Nombre</p>
 									<h:inputText
 										value="#{procesoEspecificoController.proceso.nombre }"
-										styleClass="textoProceso" style="width: 180px;"
-										readonly="#{not procesoEspecificoController.editar }"
-										disabled="#{not procesoEspecificoController.editar }"></h:inputText>
+										styleClass="textoProceso" style="width: 180px;"></h:inputText>
 									<p>Descripción</p>
 									<h:inputTextarea
 										value="#{procesoEspecificoController.proceso.descripcion }"
-										rows="3" styleClass="textoProceso"
-										readonly="#{not procesoEspecificoController.editar }"
-										disabled="#{not procesoEspecificoController.editar }"
-										style="width: 180px;"></h:inputTextarea>
+										rows="3" styleClass="textoProceso" style="width: 180px;"></h:inputTextarea>
 									<p>Fecha de Creación</p>
 									<h:inputText readonly="true" disabled="true"
 										style="width: 180px;"
 										value="#{procesoEspecificoController.proceso.fechaCreacion }"></h:inputText>
 									<p>Fecha de Inicio</p>
 									<h:inputText styleClass="datepicker"
-										value="#{procesoEspecificoController.proceso.fechaInicio }"
-										readonly="#{not procesoEspecificoController.editar }"
-										disabled="#{not procesoEspecificoController.editar }"
+										valueChangeListener="#{procesoEspecificoController.formatoFechaInicial }"
+										value="#{procesoEspecificoController.parametroFechaInicial }"
 										style="width: 180px;"></h:inputText>
 									<p>Fecha de Finalización</p>
 									<h:inputText styleClass="datepicker"
-										value="#{procesoEspecificoController.proceso.fechaFinalizacion }"
-										readonly="#{not procesoEspecificoController.editar }"
-										disabled="#{not procesoEspecificoController.editar }"
+										valueChangeListener="#{procesoEspecificoController.formatoFechaFinal }"
+										value="#{procesoEspecificoController.parametroFechaFinal }"
 										style="width: 180px;"></h:inputText>
 									<h:commandLink styleClass="btn btn-primary"
-										action="#{procesoEspecificoController.editarProceso }"
-										rendered="#{not procesoEspecificoController.editar }"
-										style="float: right; margin-right: 20px;" value="Editar"></h:commandLink>
-									<h:commandLink styleClass="btn btn-primary"
-										rendered="#{procesoEspecificoController.editar }"
 										action="#{procesoEspecificoController.guardarEditarProceso }"
 										style="float: right; margin-right: 20px;" value="Guardar"></h:commandLink>
-									<h:commandLink styleClass="btn btn-danger"
-										rendered="#{procesoEspecificoController.editar }"
-										style="float: right; margin-right: 20px;" value="Cancelar"></h:commandLink>
-
 								</div>
 							</h:form>
+
+
 						</div>
 
 						<div class="span9" id="parrillaInfoProceso">
@@ -173,6 +185,7 @@ body {
 												action="#{procesoEspecificoController.verResultados }">Resultados</h:commandLink></li>
 									</ul>
 								</h:form>
+
 							</div>
 
 							<h:panelGroup
@@ -376,6 +389,7 @@ body {
 				<p>&copy; Mind Management 2013</p>
 				</footer>
 			</div>
+
 			<div id="myModalPrueba" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
 				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 320px;">
@@ -460,9 +474,9 @@ body {
 										itemValue="#{p.identificador}" />
 								</h:selectManyListbox>
 							</div>
-							<h:commandButton styleClass="btn btn-primary" value="Agregar"
+							<h:commandLink styleClass="btn btn-primary" value="Agregar"
 								action="#{procesoEspecificoController.agregarPruebasAProceso}">
-							</h:commandButton>
+							</h:commandLink>
 						</h:panelGroup>
 					</h:form>
 				</h:panelGroup>
@@ -529,9 +543,9 @@ body {
 										itemValue="#{e.identificador}" />
 								</h:selectManyListbox>
 							</div>
-							<h:commandButton styleClass="btn btn-primary" value="Agregar"
+							<h:commandLink styleClass="btn btn-primary" value="Agregar"
 								action="#{procesoEspecificoController.agregarEvaluadosAProceso}">
-							</h:commandButton>
+							</h:commandLink>
 						</h:panelGroup>
 					</h:form>
 					<h:form id="modalEvaluadoCrear">
@@ -568,12 +582,12 @@ body {
 											pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 									</h:inputText>
 								</div>
-								<h:commandButton styleClass="btn btn-primary"
+								<h:commandLink styleClass="btn btn-primary"
 									id="botCrearEvaluado" value="Crear" onclick="closeDialog ();">
 									<f:ajax execute="@form"
 										render=":modalEvaluadoCrear :formTablaParticipacionesProceso:tablaParticipacionesProceso"
 										listener="#{procesoEspecificoController.crearEvaluadoEnProceso}" />
-								</h:commandButton>
+								</h:commandLink>
 							</div>
 						</h:panelGroup>
 					</h:form>

@@ -1,7 +1,11 @@
 package co.mind.web.procesos;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,7 +13,6 @@ import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -76,6 +79,11 @@ public class ProcesoEspecificoController {
 	private boolean agregarEvaluado;
 	private boolean crearEvaluado;
 
+	private Date fechaInicial;
+	private Date fechaFinal;
+	private String parametroFechaInicial;
+	private String parametroFechaFinal;
+
 	@PostConstruct
 	public void init() {
 		verificarLogin();
@@ -134,6 +142,95 @@ public class ProcesoEspecificoController {
 				setCrearPrueba(false);
 				setAgregarEvaluado(false);
 				setCrearEvaluado(false);
+				try {
+					Calendar cal1 = Calendar.getInstance();
+					cal1.setTime(proceso.getFechaFinalizacion());
+					setParametroFechaFinal((cal1.get(Calendar.MONTH)) + "/"
+							+ cal1.get(Calendar.DAY_OF_MONTH) + "/"
+							+ cal1.get(Calendar.YEAR));
+				} catch (Exception e) {
+					setParametroFechaFinal(null);
+				}
+				try {
+					Calendar cal2 = Calendar.getInstance();
+					cal2.setTime(proceso.getFechaInicio());
+					setParametroFechaInicial((cal2.get(Calendar.MONTH) + 1)
+							+ "/" + 1 + "/" + cal2.get(Calendar.YEAR));
+				} catch (Exception e) {
+					setParametroFechaInicial(null);
+				}
+				fechaFinal = proceso.getFechaFinalizacion();
+				fechaInicial = proceso.getFechaInicio();
+			}
+		}
+	}
+
+	public void preRenderProcesoEspecifico() {
+		if (usuario != null) {
+			System.out.println("Is postback");
+
+			proceso = obtenerProcesoDeSesion();
+			if (proceso == null) {
+				HttpServletResponse response = MindHelper.obtenerResponse();
+				try {
+					response.sendRedirect("procesos.do");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				setNombreProceso(proceso.getNombre());
+				setDescripcionProceso(proceso.getDescripcion());
+				GestionProcesos gProcesos = new GestionProcesos();
+				GestionEvaluacion gEvaluacion = new GestionEvaluacion();
+				GestionPruebas gPruebas = new GestionPruebas();
+				GestionEvaluados gEvaluados = new GestionEvaluados();
+
+				ProcesoUsuarioBO result = gProcesos
+						.consultarProcesoUsuarioAdministrador(
+								usuario.getIdentificador(),
+								proceso.getIdentificador());
+				List<PruebaUsuarioBO> pruebas = new ArrayList<PruebaUsuarioBO>();
+				for (ProcesoUsuarioHasPruebaUsuarioBO pHas : result
+						.getProcesoUsuarioHasPruebaUsuario()) {
+					pruebas.add(pHas.getPruebasUsuario());
+				}
+				setPruebasProcesoEspecifico(pruebas);
+				setParticipacionesProcesoEspecifico(gEvaluacion
+						.listarParticipacionesEnProceso(
+								usuario.getIdentificador(),
+								proceso.getIdentificador()));
+				setResultadosProcesoEspecifico(gEvaluacion
+						.listarParticipacionesEnProcesoCompletas(
+								usuario.getIdentificador(),
+								proceso.getIdentificador()));
+				setPruebasRestantes(listaPruebasAArreglo(obtenerPruebasNoEnProceso(
+						gPruebas.listarPruebasUsuarioAdministrador(usuario
+								.getIdentificador()),
+						getPruebasProcesoEspecifico())));
+				setEvaluadosRestantes(listaEvaluadosAArreglo(obtenerEvaluadosNoEnProceso(
+						gEvaluados.listarUsuariosBasicos(usuario
+								.getIdentificador()),
+						obtenerEvaluadosDeParticipacion(getParticipacionesProcesoEspecifico()))));
+				try {
+					Calendar cal1 = Calendar.getInstance();
+					cal1.setTime(proceso.getFechaFinalizacion());
+					setParametroFechaFinal((cal1.get(Calendar.MONTH)) + "/"
+							+ cal1.get(Calendar.DAY_OF_MONTH) + "/"
+							+ cal1.get(Calendar.YEAR));
+				} catch (Exception e) {
+					setParametroFechaFinal(null);
+				}
+				try {
+					Calendar cal2 = Calendar.getInstance();
+					cal2.setTime(proceso.getFechaInicio());
+					setParametroFechaInicial((cal2.get(Calendar.MONTH) + 1)
+							+ "/" + 1 + "/" + cal2.get(Calendar.YEAR));
+				} catch (Exception e) {
+					setParametroFechaInicial(null);
+				}
+				fechaFinal = proceso.getFechaFinalizacion();
+				fechaInicial = proceso.getFechaInicio();
 			}
 		}
 	}
@@ -211,25 +308,23 @@ public class ProcesoEspecificoController {
 		session.setAttribute("prueba", prueba);
 	}
 
-	public String editarProceso() {
-		setEditar(true);
-		return null;
-	}
-
 	public String guardarEditarProceso() {
+		System.out.print("Editando proceso...");
 		GestionProcesos gProcesos = new GestionProcesos();
+		proceso.setFechaFinalizacion(fechaFinal);
+		proceso.setFechaInicio(fechaInicial);
 		int result = gProcesos.editarProcesoUsuarioAdministrador(
 				usuario.getIdentificador(), proceso);
 		if (result == Convencion.CORRECTO) {
 			proceso = gProcesos.consultarProcesoUsuarioAdministrador(
 					usuario.getIdentificador(), proceso.getIdentificador());
 
-		}
-		setEditar(false);
-		return null;
-	}
+			System.out.println("EXITO");
 
-	public String cancelarEditarProceso() {
+		} else {
+			System.out.println("FRACASO");
+
+		}
 		setEditar(false);
 		return null;
 	}
@@ -335,7 +430,7 @@ public class ProcesoEspecificoController {
 	}
 
 	public void crearPruebaEnProceso(AjaxBehaviorEvent event) {
-		System.out.println("Creando prueba");
+		System.out.println("Creando prueba...");
 		PruebaUsuarioBO prueba = new PruebaUsuarioBO();
 		prueba.setNombre(nombrePruebaCrear);
 		prueba.setDescripcion(descripcionPruebaCrear);
@@ -354,6 +449,10 @@ public class ProcesoEspecificoController {
 				pruebas.add(pHas.getPruebasUsuario());
 			}
 			setPruebasProcesoEspecifico(pruebas);
+			System.out.println("EXITO");
+		} else {
+			System.out.println("FRACASO");
+
 		}
 	}
 
@@ -378,6 +477,12 @@ public class ProcesoEspecificoController {
 			setParticipacionesProcesoEspecifico(gEvaluacion
 					.listarParticipacionesEnProceso(usuario.getIdentificador(),
 							proceso.getIdentificador()));
+			GestionEvaluados gEvaluados = new GestionEvaluados();
+			setEvaluadosRestantes(listaEvaluadosAArreglo(obtenerEvaluadosNoEnProceso(
+					gEvaluados
+							.listarUsuariosBasicos(usuario.getIdentificador()),
+					obtenerEvaluadosDeParticipacion(getParticipacionesProcesoEspecifico()))));
+
 		}
 		return null;
 	}
@@ -401,6 +506,10 @@ public class ProcesoEspecificoController {
 			pruebas.add(pHas.getPruebasUsuario());
 		}
 		setPruebasProcesoEspecifico(pruebas);
+		setPruebasRestantes(listaPruebasAArreglo(obtenerPruebasNoEnProceso(
+				gPruebas.listarPruebasUsuarioAdministrador(usuario
+						.getIdentificador()), getPruebasProcesoEspecifico())));
+
 		return null;
 	}
 
@@ -481,6 +590,30 @@ public class ProcesoEspecificoController {
 		Integer[] newValue = (Integer[]) event.getNewValue();
 		System.out.println(oldValue);
 		System.out.println(newValue);
+	}
+
+	public void formatoFechaInicial(ValueChangeEvent e) {
+		try {
+			SimpleDateFormat formatoDelTexto = new SimpleDateFormat(
+					"MM/dd/yyyy");
+			fechaInicial = formatoDelTexto.parse((String) e.getNewValue());
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+
+	public void formatoFechaFinal(ValueChangeEvent e) {
+		try {
+			SimpleDateFormat formatoDelTexto = new SimpleDateFormat(
+					"MM/dd/yyyy");
+			fechaFinal = formatoDelTexto.parse((String) e.getNewValue());
+		} catch (ParseException ex) {
+			ex.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public List<PruebaUsuarioBO> getPruebasProcesoEspecifico() {
@@ -724,7 +857,6 @@ public class ProcesoEspecificoController {
 
 	public void setSelectItemsPruebasRestantes(
 			Integer[] selectItemsPruebasRestantes) {
-		System.out.println(selectItemsPruebasRestantes);
 		this.selectItemsPruebasRestantes = selectItemsPruebasRestantes;
 	}
 
@@ -736,6 +868,22 @@ public class ProcesoEspecificoController {
 			Integer[] selectItemsEvaluadosRestantes) {
 		System.out.println(selectItemsEvaluadosRestantes);
 		this.selectItemsEvaluadosRestantes = selectItemsEvaluadosRestantes;
+	}
+
+	public String getParametroFechaInicial() {
+		return parametroFechaInicial;
+	}
+
+	public void setParametroFechaInicial(String parametroFechaInicial) {
+		this.parametroFechaInicial = parametroFechaInicial;
+	}
+
+	public String getParametroFechaFinal() {
+		return parametroFechaFinal;
+	}
+
+	public void setParametroFechaFinal(String parametroFechaFinal) {
+		this.parametroFechaFinal = parametroFechaFinal;
 	}
 
 }
