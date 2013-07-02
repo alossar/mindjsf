@@ -1,9 +1,11 @@
 package co.mind.web.pruebas;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -20,9 +22,14 @@ import co.mind.management.shared.persistencia.GestionPruebas;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
 
+@ManagedBean
 @ViewScoped
-public class PruebaEspecificaController {
+public class PruebaEspecificaController implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private UsuarioBO usuario;
 	private String nombreUsuario;
 	private boolean continuar = true;
@@ -73,35 +80,6 @@ public class PruebaEspecificaController {
 				setImagenes(gImagen.listarLaminasUsuarioAdministrador(usuario
 						.getIdentificador()));
 			}
-		}
-	}
-
-	public void preRenderPruebaEspecifica() {
-		prueba = obtenerPruebaDeSesion();
-		if (prueba == null) {
-			HttpServletResponse response = MindHelper.obtenerResponse();
-			try {
-				response.sendRedirect("pruebas.do");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		} else {
-			setNombrePrueba(prueba.getNombre());
-			proceso = obtenerProcesoDeSesion();
-			if (proceso != null) {
-				setNombreProceso(proceso.getNombre());
-				setMostrarBreadcrumbProceso(true);
-			} else {
-				setMostrarBreadcrumbProceso(false);
-			}
-			GestionPruebas gPreguntas = new GestionPruebas();
-			setPreguntas(gPreguntas.listarPreguntasPrueba(
-					usuario.getIdentificador(), prueba.getIdentificador()));
-			GestionLaminas gImagen = new GestionLaminas();
-			setImagenes(gImagen.listarLaminasUsuarioAdministrador(usuario
-					.getIdentificador()));
 		}
 	}
 

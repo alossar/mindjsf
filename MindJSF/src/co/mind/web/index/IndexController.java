@@ -1,5 +1,6 @@
 package co.mind.web.index;
 
+import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +14,8 @@ public class IndexController {
 		HttpSession session = httpServletRequest.getSession();
 		session.removeAttribute(Convencion.CLAVE_USUARIO);
 		session.removeAttribute("permiso");
+		FacesContext.getCurrentInstance().getExternalContext()
+				.invalidateSession();
 		return "login";
 	}
 

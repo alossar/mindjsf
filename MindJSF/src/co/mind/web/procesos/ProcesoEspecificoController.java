@@ -1,6 +1,7 @@
 package co.mind.web.procesos;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,10 +10,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.event.ValueChangeEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +38,14 @@ import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
 import co.mind.management.shared.recursos.SMTPSender;
 
-public class ProcesoEspecificoController {
+@ManagedBean
+@ViewScoped
+public class ProcesoEspecificoController implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	UsuarioBO usuario;
 	private String nombreUsuario;
 	ProcesoUsuarioBO proceso;
@@ -49,12 +59,12 @@ public class ProcesoEspecificoController {
 	private boolean enPruebas;
 	private boolean enResultados;
 
-	private UIForm tableFormEvaluados;
-	private HtmlDataTable dataTableEvaluados;
-	private UIForm tableFormPruebas;
-	private HtmlDataTable dataTablePruebas;
-	private UIForm tableFormResultados;
-	private HtmlDataTable dataTableResultados;
+	private transient UIForm tableFormEvaluados;
+	private transient HtmlDataTable dataTableEvaluados;
+	private transient UIForm tableFormPruebas;
+	private transient HtmlDataTable dataTablePruebas;
+	private transient UIForm tableFormResultados;
+	private transient HtmlDataTable dataTableResultados;
 
 	private String nombreEvaluadoCrear;
 	private String apellidoEvaluadoCrear;
@@ -165,76 +175,6 @@ public class ProcesoEspecificoController {
 		}
 	}
 
-	public void preRenderProcesoEspecifico() {
-		if (usuario != null) {
-			System.out.println("Is postback");
-
-			proceso = obtenerProcesoDeSesion();
-			if (proceso == null) {
-				HttpServletResponse response = MindHelper.obtenerResponse();
-				try {
-					response.sendRedirect("procesos.do");
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			} else {
-				setNombreProceso(proceso.getNombre());
-				setDescripcionProceso(proceso.getDescripcion());
-				GestionProcesos gProcesos = new GestionProcesos();
-				GestionEvaluacion gEvaluacion = new GestionEvaluacion();
-				GestionPruebas gPruebas = new GestionPruebas();
-				GestionEvaluados gEvaluados = new GestionEvaluados();
-
-				ProcesoUsuarioBO result = gProcesos
-						.consultarProcesoUsuarioAdministrador(
-								usuario.getIdentificador(),
-								proceso.getIdentificador());
-				List<PruebaUsuarioBO> pruebas = new ArrayList<PruebaUsuarioBO>();
-				for (ProcesoUsuarioHasPruebaUsuarioBO pHas : result
-						.getProcesoUsuarioHasPruebaUsuario()) {
-					pruebas.add(pHas.getPruebasUsuario());
-				}
-				setPruebasProcesoEspecifico(pruebas);
-				setParticipacionesProcesoEspecifico(gEvaluacion
-						.listarParticipacionesEnProceso(
-								usuario.getIdentificador(),
-								proceso.getIdentificador()));
-				setResultadosProcesoEspecifico(gEvaluacion
-						.listarParticipacionesEnProcesoCompletas(
-								usuario.getIdentificador(),
-								proceso.getIdentificador()));
-				setPruebasRestantes(listaPruebasAArreglo(obtenerPruebasNoEnProceso(
-						gPruebas.listarPruebasUsuarioAdministrador(usuario
-								.getIdentificador()),
-						getPruebasProcesoEspecifico())));
-				setEvaluadosRestantes(listaEvaluadosAArreglo(obtenerEvaluadosNoEnProceso(
-						gEvaluados.listarUsuariosBasicos(usuario
-								.getIdentificador()),
-						obtenerEvaluadosDeParticipacion(getParticipacionesProcesoEspecifico()))));
-				try {
-					Calendar cal1 = Calendar.getInstance();
-					cal1.setTime(proceso.getFechaFinalizacion());
-					setParametroFechaFinal((cal1.get(Calendar.MONTH)) + "/"
-							+ cal1.get(Calendar.DAY_OF_MONTH) + "/"
-							+ cal1.get(Calendar.YEAR));
-				} catch (Exception e) {
-					setParametroFechaFinal(null);
-				}
-				try {
-					Calendar cal2 = Calendar.getInstance();
-					cal2.setTime(proceso.getFechaInicio());
-					setParametroFechaInicial((cal2.get(Calendar.MONTH) + 1)
-							+ "/" + 1 + "/" + cal2.get(Calendar.YEAR));
-				} catch (Exception e) {
-					setParametroFechaInicial(null);
-				}
-				fechaFinal = proceso.getFechaFinalizacion();
-				fechaInicial = proceso.getFechaInicio();
-			}
-		}
-	}
-
 	private ProcesoUsuarioBO obtenerProcesoDeSesion() {
 		HttpServletRequest request = MindHelper.obtenerRequest();
 		return (ProcesoUsuarioBO) ((HttpServletRequest) request).getSession()
@@ -306,6 +246,14 @@ public class ProcesoEspecificoController {
 	private void guardarPruebaEnSesion(PruebaUsuarioBO prueba) {
 		HttpSession session = MindHelper.obtenerSesion();
 		session.setAttribute("prueba", prueba);
+	}
+
+	public void seleccionarPruebaEliminar(AjaxBehaviorEvent event) {
+
+	}
+
+	public void eliminarPrueba(ActionEvent event) {
+
 	}
 
 	public String guardarEditarProceso() {
@@ -398,8 +346,8 @@ public class ProcesoEspecificoController {
 		setCrearEvaluado(true);
 	}
 
-	public void crearEvaluadoEnProceso(AjaxBehaviorEvent event) {
-		System.out.println("Creando evaluado");
+	public String crearEvaluadoEnProceso() {
+		System.out.println("Creando evaluado...");
 		EvaluadoBO eva = new EvaluadoBO();
 		eva.setApellidos(apellidoEvaluadoCrear);
 		eva.setCedula(cedulaEvaluadoCrear);
@@ -410,7 +358,7 @@ public class ProcesoEspecificoController {
 		ParticipacionEnProcesoBO p = new ParticipacionEnProcesoBO();
 		p.setUsuarioBasico(eva);
 		p.setFechaFinalizacion(proceso.getFechaFinalizacion());
-		p.setFechaInicio(proceso.getFechaInicio());
+		p.setFechaInicio(new Date());
 		p.setProcesoID(proceso.getIdentificador());
 		p.setEstaNotificado(Convencion.ESTADO_NOTIFICACION_NO_ENVIADA);
 
@@ -427,9 +375,10 @@ public class ProcesoEspecificoController {
 								proceso.getIdentificador()));
 			}
 		}
+		return null;
 	}
 
-	public void crearPruebaEnProceso(AjaxBehaviorEvent event) {
+	public String crearPruebaEnProceso() {
 		System.out.println("Creando prueba...");
 		PruebaUsuarioBO prueba = new PruebaUsuarioBO();
 		prueba.setNombre(nombrePruebaCrear);
@@ -454,6 +403,7 @@ public class ProcesoEspecificoController {
 			System.out.println("FRACASO");
 
 		}
+		return null;
 	}
 
 	public String agregarEvaluadosAProceso() {
@@ -467,7 +417,7 @@ public class ProcesoEspecificoController {
 				ParticipacionEnProcesoBO p = new ParticipacionEnProcesoBO();
 				p.setUsuarioBasico(eva);
 				p.setFechaFinalizacion(proceso.getFechaFinalizacion());
-				p.setFechaInicio(proceso.getFechaInicio());
+				p.setFechaInicio(new Date());
 				p.setProcesoID(proceso.getIdentificador());
 				p.setEstaNotificado(Convencion.ESTADO_NOTIFICACION_NO_ENVIADA);
 				gEvaluacion.agregarParticipacionEnProceso(usuario

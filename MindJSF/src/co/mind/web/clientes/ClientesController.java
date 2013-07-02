@@ -1,11 +1,14 @@
 package co.mind.web.clientes;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.ActionEvent;
@@ -21,8 +24,15 @@ import co.mind.management.shared.persistencia.GestionClientes;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
 
-public class ClientesController {
 
+@ManagedBean
+@ViewScoped
+public class ClientesController implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private UsuarioBO usuario;
 	private String nombreUsuario;
 
@@ -36,7 +46,7 @@ public class ClientesController {
 	private boolean continuar = true;
 
 	private UIForm tableForm;
-	private HtmlDataTable dataTable;
+	private transient HtmlDataTable dataTable;
 	private UsuarioAdministradorBO clienteEliminar;
 
 	private String nombreClienteCrear;

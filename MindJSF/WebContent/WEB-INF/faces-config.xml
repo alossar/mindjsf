@@ -75,12 +75,6 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>procesoEspecificoController</managed-bean-name>
-		<managed-bean-class>co.mind.web.procesos.ProcesoEspecificoController</managed-bean-class>
-		<managed-bean-scope>
-	session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
 		<managed-bean-name>evaluadosController</managed-bean-name>
 		<managed-bean-class>co.mind.web.evaluados.EvaluadosController</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
@@ -88,11 +82,6 @@
 	<managed-bean>
 		<managed-bean-name>programadoresController</managed-bean-name>
 		<managed-bean-class>co.mind.web.programadores.ProgramadoresController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>clientesController</managed-bean-name>
-		<managed-bean-class>co.mind.web.clientes.ClientesController</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
@@ -116,11 +105,6 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>pruebaEspecificaController</managed-bean-name>
-		<managed-bean-class>co.mind.web.pruebas.PruebaEspecificaController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
 		<managed-bean-name>autorizacionController</managed-bean-name>
 		<managed-bean-class>co.mind.web.autorizacion.AutorizacionController</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
@@ -138,12 +122,12 @@
 		<from-view-id>/login.jsp</from-view-id>
 		<navigation-case>
 			<from-outcome>index</from-outcome>
-			<to-view-id>/index.jsp</to-view-id>
+			<to-view-id>/index.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>index</display-name>
-		<from-view-id>/index.jsp</from-view-id>
+		<from-view-id>/index.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>procesos</from-outcome>
 			<to-view-id>/procesos.xhtml</to-view-id>
@@ -159,7 +143,7 @@
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>index</display-name>
-		<from-view-id>/index.jsp</from-view-id>
+		<from-view-id>/index.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>pruebas</from-outcome>
 			<to-view-id>/pruebas.xhtml</to-view-id>
@@ -167,7 +151,7 @@
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>index</display-name>
-		<from-view-id>/index.jsp</from-view-id>
+		<from-view-id>/index.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>evaluados</from-outcome>
 			<to-view-id>/evaluados.xhtml</to-view-id>
@@ -175,7 +159,7 @@
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>index</display-name>
-		<from-view-id>/index.jsp</from-view-id>
+		<from-view-id>/index.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>clientes</from-outcome>
 			<to-view-id>/clientes.xhtml</to-view-id>
@@ -183,7 +167,7 @@
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>index</display-name>
-		<from-view-id>/index.jsp</from-view-id>
+		<from-view-id>/index.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>programadores</from-outcome>
 			<to-view-id>/programadores.xhtml</to-view-id>
@@ -207,7 +191,7 @@
 	</navigation-rule>
 	<navigation-rule>
 		<display-name>index</display-name>
-		<from-view-id>/index.jsp</from-view-id>
+		<from-view-id>/index.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>cuenta</from-outcome>
 			<to-view-id>/cuenta.xhtml</to-view-id>
