@@ -6,7 +6,7 @@
 	<parameter name="inicioUsos" class="java.sql.Timestamp"/>
 	<parameter name="finalUsos" class="java.sql.Timestamp"/>
 	<queryString>
-		<![CDATA[SELECT DISTINCT usuarios.nombres as NombreCliente, usuarios.apellidos as ApellidosCliente, usos_usuarios.fecha_asignacion as FechaAsignacion, usos_usuarios.usos_asignados as UsosAsignados, usos_usuarios.usos_redimidos as UsosRedimidos FROM usuarios, usos_usuarios WHERE usuarios.identificador = $P{usuarioUsos} AND usuarios.identificador = usos_usuarios.usuarios_identificador AND usos_usuarios.fecha_asignacion >= $P{inicioUsos} AND usos_usuarios.fecha_asignacion <=  $P{finalUsos};]]>
+		<![CDATA[SELECT DISTINCT usuarios.nombres as NombreCliente, usuarios.apellidos as ApellidosCliente, usos_usuarios.fecha_asignacion as FechaAsignacion, usos_usuarios.usos_asignados as UsosAsignados, usos_usuarios.usos_redimidos as UsosRedimidos FROM usuarios, usos_usuarios WHERE usuarios.identificador = $P{usuarioUsos} AND usuarios.identificador = usos_usuarios.usuarios_identificador AND usos_usuarios.fecha_asignacion >= $P{inicioUsos} AND usos_usuarios.fecha_asignacion <= $P{finalUsos};]]>
 	</queryString>
 	<field name="NombreCliente" class="java.lang.String"/>
 	<field name="ApellidosCliente" class="java.lang.String"/>

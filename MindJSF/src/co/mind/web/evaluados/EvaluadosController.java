@@ -1,10 +1,13 @@
 package co.mind.web.evaluados;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.AjaxBehaviorEvent;
@@ -13,13 +16,20 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import co.mind.management.shared.dto.EvaluadoBO;
+import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.persistencia.GestionEvaluados;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
 
-public class EvaluadosController {
+@ManagedBean
+@ViewScoped
+public class EvaluadosController implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private UsuarioBO usuario;
 	private String nombreUsuario;
 
@@ -31,8 +41,8 @@ public class EvaluadosController {
 	private String mensajeFeedBack;
 
 	// JavaServerFaces related variables
-	private UIForm tableForm;
-	private HtmlDataTable dataTable;
+	private transient UIForm tableForm;
+	private transient HtmlDataTable dataTable;
 
 	private String nombreEvaluadoCrear;
 	private String apellidoEvaluadoCrear;
@@ -40,7 +50,6 @@ public class EvaluadosController {
 	private String correoEvaluadoCrear;
 
 	private boolean continuar = true;
-	private EvaluadoBO evaluadoEliminar;
 
 	@PostConstruct
 	public void init() {
@@ -136,21 +145,27 @@ public class EvaluadosController {
 	}
 
 	public void seleccionarEvaluadoEliminar(AjaxBehaviorEvent event) {
-		evaluadoEliminar = (EvaluadoBO) dataTable.getRowData();
-		System.out.println("Evaluado seleccionada para eliminar");
+		System.out.println("Evaluado seleccionado para eliminar.");
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("evaluadoEliminar",
+				(EvaluadoBO) dataTable.getRowData());
 	}
 
 	public void eliminarEvaluado() {
 		System.out.println("Eliminando evaluado.");
+		HttpServletRequest request = MindHelper.obtenerRequest();
 		GestionEvaluados gEvaluados = new GestionEvaluados();
-		int result = gEvaluados
-				.eliminarUsuarioBasico(usuario.getIdentificador(),
-						evaluadoEliminar.getIdentificador());
+		int result = gEvaluados.eliminarUsuarioBasico(usuario
+				.getIdentificador(),
+				((EvaluadoBO) ((HttpServletRequest) request).getSession()
+						.getAttribute("evaluadoEliminar")).getIdentificador());
 		if (result == Convencion.CORRECTO) {
 			setEvaluados(gEvaluados.listarUsuariosBasicos(usuario
 					.getIdentificador()));
 			evaluadosTemp = evaluados;
 		}
+		HttpSession session = request.getSession();
+		session.removeAttribute("evaluadoEliminar");
 	}
 
 	public String irAEvaluadoEspecifico() {
@@ -186,7 +201,17 @@ public class EvaluadosController {
 				} else {
 					for (EvaluadoBO eval : getEvaluados()) {
 						if (getParametroBusqueda().equalsIgnoreCase(
-								eval.getCorreoElectronico())) {
+								eval.getCorreoElectronico())
+								|| eval.getNombres()
+										.toLowerCase()
+										.contains(
+												getParametroBusqueda()
+														.toLowerCase())
+								|| eval.getApellidos()
+										.toLowerCase()
+										.contains(
+												getParametroBusqueda()
+														.toLowerCase())) {
 							resultadoBusqueda.add(eval);
 						}
 					}

@@ -348,8 +348,7 @@ public class GestionProcesos implements IGestionProcesos {
 						.getProcesosUsuariosHasPruebasUsuarios();
 				List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<>();
 				for (int j = 0; j < pruebas.size(); j++) {
-					ProcesoUsuarioHasPruebaUsuario pHas = pruebas
-							.get(j);
+					ProcesoUsuarioHasPruebaUsuario pHas = pruebas.get(j);
 					ProcesoUsuarioHasPruebaUsuarioBO pHasBO = new ProcesoUsuarioHasPruebaUsuarioBO();
 					pHasBO.setIdentificador(pHas.getIdentificador());
 					PruebaUsuario pruebaUsuario = pHas.getPruebasUsuario();
@@ -357,17 +356,13 @@ public class GestionProcesos implements IGestionProcesos {
 					PruebaUsuarioBO pruebaBO = new PruebaUsuarioBO();
 					entityManager.refresh(im);
 
-					pruebaBO.setDescripcion(pruebaUsuario
-							.getDescripcion());
-					pruebaBO.setIdentificador(pruebaUsuario
-							.getIdentificador());
-					pruebaBO.setNombre(pruebaUsuario
-							.getNombre());
+					pruebaBO.setDescripcion(pruebaUsuario.getDescripcion());
+					pruebaBO.setIdentificador(pruebaUsuario.getIdentificador());
+					pruebaBO.setNombre(pruebaUsuario.getNombre());
 					pruebaBO.setUsuarioAdministradorID(pruebaUsuario
-							.getUsuario()
-							.getIdentificador());
+							.getUsuario().getIdentificador());
 					List<PreguntaUsuario> preguntas = pruebaUsuario
-						.getPreguntasUsuarios();
+							.getPreguntasUsuarios();
 					List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
 					for (int k = 0; k < preguntas.size(); k++) {
 						PreguntaUsuario pre = preguntas.get(k);
@@ -534,5 +529,41 @@ public class GestionProcesos implements IGestionProcesos {
 		} else {
 			return null;
 		}
+	}
+
+	public int eliminarPruebaDeProceso(int identificador,
+			PruebaUsuarioBO pruebaEliminar, ProcesoUsuarioBO procesoBO) {
+		ProcesoUsuario proceso = entityManager.find(ProcesoUsuario.class,
+				procesoBO.getIdentificador());
+		if (proceso == null) {
+			return Convencion.INCORRECTO;
+		} else {
+			entityManager.refresh(proceso);
+
+			List<ProcesoUsuarioHasPruebaUsuario> pruebas = proceso
+					.getProcesosUsuariosHasPruebasUsuarios();
+			List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<>();
+			for (ProcesoUsuarioHasPruebaUsuario pruebaUsuario : pruebas) {
+				entityManager.refresh(pruebaUsuario);
+				if (pruebaEliminar.getIdentificador() == pruebaUsuario
+						.getPruebasUsuario().getIdentificador()) {
+					EntityTransaction userTransaction = entityManager
+							.getTransaction();
+					try {
+						userTransaction.begin();
+						entityManager.remove(pruebaUsuario);
+						entityManager.flush();
+						userTransaction.commit();
+						return Convencion.CORRECTO;
+					} catch (Exception exception) {
+						// Exception has occurred, roll-back the transaction.
+						exception.printStackTrace();
+						userTransaction.rollback();
+						return Convencion.INCORRECTO;
+					}
+				}
+			}
+		}
+		return Convencion.INCORRECTO;
 	}
 }

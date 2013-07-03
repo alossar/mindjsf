@@ -17,13 +17,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import co.mind.management.shared.dto.EvaluadoBO;
+import co.mind.management.shared.dto.ProcesoUsuarioBO;
+import co.mind.management.shared.dto.ProcesoUsuarioHasPruebaUsuarioBO;
+import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsoBO;
 import co.mind.management.shared.dto.UsuarioAdministradorBO;
 import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.persistencia.GestionClientes;
+import co.mind.management.shared.persistencia.GestionProcesos;
+import co.mind.management.shared.persistencia.GestionPruebas;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
-
 
 @ManagedBean
 @ViewScoped
@@ -47,7 +52,6 @@ public class ClientesController implements Serializable {
 
 	private UIForm tableForm;
 	private transient HtmlDataTable dataTable;
-	private UsuarioAdministradorBO clienteEliminar;
 
 	private String nombreClienteCrear;
 	private String apellidosClienteCrear;
@@ -58,6 +62,10 @@ public class ClientesController implements Serializable {
 	private String cargoClienteCrear;
 	private int usosClienteCrear;
 
+	private PruebaUsuarioBO[] pruebas;
+
+	private Integer[] selectItemsPruebas;
+
 	@PostConstruct
 	public void init() {
 		verificarLogin();
@@ -66,6 +74,11 @@ public class ClientesController implements Serializable {
 					+ usuario.getApellidos());
 			GestionClientes gCLientes = new GestionClientes();
 			setClientes(gCLientes.listarUsuariosAdministradores());
+			GestionPruebas gPruebas = new GestionPruebas();
+			setPruebas(listaPruebasAArreglo(gPruebas
+					.listarPruebasUsuarioAdministrador(usuario
+							.getIdentificador())));
+			clientesTemp = clientes;
 		}
 	}
 
@@ -203,17 +216,24 @@ public class ClientesController implements Serializable {
 
 	public void eliminarCliente(ActionEvent event) {
 		GestionClientes gCLientes = new GestionClientes();
-		int result = gCLientes.eliminarUsuarioAdministrador(clienteEliminar
-				.getIdentificador());
+		HttpServletRequest request = MindHelper.obtenerRequest();
+		int result = gCLientes
+				.eliminarUsuarioAdministrador(((UsuarioAdministradorBO) ((HttpServletRequest) request)
+						.getSession().getAttribute("clienteEliminar"))
+						.getIdentificador());
 		if (result == Convencion.CORRECTO) {
 			setClientes(gCLientes.listarUsuariosAdministradores());
 			clientesTemp = clientes;
 		}
+		HttpSession session = request.getSession();
+		session.removeAttribute("clienteEliminar");
 	}
 
 	public void seleccionarClienteEliminar(AjaxBehaviorEvent event) {
-		clienteEliminar = (UsuarioAdministradorBO) dataTable.getRowData();
-		System.out.println("Cliente seleccionada para eliminar");
+		System.out.println("Cliente seleccionado para eliminar.");
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("clienteEliminar",
+				(UsuarioAdministradorBO) dataTable.getRowData());
 	}
 
 	public String irAClienteEspecifico() {
@@ -248,8 +268,22 @@ public class ClientesController implements Serializable {
 					}
 				} else {
 					for (UsuarioAdministradorBO cli : getClientes()) {
-						if (getParametroBusqueda().toLowerCase().contains(
-								cli.getEmpresa())
+						String empresa = cli.getEmpresa();
+						if (empresa == null) {
+							empresa = "";
+						}
+						if (empresa.toLowerCase().contains(
+								getParametroBusqueda().toLowerCase())
+								|| cli.getNombres()
+										.toLowerCase()
+										.contains(
+												getParametroBusqueda()
+														.toLowerCase())
+								|| cli.getApellidos()
+										.toLowerCase()
+										.contains(
+												getParametroBusqueda()
+														.toLowerCase())
 								|| getParametroBusqueda().equalsIgnoreCase(
 										cli.getCorreo_Electronico())) {
 							resultadoBusqueda.add(cli);
@@ -261,6 +295,37 @@ public class ClientesController implements Serializable {
 			}
 		}
 		return null;
+	}
+
+	public void seleccionarClienteAgregarPruebas(AjaxBehaviorEvent event) {
+		System.out.println("Cliente seleccionado para agregar pruebas.");
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("clienteAgregarPruebas",
+				(UsuarioAdministradorBO) dataTable.getRowData());
+	}
+
+	public String agregarPruebasACliente() {
+		GestionPruebas gPruebas = new GestionPruebas();
+		HttpServletRequest request = MindHelper.obtenerRequest();
+		for (Integer id : selectItemsPruebas) {
+			PruebaUsuarioBO prueba = gPruebas
+					.consultarPruebaUsuarioAdministrador(
+							usuario.getIdentificador(), id);
+			gPruebas.agregarPruebaAClientes(
+					((UsuarioAdministradorBO) ((HttpServletRequest) request)
+							.getSession().getAttribute("clienteAgregarPruebas"))
+							.getIdentificador(), prueba);
+		}
+		return null;
+	}
+
+	private PruebaUsuarioBO[] listaPruebasAArreglo(
+			List<PruebaUsuarioBO> pruebasRestantes) {
+		PruebaUsuarioBO[] pruebas = new PruebaUsuarioBO[pruebasRestantes.size()];
+		for (int i = 0; i < pruebasRestantes.size(); i++) {
+			pruebas[i] = pruebasRestantes.get(i);
+		}
+		return pruebas;
 	}
 
 	public String getNombreUsuario() {
@@ -365,6 +430,22 @@ public class ClientesController implements Serializable {
 
 	public void setUsosClienteCrear(int usosClienteCrear) {
 		this.usosClienteCrear = usosClienteCrear;
+	}
+
+	public PruebaUsuarioBO[] getPruebas() {
+		return pruebas;
+	}
+
+	public void setPruebas(PruebaUsuarioBO[] pruebas) {
+		this.pruebas = pruebas;
+	}
+
+	public Integer[] getSelectItemsPruebas() {
+		return selectItemsPruebas;
+	}
+
+	public void setSelectItemsPruebas(Integer[] selectItemsPruebas) {
+		this.selectItemsPruebas = selectItemsPruebas;
 	}
 
 }

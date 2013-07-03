@@ -129,17 +129,17 @@ public class GestionClientes implements IGestionClientes {
 						entityManager.persist(u);
 						entityManager.flush();
 						userTransaction.commit();
+						GestionLaminas gLaminas = new GestionLaminas();
+						List<ImagenUsuarioBO> imagenes = gLaminas
+								.listarLaminasUsuarioAdministrador(usuarioMaestroID);
+						for (ImagenUsuarioBO imagenUsuarioBO : imagenes) {
+							gLaminas.agregarLaminaUsuarioAdministrador(
+									u.getIdentificador(), imagenUsuarioBO);
+						}
 						if (pruebas != null) {
-							GestionLaminas gLaminas = new GestionLaminas();
 							GestionPreguntas gPreguntas = new GestionPreguntas();
 							entityManager.refresh(u);
 
-							List<ImagenUsuarioBO> imagenes = gLaminas
-									.listarLaminasUsuarioAdministrador(usuarioMaestroID);
-							for (ImagenUsuarioBO imagenUsuarioBO : imagenes) {
-								gLaminas.agregarLaminaUsuarioAdministrador(
-										u.getIdentificador(), imagenUsuarioBO);
-							}
 							for (PruebaUsuarioBO pruebaUsuarioBO : pruebas) {
 								userTransaction.begin();
 								PruebaUsuario c = new PruebaUsuario();
@@ -200,10 +200,9 @@ public class GestionClientes implements IGestionClientes {
 						entityManager.flush();
 						userTransaction.commit();
 
-						SMTPSender.enviarCorreoCreacionCuentaCliente(
-								u.getNombres(), u.getApellidos(),
-								u.getCorreo_Electronico(), contrasena,
-								usos.getUsosAsignados());
+						SMTPSender.enviarCorreoCreacionCuenta(u.getNombres(),
+								u.getApellidos(), u.getCorreo_Electronico(),
+								contrasena, usos.getUsosAsignados(), true);
 						return Convencion.CORRECTO;
 					} else {
 						return Convencion.INCORRECTO;
@@ -221,16 +220,14 @@ public class GestionClientes implements IGestionClientes {
 	}
 
 	@Override
-	public int editarUsuarioAdministrador(
-			UsuarioBO usuario) {
+	public int editarUsuarioAdministrador(UsuarioBO usuario) {
 		EntityTransaction userTransaction = entityManager.getTransaction();
 		try {
 			userTransaction.begin();
 			Usuario u = entityManager.find(Usuario.class,
 					usuario.getIdentificador());
 			u.setApellidos(usuario.getApellidos());
-			u.setCorreo_Electronico(usuario
-					.getCorreo_Electronico());
+			u.setCorreo_Electronico(usuario.getCorreo_Electronico());
 			u.setIdentificador(usuario.getIdentificador());
 			u.setNombres(usuario.getNombres());
 			u.setCargo(usuario.getCargo());
@@ -472,7 +469,7 @@ public class GestionClientes implements IGestionClientes {
 			userTransaction.begin();
 			Usuario u = entityManager.find(Usuario.class,
 					usuarioMaestro.getIdentificador());
-			u.setContrasena(pass);
+			u.setContrasena(Generador.convertirStringmd5(pass));
 			entityManager.merge(u);
 			entityManager.flush();
 			userTransaction.commit();

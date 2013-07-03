@@ -114,22 +114,24 @@ body {
 									<h:outputText
 										value="#{procesoEspecificoController.nombreProceso }"></h:outputText>
 								</h4>
-								<h:panelGroup styleClass=" pull-right">
+								<h:panelGroup styleClass=" pull-right"
+									rendered="#{autorizacionController.onlyCliente}">
 									<h:form>
 
 										<h:commandLink styleClass="btn btn-info"
 											rendered="#{procesoEspecificoController.proceso.estadoValoracion == 'no_realizada' or (empty procesoEspecificoController.proceso.estadoValoracion)}"
-											title="Solicitar revisión de experto.">
+											title="Solicitar revisión de experto."
+											action="#{procesoEspecificoController.solicitarRevision}">
 											<i class="icon-comment icon-white"></i>
 										</h:commandLink>
 										<h:commandLink styleClass="btn btn-info" disabled="true"
 											rendered="#{procesoEspecificoController.proceso.estadoValoracion == 'realizada'}"
-											title="Solicitar revisión de experto.">
+											title="Revisión realizada.">
 											<i class="icon-thumbs-up icon-white"></i>
 										</h:commandLink>
 										<h:commandLink styleClass="btn btn-info" disabled="true"
 											rendered="#{procesoEspecificoController.proceso.estadoValoracion == 'rechazada'}"
-											title="Solicitar revisión de experto.">
+											title="Revisión rechazada.">
 											<i class="icon-thumbs-down icon-white"></i>
 										</h:commandLink>
 
@@ -235,8 +237,6 @@ body {
 									value="#{procesoEspecificoController.participacionesProcesoEspecifico }"
 									var="participacion">
 									<small> <h:column>
-											<h:selectBooleanCheckbox></h:selectBooleanCheckbox>
-										</h:column> <h:column>
 											<f:facet name="header">
 												<h:outputText value="Cédula"></h:outputText>
 											</f:facet>
@@ -284,6 +284,13 @@ body {
 												style="padding: 5;">
 												<i class="icon-envelope icon-white"></i>
 											</h:commandLink>
+											<h:commandLink styleClass="btn btn-danger btn-small "
+												rendered="#{participacion.estado == 'participacion_espera'}"
+												onclick="$('#myModalBorrarParticipacion').modal('show');">
+												<f:ajax
+													listener="#{procesoEspecificoController.seleccionarParticipacionEliminar }"></f:ajax>
+												<i class="icon-trash icon-white"></i>
+											</h:commandLink>
 										</h:column>
 									</small>
 								</h:dataTable>
@@ -318,7 +325,7 @@ body {
 												style="color:black; "></h:outputText>
 										</h:column> <h:column>
 											<h:commandLink styleClass="btn btn-danger btn-small "
-												onclick="$('#myModal').modal('show');">
+												onclick="$('#myModalBorrarPrueba').modal('show');">
 												<f:ajax
 													listener="#{procesoEspecificoController.seleccionarPruebaEliminar }"></f:ajax>
 												<i class="icon-trash icon-white"></i>
@@ -379,18 +386,22 @@ body {
 										</h:column> </small>
 								</h:dataTable>
 							</h:form>
-							<h:outputText
-								rendered="#{procesoEspecificoController.enEvaluados and empty procesoEspecificoController.participacionesProcesoEspecifico }"
-								value="No se encontraron participaciones de evaluados.">
-							</h:outputText>
-							<h:outputText
-								rendered="#{procesoEspecificoController.enPruebas and empty procesoEspecificoController.pruebasProcesoEspecifico }"
-								value="No se encontraron pruebas.">
-							</h:outputText>
-							<h:outputText
-								rendered="#{procesoEspecificoController.enResultados and empty procesoEspecificoController.resultadosProcesoEspecifico }"
-								value="No se encontraron resultados.">
-							</h:outputText>
+							<h:panelGroup styleClass="alert"
+								rendered="#{procesoEspecificoController.enEvaluados and empty procesoEspecificoController.participacionesProcesoEspecifico }">
+								<h:outputText
+									value="No se encontraron participaciones de evaluados.">
+								</h:outputText>
+							</h:panelGroup>
+							<h:panelGroup styleClass="alert"
+								rendered="#{procesoEspecificoController.enPruebas and empty procesoEspecificoController.pruebasProcesoEspecifico }">
+								<h:outputText value="No se encontraron pruebas.">
+								</h:outputText>
+							</h:panelGroup>
+							<h:panelGroup styleClass="alert"
+								rendered="#{procesoEspecificoController.enResultados and empty procesoEspecificoController.resultadosProcesoEspecifico }">
+								<h:outputText value="No se encontraron resultados.">
+								</h:outputText>
+							</h:panelGroup>
 
 
 
@@ -483,7 +494,8 @@ body {
 							value="#{procesoEspecificoController.selectItemsEvaluadosRestantes}">
 							<f:selectItems
 								value="#{procesoEspecificoController.evaluadosRestantes}"
-								var="e" itemLabel="#{e.nombres }" itemValue="#{e.identificador}" />
+								var="e" itemLabel="#{e.nombres } #{e.apellidos}"
+								itemValue="#{e.identificador}" />
 						</h:selectManyListbox>
 						<h:commandLink styleClass="btn btn-primary" value="Agregar"
 							action="#{procesoEspecificoController.agregarEvaluadosAProceso}">
@@ -544,7 +556,7 @@ body {
 
 
 			<h:form>
-				<div id="myModal" class="modal hide fade" tabindex="-1"
+				<div id="myModalBorrarPrueba" class="modal hide fade" tabindex="-1"
 					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 					<div class="modal-body"
 						style="text-align: center; font-size: 18pt; font-weight: bold;">
@@ -558,6 +570,29 @@ body {
 							aria-hidden="true">No</button>
 						<h:commandLink styleClass="btn btn-primary show-notification"
 							actionListener="#{procesoEspecificoController.eliminarPrueba }"
+							onclick="closeDialog ();" rendered="#{not proceso.editar }"
+							style="padding: 5;" value="SI">
+						</h:commandLink>
+					</div>
+
+				</div>
+			</h:form>
+			<h:form>
+				<div id="myModalBorrarParticipacion" class="modal hide fade"
+					tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+					aria-hidden="true">
+					<div class="modal-body"
+						style="text-align: center; font-size: 18pt; font-weight: bold;">
+						<img src="img/dialogo.png" />
+						<h2>Borrar Evaluado del Proceso.</h2>
+						<p style="font-size: 12pt;">¿Estas Seguro que Deseas Borrar?</p>
+					</div>
+
+					<div class="modal-footer">
+						<button class="btn btn-danger" data-dismiss="modal"
+							aria-hidden="true">No</button>
+						<h:commandLink styleClass="btn btn-primary show-notification"
+							actionListener="#{procesoEspecificoController.eliminarParticipacion }"
 							onclick="closeDialog ();" rendered="#{not proceso.editar }"
 							style="padding: 5;" value="SI">
 						</h:commandLink>

@@ -63,9 +63,9 @@ public class GestionUsuariosProgramadores implements
 				entityManager.persist(u);
 				entityManager.flush();
 				userTransaction.commit();
-				SMTPSender.enviarCorreoCreacionCuentaCliente(u.getNombres(),
+				SMTPSender.enviarCorreoCreacionCuenta(u.getNombres(),
 						u.getApellidos(), u.getCorreo_Electronico(),
-						contrasena, 0);
+						contrasena, 0, false);
 				return Convencion.CORRECTO;
 			} else {
 				return Convencion.INCORRECTO;

@@ -277,30 +277,26 @@ public class GestionLaminas implements IGestionLaminas {
 	public ImagenUsuarioBO consultarLaminaUsuarioAdministradorEnlace(
 			int identificador, String imagenURI) {
 		Usuario user = entityManager.find(Usuario.class, identificador);
-
 		if (user != null) {
-			String query = "SELECT DISTINCT(i) FROM Imagen u, ImagenUsuario i WHERE i.usuario =:usuar AND i.imagene = u AND u.imagenURI =:uri";
-			Query q = entityManager.createQuery(query);
-			q.setParameter("usuar", user);
-			q.setParameter("uri", imagenURI);
-			ImagenUsuario pregunta = (ImagenUsuario) q.getSingleResult();
-			// Valida que se encuentre un usuario.
-			if (pregunta != null) {
-				ImagenUsuarioBO imagen = new ImagenUsuarioBO();
-				imagen.setIdentificador(pregunta.getIdentificador());
-				imagen.setUsuario(pregunta.getUsuario().getIdentificador());
-				ImagenBO ima = new ImagenBO();
-				ima.setIdentificador(pregunta.getImagene().getIdentificador());
-				ima.setImagenURI(pregunta.getImagene().getImagenURI());
-				imagen.setImagene(ima);
-				return imagen;
-			} else {
-				return null;
+			entityManager.refresh(user);
+			List<ImagenUsuario> imagenes = user.getImagenesUsuarios();
+			for (ImagenUsuario imagenUsuario : imagenes) {
+				if (imagenUsuario.getImagene().getImagenURI().equals(imagenURI)) {
+					ImagenUsuarioBO imagen = new ImagenUsuarioBO();
+					imagen.setIdentificador(imagenUsuario.getIdentificador());
+					imagen.setUsuario(imagenUsuario.getUsuario()
+							.getIdentificador());
+					ImagenBO ima = new ImagenBO();
+					ima.setIdentificador(imagenUsuario.getImagene()
+							.getIdentificador());
+					ima.setImagenURI(imagenUsuario.getImagene().getImagenURI());
+					imagen.setImagene(ima);
+					return imagen;
+				}
 			}
-
-		} else {
-			return null;
 		}
+		return null;
+
 	}
 
 }

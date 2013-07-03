@@ -94,10 +94,11 @@ body {
 
 			<div class="row">
 
-				<h:form styleClass="form-search pull-right">
+				<h:form id="formsearch" styleClass="form-search pull-right"
+					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
 						value="#{clientesController.parametroBusqueda }" />
-					<h:commandLink styleClass="btn btn-info "
+					<h:commandLink styleClass="btn btn-info " id="searchid"
 						action="#{clientesController.buscarClientes }">
 						<i class="icon-search icon-white"></i>
 					</h:commandLink>
@@ -182,6 +183,15 @@ body {
 								<i class="icon-trash icon-white"></i>
 							</h:commandLink>
 
+						</h:column> <h:column>
+							<h:commandLink styleClass="btn btn-info btn-small "
+								onclick="$('#myModalAgregarPrueba').modal('show');"
+								title="Agregar pruebas"
+								rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }">
+								<f:ajax
+									listener="#{clientesController.seleccionarClienteAgregarPruebas }"></f:ajax>
+								<i class="icon-file icon-white"></i>
+							</h:commandLink>
 						</h:column>
 					</small>
 				</h:dataTable>
@@ -272,6 +282,33 @@ body {
 
 					</div>
 				</h:form>
+			</div>
+
+			<div id="myModalAgregarPrueba" class="modal hide fade" tabindex="-1"
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+				style="width: 450px; left: 32%; margin-left: auto; margin-right: auto; height: 380px;">
+				<div class="modal-header" style="height: 50px;">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h3 id="myModalLabel" style="margin-top: 5px; text-align: center;">
+						<img src="img/logoPruebasCrear.png" />Agregar Prueba
+					</h3>
+				</div>
+				<div id="contenedorBotonesAgregarPrueba">
+					<p>Pruebas</p>
+					<h:form>
+						<h:selectManyListbox converter="javax.faces.Integer"
+							value="#{clientesController.selectItemsPruebas}"
+							styleClass="span1" style="width: 200px; height: 150px;">
+							<f:selectItems value="#{clientesController.pruebas}" var="p"
+								itemLabel="#{p.nombre }" itemValue="#{p.identificador}" />
+						</h:selectManyListbox>
+
+						<h:commandLink styleClass="btn btn-primary" value="Agregar"
+							action="#{clientesController.agregarPruebasACliente}">
+						</h:commandLink>
+					</h:form>
+				</div>
 			</div>
 
 			<h:form>

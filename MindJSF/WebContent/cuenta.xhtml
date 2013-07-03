@@ -208,11 +208,135 @@ body {
 										</small>
 									</h:dataTable>
 								</h:form>
-								<h:outputText
-									rendered="#{empty cuentaController.procesosRevisar }"
-									value="No se encontraron procesos para revisar.">
-								</h:outputText>
+								<h:panelGroup styleClass="alert"
+									rendered="#{empty cuentaController.procesosRevisar }">
+									<h:outputText value="No se encontraron procesos para revisar.">
+									</h:outputText>
+								</h:panelGroup>
 							</h:panelGroup>
+							<h:panelGroup
+								rendered="#{autorizacionController.onlyProgramador or autorizacionController.onlyCliente}">
+								<div id="navProceso">
+									<div id="buscarProceso">
+										<a class="btn btn-primary btn-small  pull-right"
+											data-toggle="modal" href="#myModalEnviarCorreo"
+											title="Enviar comentarios" style="height: 20px;"> <i
+											class="icon-envelope icon-white" style="margin-top: 3px;"
+											role="button"></i>
+										</a>
+									</div>
+
+								</div>
+								<h:form
+									rendered="#{not empty cuentaController.usos and autorizacionController.onlyCliente }"
+									binding="#{cuentaController.tableFormUsos}">
+									<legend>Usos del Cliente</legend>
+									<h:dataTable
+										styleClass="table table-hover table-condensed table-striped"
+										binding="#{cuentaController.dataTableUsos }"
+										value="#{cuentaController.usos }" var="uso">
+										<small> <h:column>
+												<f:facet name="header">
+													<h:outputText value="Usos Asignados"></h:outputText>
+												</f:facet>
+												<h:outputText value="#{uso.usosAsignados}"
+													style="color:black; "></h:outputText>
+											</h:column> <h:column>
+												<f:facet name="header">
+													<h:outputText value="Usos Gastados"></h:outputText>
+												</f:facet>
+												<h:outputText value="#{uso.usosRedimidos}"
+													style="color:black; "></h:outputText>
+											</h:column> <h:column>
+												<f:facet name="header">
+													<h:outputText value="Fecha de Asignación"></h:outputText>
+												</f:facet>
+												<h:outputText value="#{uso.fechaAsignacion}"
+													style="color:black; ">
+													<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+												</h:outputText>
+											</h:column>
+										</small>
+									</h:dataTable>
+								</h:form>
+
+								<h:form id="formMyModalEnviarCorreo">
+									<div id="myModalEnviarCorreo" class="modal hide fade"
+										tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+										aria-hidden="true"
+										style="left: 30%; margin-left: auto; margin-right: auto; width: 450px;">
+										<div class="modal-header" style="height: 50px;">
+											<button type="button" class="close" data-dismiss="modal"
+												aria-hidden="true">x</button>
+											<h3 id="myModalLabel"
+												style="margin-top: 5px; text-align: center;">
+												<img src="img/logoPruebasCrear.png" />Enviar Comentario
+											</h3>
+										</div>
+
+										<div class="modal-body">
+											<div id="modalCrearProceso">
+
+												<div class="control-group">
+													<label class="control-label">Mensaje</label>
+													<div class="controls">
+														<h:inputTextarea style="height: 100px;" required="true"
+															id="descripcionProcesoTA"
+															requiredMessage="Campo necesario."
+															value="#{cuentaController.mensajeCorreo }">
+															<f:validateLength maximum="100"></f:validateLength>
+														</h:inputTextarea>
+													</div>
+												</div>
+
+												<div class="control-group">
+													<div class="controls">
+														<h:commandButton
+															styleClass="btn btn-primary show-notification"
+															value="Enviar"
+															style=" margin-left:65px; width:100px; height:45px;"
+															id="botCrearPrueba"
+															actionListener="#{cuentaController.enviarCorreo}">
+														</h:commandButton>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</h:form>
+
+							</h:panelGroup>
+							<h:form styleClass="form-horizontal">
+								<legend>Cambiar Contraseña</legend>
+								<div class="control-group">
+									<label class="control-label">Contraseña Actual</label>
+									<div class="controls">
+										<h:inputSecret required="true"
+											value="#{cuentaController.passActual}"></h:inputSecret>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Nueva Contraseña</label>
+									<div class="controls">
+										<h:inputSecret required="true"
+											value="#{cuentaController.passNueva}"></h:inputSecret>
+									</div>
+								</div>
+								<div class="control-group">
+									<label class="control-label">Repetir Nueva Contraseña</label>
+									<div class="controls">
+										<h:inputSecret required="true"
+											value="#{cuentaController.passNuevaRepetir}"></h:inputSecret>
+									</div>
+								</div>
+								<div class="control-group">
+									<div class="controls">
+										<h:commandButton styleClass="btn bnt-primary" value="Cambiar"
+											action="#{cuentaController.cambiarContrasena}"></h:commandButton>
+									</div>
+								</div>
+							</h:form>
 						</div>
 					</div>
 				</div>

@@ -1,11 +1,14 @@
 package co.mind.web.procesos;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.ActionEvent;
@@ -14,14 +17,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import co.mind.management.shared.dto.ParticipacionEnProcesoBO;
 import co.mind.management.shared.dto.ProcesoUsuarioBO;
+import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.persistencia.GestionProcesos;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
 
-public class ProcesosController {
+@ManagedBean
+@ViewScoped
+public class ProcesosController implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private UsuarioBO usuario;
 	private boolean continuar = true;
 	private String nombreUsuario;
@@ -33,14 +44,12 @@ public class ProcesosController {
 	private String mensajeFeedBack;
 
 	// JavaServerFaces related variables
-	private UIForm tableForm;
-	private HtmlDataTable dataTable;
-	private ProcesoUsuarioBO procesoEliminar;
+	private transient UIForm tableForm;
+	private transient HtmlDataTable dataTable;
 
 	private String nombreProcesoCrear;
 	private String descripcionProcesoCrear;
 
-	private int idProcesoDuplicar;
 	private String nombreProcesoDuplicar;
 	private String descripcionProcesoDuplicar;
 
@@ -111,9 +120,13 @@ public class ProcesosController {
 	public void duplicarProceso(ActionEvent event) {
 		System.out.println("Duplicando...");
 		GestionProcesos gProcesos = new GestionProcesos();
+		HttpServletRequest request = MindHelper.obtenerRequest();
 		ProcesoUsuarioBO procesoADuplicar = gProcesos
-				.consultarProcesoUsuarioAdministrador(
-						usuario.getIdentificador(), getIdProcesoDuplicar());
+				.consultarProcesoUsuarioAdministrador(usuario
+						.getIdentificador(),
+						((ProcesoUsuarioBO) ((HttpServletRequest) request)
+								.getSession().getAttribute("pruebaEliminar"))
+								.getIdentificador());
 		procesoADuplicar.setNombre(nombreProcesoDuplicar);
 		procesoADuplicar.setDescripcion(descripcionProcesoDuplicar);
 		int result = gProcesos.agregarProcesoConPruebas(
@@ -123,6 +136,8 @@ public class ProcesosController {
 			setProcesos(gProcesos.listarProcesoUsuarioAdministrador(usuario
 					.getIdentificador()));
 		}
+		HttpSession session = request.getSession();
+		session.removeAttribute("procesoDuplicar");
 	}
 
 	public String editarProceso() {
@@ -150,13 +165,19 @@ public class ProcesosController {
 	}
 
 	public void eliminarProceso(ActionEvent event) {
+
+		HttpServletRequest request = MindHelper.obtenerRequest();
 		GestionProcesos gProcesos = new GestionProcesos();
-		int result = gProcesos.eliminarProcesoUsuarioAdministrador(
-				usuario.getIdentificador(), procesoEliminar.getIdentificador());
+		int result = gProcesos.eliminarProcesoUsuarioAdministrador(usuario
+				.getIdentificador(),
+				((ProcesoUsuarioBO) ((HttpServletRequest) request).getSession()
+						.getAttribute("procesoEliminar")).getIdentificador());
 		if (result == Convencion.CORRECTO) {
 			setProcesos(gProcesos.listarProcesoUsuarioAdministrador(usuario
 					.getIdentificador()));
 		}
+		HttpSession session = request.getSession();
+		session.removeAttribute("procesoEliminar");
 	}
 
 	public String irAProcesoEspecifico() {
@@ -190,17 +211,17 @@ public class ProcesosController {
 	}
 
 	public void seleccionarProcesoEliminar(AjaxBehaviorEvent event) {
-		procesoEliminar = (ProcesoUsuarioBO) dataTable.getRowData();
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("procesoEliminar",
+				(ProcesoUsuarioBO) dataTable.getRowData());
 		System.out.println("Proceso seleccionado para eliminar");
 	}
 
 	public void seleccionarProcesoDuplicar(AjaxBehaviorEvent event) {
-		ProcesoUsuarioBO p = (ProcesoUsuarioBO) dataTable.getRowData();
-		setNombreProcesoDuplicar(p.getNombre());
-		setDescripcionProcesoDuplicar(p.getDescripcion());
-		setIdProcesoDuplicar(p.getIdentificador());
-		System.out.println("Proceso seleccionado para duplicar: "
-				+ getNombreProcesoDuplicar());
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("procesoDuplicar",
+				(ProcesoUsuarioBO) dataTable.getRowData());
+		System.out.println("Proceso seleccionado para duplicar");
 	}
 
 	public List<ProcesoUsuarioBO> getProcesos() {
@@ -297,14 +318,6 @@ public class ProcesosController {
 
 	public void setNombreProcesoDuplicar(String nombreProcesoDuplicar) {
 		this.nombreProcesoDuplicar = nombreProcesoDuplicar;
-	}
-
-	public int getIdProcesoDuplicar() {
-		return idProcesoDuplicar;
-	}
-
-	public void setIdProcesoDuplicar(int idProcesoDuplicar) {
-		this.idProcesoDuplicar = idProcesoDuplicar;
 	}
 
 }

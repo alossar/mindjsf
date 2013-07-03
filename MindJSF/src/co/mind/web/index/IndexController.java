@@ -14,9 +14,7 @@ public class IndexController {
 		HttpSession session = httpServletRequest.getSession();
 		session.removeAttribute(Convencion.CLAVE_USUARIO);
 		session.removeAttribute("permiso");
-		FacesContext.getCurrentInstance().getExternalContext()
-				.invalidateSession();
-		return "login";
+		return "index";
 	}
 
 	public String irAIndex() {

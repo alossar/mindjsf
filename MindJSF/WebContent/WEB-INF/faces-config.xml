@@ -25,49 +25,9 @@
 		</managed-property>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>procesosController</managed-bean-name>
-		<managed-bean-class>co.mind.web.procesos.ProcesosController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-		<managed-property>
-			<property-name>proceso</property-name>
-			<property-class>co.mind.management.shared.dto.ProcesoUsuarioBO</property-class>
-			<value></value>
-		</managed-property>
-		<managed-property>
-			<property-name>procesos</property-name>
-			<property-class>java.util.List</property-class>
-			<value></value>
-		</managed-property>
-		<managed-property>
-			<property-name>tableForm</property-name>
-			<property-class>javax.faces.component.UIForm</property-class>
-			<value></value>
-		</managed-property>
-		<managed-property>
-			<property-name>nombreUsuario</property-name>
-			<property-class>java.lang.String</property-class>
-			<value></value>
-		</managed-property>
-		<managed-property>
-			<property-name>parametroBusqueda</property-name>
-			<property-class>java.lang.String</property-class>
-			<value></value>
-		</managed-property>
-		<managed-property>
-			<property-name>dataTable</property-name>
-			<property-class>javax.faces.component.html.HtmlDataTable</property-class>
-			<value></value>
-		</managed-property>
-	</managed-bean>
-	<managed-bean>
 		<managed-bean-name>indexController</managed-bean-name>
 		<managed-bean-class>co.mind.web.index.IndexController</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>pruebasController</managed-bean-name>
-		<managed-bean-class>co.mind.web.pruebas.PruebasController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>homeController</managed-bean-name>
@@ -75,29 +35,9 @@
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>evaluadosController</managed-bean-name>
-		<managed-bean-class>co.mind.web.evaluados.EvaluadosController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>programadoresController</managed-bean-name>
-		<managed-bean-class>co.mind.web.programadores.ProgramadoresController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>clienteEspecificoController</managed-bean-name>
-		<managed-bean-class>co.mind.web.clientes.ClienteEspecificoController</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
 		<managed-bean-name>evaluadoEspecificoController</managed-bean-name>
 		<managed-bean-class>co.mind.web.evaluados.EvaluadoEspecificoController</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>cuentaController</managed-bean-name>
-		<managed-bean-class>co.mind.web.cuenta.CuentaController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
 	<managed-bean>
 		<managed-bean-name>programadorEspecificoController</managed-bean-name>

@@ -1,6 +1,7 @@
 package co.mind.web.clientes;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -8,6 +9,8 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.context.ExternalContext;
@@ -23,8 +26,14 @@ import co.mind.management.shared.persistencia.GestionUsos;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
 
-public class ClienteEspecificoController {
+@ManagedBean
+@ViewScoped
+public class ClienteEspecificoController implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private UsuarioBO usuario;
 	private String nombreUsuario;
 	private UsuarioAdministradorBO cliente;
@@ -33,8 +42,8 @@ public class ClienteEspecificoController {
 
 	private boolean continuar = true;
 
-	private UIForm tableFormUsos;
-	private HtmlDataTable dataTableUsos;
+	private transient UIForm tableFormUsos;
+	private transient HtmlDataTable dataTableUsos;
 	private Date fechaInicial;
 	private Date fechaFinal;
 	private String parametroFechaInicial;
@@ -114,7 +123,7 @@ public class ClienteEspecificoController {
 		uso.setUsosAsignados(cantidadUsos);
 		uso.setUsosRedimidos(0);
 		GestionUsos gUsos = new GestionUsos();
-		int result = gUsos.agregarUso(usuario.getIdentificador(), uso);
+		int result = gUsos.agregarUso(cliente.getIdentificador(), uso);
 		if (result == Convencion.CORRECTO) {
 			System.out.println("EXITO");
 			setUsos(gUsos.listarUsos(cliente.getIdentificador()));
@@ -134,7 +143,7 @@ public class ClienteEspecificoController {
 			ExternalContext ctx = context.getExternalContext();
 			HttpSession sess = (HttpSession) ctx.getSession(true);
 
-			sess.setAttribute("usuarioUsos", usuario);
+			sess.setAttribute("usuarioUsos", cliente);
 			sess.setAttribute("inicioUsos", fechaInicial);
 			sess.setAttribute("finalUsos", fechaFinal);
 			try {

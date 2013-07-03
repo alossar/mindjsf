@@ -1,10 +1,13 @@
 package co.mind.web.pruebas;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.ActionEvent;
@@ -19,8 +22,14 @@ import co.mind.management.shared.persistencia.GestionPruebas;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
 
-public class PruebasController {
+@ManagedBean
+@ViewScoped
+public class PruebasController implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private UsuarioBO usuario;
 	private String nombreUsuario;
 	private boolean continuar = true;
@@ -35,9 +44,8 @@ public class PruebasController {
 	private String descripcionPruebaCrear;
 
 	// JavaServerFaces related variables
-	private UIForm tableForm;
-	private HtmlDataTable dataTable;
-	private PruebaUsuarioBO pruebaEliminar;
+	private transient UIForm tableForm;
+	private transient HtmlDataTable dataTable;
 
 	@PostConstruct
 	public void init() {
@@ -155,19 +163,26 @@ public class PruebasController {
 	}
 
 	public void seleccionarPruebaEliminar(AjaxBehaviorEvent event) {
-		pruebaEliminar = (PruebaUsuarioBO) dataTable.getRowData();
-		System.out.println("Prueba seleccionada para eliminar");
+		System.out.println("Prueba seleccionada para eliminar.");
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("pruebaEliminar",
+				(PruebaUsuarioBO) dataTable.getRowData());
 	}
 
 	public void eliminarPrueba(ActionEvent event) {
 		GestionPruebas gPruebas = new GestionPruebas();
-		int result = gPruebas.eliminarPruebaUsuarioAdministrador(
-				usuario.getIdentificador(), pruebaEliminar.getIdentificador());
+		HttpServletRequest request = MindHelper.obtenerRequest();
+		int result = gPruebas.eliminarPruebaUsuarioAdministrador(usuario
+				.getIdentificador(),
+				((PruebaUsuarioBO) ((HttpServletRequest) request).getSession()
+						.getAttribute("pruebaEliminar")).getIdentificador());
 		if (result == Convencion.CORRECTO) {
 			setPruebas(gPruebas.listarPruebasUsuarioAdministrador(usuario
 					.getIdentificador()));
 			pruebasTemp = pruebas;
 		}
+		HttpSession session = request.getSession();
+		session.removeAttribute("pruebaEliminar");
 	}
 
 	private void guardarPruebaEnSesion(PruebaUsuarioBO proceso) {

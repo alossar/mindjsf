@@ -89,10 +89,11 @@ body {
 
 			<div class="row">
 
-				<h:form styleClass="form-search pull-right">
+				<h:form id="formsearch" styleClass="form-search pull-right"
+					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
 						value="#{programadoresController.parametroBusqueda }" />
-					<h:commandLink styleClass="btn btn-info "
+					<h:commandLink styleClass="btn btn-info " id="searchid"
 						action="#{programadoresController.buscarProgramadores }">
 						<i class="icon-search icon-white"></i>
 					</h:commandLink>

@@ -1,10 +1,13 @@
 package co.mind.web.programadores;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
 import javax.faces.event.ActionEvent;
@@ -13,14 +16,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import co.mind.management.shared.dto.EvaluadoBO;
 import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.dto.UsuarioProgramadorBO;
 import co.mind.management.shared.persistencia.GestionUsuariosProgramadores;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
 
-public class ProgramadoresController {
+@ManagedBean
+@ViewScoped
+public class ProgramadoresController implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private UsuarioBO usuario;
 	private String nombreUsuario;
 
@@ -33,15 +43,14 @@ public class ProgramadoresController {
 
 	private boolean continuar = true;
 
-	private UIForm tableForm;
-	private HtmlDataTable dataTable;
+	private transient UIForm tableForm;
+	private transient HtmlDataTable dataTable;
 
 	private String nombreProgramadorCrear;
 	private String apellidosProgramadorCrear;
 	private String correoProgramadorCrear;
 	private int idProgramadorCrear;
 	private String telefonoProgramadorCrear;
-	private UsuarioProgramadorBO programadorEliminar;
 
 	@PostConstruct
 	public void init() {
@@ -159,19 +168,26 @@ public class ProgramadoresController {
 
 	public void eliminarProgramador(ActionEvent event) {
 		GestionUsuariosProgramadores gProgramadores = new GestionUsuariosProgramadores();
-		int result = gProgramadores.eliminarUsuarioProgramador(
-				usuario.getIdentificador(),
-				programadorEliminar.getIdentificador());
+		HttpServletRequest request = MindHelper.obtenerRequest();
+		int result = gProgramadores.eliminarUsuarioProgramador(usuario
+				.getIdentificador(),
+				((EvaluadoBO) ((HttpServletRequest) request).getSession()
+						.getAttribute("programadorEliminar"))
+						.getIdentificador());
 		if (result == Convencion.CORRECTO) {
 			setProgramadores(gProgramadores.listarUsuariosProgramadores(usuario
 					.getIdentificador()));
 			programadoresTemp = programadores;
 		}
+		HttpSession session = request.getSession();
+		session.removeAttribute("programadorEliminar");
 	}
 
 	public void seleccionarProgramadorEliminar(AjaxBehaviorEvent event) {
-		programadorEliminar = (UsuarioProgramadorBO) dataTable.getRowData();
-		System.out.println("Programador seleccionada para eliminar");
+		System.out.println("Programador seleccionado para eliminar.");
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("programadorEliminar",
+				(UsuarioProgramadorBO) dataTable.getRowData());
 	}
 
 	public String activarProgramador() {
@@ -238,9 +254,18 @@ public class ProgramadoresController {
 					}
 				} else {
 					for (UsuarioProgramadorBO pro : getProgramadores()) {
-						int id = pro.getIdentificador();
 						if (getParametroBusqueda().equalsIgnoreCase(
-								pro.getCorreo_Electronico())) {
+								pro.getCorreo_Electronico())
+								|| pro.getNombres()
+										.toLowerCase()
+										.contains(
+												getParametroBusqueda()
+														.toLowerCase())
+								|| pro.getApellidos()
+										.toLowerCase()
+										.contains(
+												getParametroBusqueda()
+														.toLowerCase())) {
 							resultadoBusqueda.add(pro);
 						}
 					}

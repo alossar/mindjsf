@@ -74,21 +74,27 @@ public class SMTPSender {
 		}
 	}
 
-	public static int enviarCorreoCreacionCuentaCliente(String nombre,
-			String apellido, String correo, String contrasena, int usos) {
+	public static int enviarCorreoCreacionCuenta(String nombre,
+			String apellido, String correo, String contrasena, int usos,
+			boolean administrador) {
 		String host = "smtp.gmail.com";
 		int port = 587;
 		String username = Convencion.CORREO_NOTIFICACION;
 		String password = Convencion.CONTRASENA_NOTIFICACION;
 		Session session = obtenerSesion();
 		try {
-
+			String tipoCuenta = "administración";
+			if (!administrador) {
+				tipoCuenta = "de programador";
+			}
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("no-reply@mindmanagement.co",
 					"Mind Management"));
 			message.setSubject("Bienvenido a Mind Management");
 			String i = "<!DOCTYPE HTML><html><head><meta http-equiv='Content-Type' content='text/html; charset=utf-8'><style>#nombre p{	float:left;	margin-left: 10px;} #mail{ clear:both;	}#mail p{ float:left;	margin-left: 10px;	}#mailLink p{	padding-top: 30px;}	</style></head>	<body style='margin:0px; padding:0px;'>	<div id='contenedorTotalMail' style='position: relative; width: 960px margin: 0px auto;'>		<div id='cuerpoMail' style='width: 408px; height: 643px; margin:auto;'>		<div id='mailContenedorDatos' style='	width:408px; height:380px; background-color: white; box-shadow: 0px 0px 10px rgba(0,0,0,0.3);'>		<div id='MailTitle' style='width:137px; height:62px; margin:25px auto; padding-top:20px;'><img src='https://dl.dropbox.com/u/32952272/logo2M.png'></div>	<div id='mailTitleGracias' style='color:rgb(91,91,91); font-family:Arial; font-size:14px; text-align:center; margin-bottom:50px;'><h1>Bienvenido a Mind Management</h1>"
-					+ "<h3>Se ha creado una cuenta de administración.</h3>"
+					+ "<h3>Se ha creado una cuenta de "
+					+ tipoCuenta
+					+ ".</h3>"
 					+ "</div> <div class='registrateInfo' style='width:337px;font-family:Arial; font-size:12px; margin-top:10px; margin-left:35px;'>	<div id='nombre'><p>Correo Electrónico:</p>	<p style=' color:rgb(17,170,209); font-style:italic;' >"
 					+ correo
 					+ "</p></div>	<div id='mail'>	<p>Contraseña: </p><p id='pass' style=' color:rgb(17,170,209); font-style:italic;'>"
@@ -237,6 +243,58 @@ public class SMTPSender {
 			return Convencion.INCORRECTO;
 		}
 
+	}
+
+	public static int enviarMensajeAMaestro(UsuarioBO usuario,
+			String mensajeCorreo) {
+		String host = "smtp.gmail.com";
+		int port = 587;
+		String username = Convencion.CORREO_NOTIFICACION;
+		String password = Convencion.CONTRASENA_NOTIFICACION;
+		Session session = obtenerSesion();
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("no-reply@mindmanagement.co",
+					"Mind Management"));
+			message.setSubject("Proceso de Revisión");
+			String empresa = usuario.getEmpresa();
+			if (empresa == null) {
+				empresa = "";
+			} else {
+				empresa = " de " + empresa;
+			}
+			String i = usuario.getNombres() + " " + usuario.getApellidos()
+					+ " " + empresa + " le envía el siguiente comentario. <p>"
+					+ mensajeCorreo + "</p><p>Su correo es: "
+					+ usuario.getCorreo_Electronico() + ".</p>";
+			message.setContent(i, "text/html");
+			Transport transport = session.getTransport("smtp");
+			try {
+				transport.connect(host, port, username, password);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("connection refused");
+				return Convencion.INCORRECTO;
+			}
+
+			transport.sendMessage(message,
+					InternetAddress.parse("raymond.chaux@gmail.com"));
+			System.out.println("Done");
+			return Convencion.CORRECTO;
+		} catch (UnsupportedEncodingException ex) {
+			ex.printStackTrace();
+			return Convencion.INCORRECTO;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return Convencion.INCORRECTO;
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			return Convencion.INCORRECTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Convencion.INCORRECTO;
+		}
 	}
 
 }

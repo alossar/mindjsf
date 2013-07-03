@@ -14,6 +14,7 @@ import co.mind.management.shared.dto.ImagenUsuarioBO;
 import co.mind.management.shared.dto.PreguntaUsuarioBO;
 import co.mind.management.shared.dto.ProcesoUsuarioBO;
 import co.mind.management.shared.dto.PruebaUsuarioBO;
+import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.entidades.Evaluado;
 import co.mind.management.shared.entidades.PreguntaUsuario;
 import co.mind.management.shared.entidades.ProcesoUsuario;
@@ -661,5 +662,51 @@ public class GestionPruebas implements IGestionPruebas {
 			int identificador, ProcesoUsuarioBO proceso) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void agregarPruebaAClientes(int identificador,
+			PruebaUsuarioBO pruebaUsuarioBO) {
+		EntityTransaction userTransaction = entityManager.getTransaction();
+		try {
+			userTransaction.begin();
+			GestionLaminas gLaminas = new GestionLaminas();
+			GestionPreguntas gPreguntas = new GestionPreguntas();
+			PruebaUsuario c = new PruebaUsuario();
+			Usuario u = entityManager.find(Usuario.class, identificador);
+			c.setUsuario(u);
+			c.setDescripcion(pruebaUsuarioBO.getDescripcion());
+			c.setNombre(pruebaUsuarioBO.getNombre());
+			if (!entityManager.contains(c)) {
+				entityManager.persist(c);
+				entityManager.flush();
+				userTransaction.commit();
+			}
+			entityManager.refresh(c);
+
+			PruebaUsuario pru = entityManager.find(PruebaUsuario.class,
+					pruebaUsuarioBO.getIdentificador());
+			PruebaUsuarioBO pruBO = new PruebaUsuarioBO();
+			pruBO.setIdentificador(c.getIdentificador());
+			List<PreguntaUsuario> preguntas = pru.getPreguntasUsuarios();
+			for (PreguntaUsuario im : preguntas) {
+				PreguntaUsuarioBO resultado = new PreguntaUsuarioBO();
+				resultado.setCaracteresMaximo(im.getCaracteresMaximo());
+				resultado.setIdentificador(im.getIdentificador());
+				resultado.setPregunta(im.getPregunta());
+				resultado.setTiempoMaximo(im.getTiempoMaximo());
+				resultado.setPosicionPreguntaX(im.getPosicionPreguntaX());
+				resultado.setPosicionPreguntaY(im.getPosicionPreguntaY());
+				resultado.setImagenesUsuarioID(gLaminas
+						.consultarLaminaUsuarioAdministradorEnlace(
+								identificador, im.getImagenesUsuario()
+										.getImagene().getImagenURI()));
+				gPreguntas.agregarPreguntaUsuarioAdministrador(
+						u.getIdentificador(), resultado, pruBO);
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 }

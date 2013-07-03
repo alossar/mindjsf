@@ -249,18 +249,84 @@ public class ProcesoEspecificoController implements Serializable {
 	}
 
 	public void seleccionarPruebaEliminar(AjaxBehaviorEvent event) {
+		System.out.println("Prueba seleccionada para eliminar.");
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("pruebaEliminar",
+				(PruebaUsuarioBO) dataTablePruebas.getRowData());
+	}
 
+	public void seleccionarParticipacionEliminar(AjaxBehaviorEvent event) {
+		System.out.println("Participacion seleccionado para eliminar.");
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("participacionEliminar",
+				(ParticipacionEnProcesoBO) dataTableEvaluados.getRowData());
 	}
 
 	public void eliminarPrueba(ActionEvent event) {
+		GestionProcesos gProcesos = new GestionProcesos();
+		HttpServletRequest request = MindHelper.obtenerRequest();
+		int result = gProcesos.eliminarPruebaDeProceso(usuario
+				.getIdentificador(),
+				(PruebaUsuarioBO) ((HttpServletRequest) request).getSession()
+						.getAttribute("pruebaEliminar"), proceso);
 
+		if (result == Convencion.CORRECTO) {
+			GestionPruebas gPruebas = new GestionPruebas();
+			ProcesoUsuarioBO pro = gProcesos
+					.consultarProcesoUsuarioAdministrador(
+							usuario.getIdentificador(),
+							proceso.getIdentificador());
+			List<PruebaUsuarioBO> pruebas = new ArrayList<PruebaUsuarioBO>();
+			for (ProcesoUsuarioHasPruebaUsuarioBO pHas : pro
+					.getProcesoUsuarioHasPruebaUsuario()) {
+				pruebas.add(pHas.getPruebasUsuario());
+			}
+			setPruebasProcesoEspecifico(pruebas);
+
+			setPruebasRestantes(listaPruebasAArreglo(obtenerPruebasNoEnProceso(
+					gPruebas.listarPruebasUsuarioAdministrador(usuario
+							.getIdentificador()), getPruebasProcesoEspecifico())));
+		}
+		HttpSession session = request.getSession();
+		session.removeAttribute("pruebaEliminar");
+	}
+
+	public void eliminarParticipacion(ActionEvent event) {
+		HttpServletRequest request = MindHelper.obtenerRequest();
+		GestionEvaluacion gEvaluacion = new GestionEvaluacion();
+		int result = gEvaluacion.eliminarParticipacionEnProceso(usuario
+				.getIdentificador(),
+				((ParticipacionEnProcesoBO) ((HttpServletRequest) request)
+						.getSession().getAttribute("participacionEliminar"))
+						.getUsuarioBasico().getIdentificador(), proceso
+						.getIdentificador(),
+				((ParticipacionEnProcesoBO) ((HttpServletRequest) request)
+						.getSession().getAttribute("participacionEliminar"))
+						.getIdentificador());
+		if (result == Convencion.CORRECTO) {
+			setParticipacionesProcesoEspecifico(gEvaluacion
+					.listarParticipacionesEnProceso(usuario.getIdentificador(),
+							proceso.getIdentificador()));
+		}
+		HttpSession session = request.getSession();
+		session.removeAttribute("participacionEliminar");
 	}
 
 	public String guardarEditarProceso() {
 		System.out.print("Editando proceso...");
 		GestionProcesos gProcesos = new GestionProcesos();
-		proceso.setFechaFinalizacion(fechaFinal);
-		proceso.setFechaInicio(fechaInicial);
+		if (fechaFinal != null) {
+			if (fechaInicial != null) {
+				if (!fechaFinal.before(fechaInicial)) {
+					proceso.setFechaFinalizacion(fechaFinal);
+					proceso.setFechaInicio(fechaInicial);
+				}
+			}
+		} else {
+			if (fechaInicial != null) {
+				proceso.setFechaInicio(fechaInicial);
+			}
+		}
 		int result = gProcesos.editarProcesoUsuarioAdministrador(
 				usuario.getIdentificador(), proceso);
 		if (result == Convencion.CORRECTO) {
@@ -564,6 +630,15 @@ public class ProcesoEspecificoController implements Serializable {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+	}
+
+	public String solicitarRevision() {
+		proceso.setEstadoValoracion(Convencion.ESTADO_SOLICITUD_PENDIENTE);
+		GestionProcesos gProcesos = new GestionProcesos();
+		gProcesos.editarProcesoUsuarioAdministrador(usuario.getIdentificador(),
+				proceso);
+		SMTPSender.enviarCorreoProcesoRevision(usuario, proceso);
+		return null;
 	}
 
 	public List<PruebaUsuarioBO> getPruebasProcesoEspecifico() {
