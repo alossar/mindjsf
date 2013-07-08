@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
@@ -29,6 +30,7 @@ import co.mind.management.shared.dto.ProcesoUsuarioBO;
 import co.mind.management.shared.dto.ProcesoUsuarioHasPruebaUsuarioBO;
 import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsuarioBO;
+import co.mind.management.shared.dto.UsuarioProgramadorBO;
 import co.mind.management.shared.persistencia.GestionEvaluacion;
 import co.mind.management.shared.persistencia.GestionEvaluados;
 import co.mind.management.shared.persistencia.GestionProcesos;
@@ -93,6 +95,7 @@ public class ProcesoEspecificoController implements Serializable {
 	private Date fechaFinal;
 	private String parametroFechaInicial;
 	private String parametroFechaFinal;
+	private int idUsuario;
 
 	@PostConstruct
 	public void init() {
@@ -130,6 +133,18 @@ public class ProcesoEspecificoController implements Serializable {
 						.getProcesoUsuarioHasPruebaUsuario()) {
 					pruebas.add(pHas.getPruebasUsuario());
 				}
+
+				String permiso = (String) MindHelper.obtenerSesion()
+						.getAttribute("permiso");
+				idUsuario = usuario.getIdentificador();
+				if (permiso != null) {
+					if (permiso
+							.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_PROGRAMADOR)) {
+						idUsuario = ((UsuarioProgramadorBO) usuario)
+								.getUsuarioAdministradorID();
+					}
+				}
+
 				setPruebasProcesoEspecifico(pruebas);
 				setParticipacionesProcesoEspecifico(gEvaluacion
 						.listarParticipacionesEnProceso(
@@ -140,8 +155,7 @@ public class ProcesoEspecificoController implements Serializable {
 								usuario.getIdentificador(),
 								proceso.getIdentificador()));
 				setPruebasRestantes(listaPruebasAArreglo(obtenerPruebasNoEnProceso(
-						gPruebas.listarPruebasUsuarioAdministrador(usuario
-								.getIdentificador()),
+						gPruebas.listarPruebasUsuarioAdministrador(idUsuario),
 						getPruebasProcesoEspecifico())));
 				setEvaluadosRestantes(listaEvaluadosAArreglo(obtenerEvaluadosNoEnProceso(
 						gEvaluados.listarUsuariosBasicos(usuario
@@ -286,6 +300,16 @@ public class ProcesoEspecificoController implements Serializable {
 			setPruebasRestantes(listaPruebasAArreglo(obtenerPruebasNoEnProceso(
 					gPruebas.listarPruebasUsuarioAdministrador(usuario
 							.getIdentificador()), getPruebasProcesoEspecifico())));
+
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Prueba eliminada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La prueba no se pudo eliminar.", ""));
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("pruebaEliminar");
@@ -307,13 +331,22 @@ public class ProcesoEspecificoController implements Serializable {
 			setParticipacionesProcesoEspecifico(gEvaluacion
 					.listarParticipacionesEnProceso(usuario.getIdentificador(),
 							proceso.getIdentificador()));
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Participación del evaluado eliminada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La participación del evaluado no se pudo eliminar.", ""));
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("participacionEliminar");
 	}
 
 	public String guardarEditarProceso() {
-		System.out.print("Editando proceso...");
 		GestionProcesos gProcesos = new GestionProcesos();
 		if (fechaFinal != null) {
 			if (fechaInicial != null) {
@@ -333,11 +366,15 @@ public class ProcesoEspecificoController implements Serializable {
 			proceso = gProcesos.consultarProcesoUsuarioAdministrador(
 					usuario.getIdentificador(), proceso.getIdentificador());
 
-			System.out.println("EXITO");
-
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Proceso editado.", ""));
 		} else {
-			System.out.println("FRACASO");
-
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El proceso no se pudo editar.", ""));
 		}
 		setEditar(false);
 		return null;
@@ -377,6 +414,15 @@ public class ProcesoEspecificoController implements Serializable {
 			setParticipacionesProcesoEspecifico(gEvaluacion
 					.listarParticipacionesEnProceso(usuario.getIdentificador(),
 							proceso.getIdentificador()));
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Notificación enviada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La notificación no se pudo enviar.", ""));
 		}
 		return null;
 	}
@@ -418,7 +464,7 @@ public class ProcesoEspecificoController implements Serializable {
 		eva.setApellidos(apellidoEvaluadoCrear);
 		eva.setCedula(cedulaEvaluadoCrear);
 		eva.setNombres(nombreEvaluadoCrear);
-		eva.setCorreoElectronico(correoEvaluadoCrear);
+		eva.setCorreoElectronico(correoEvaluadoCrear.toLowerCase());
 		eva.setIdentificadorUsuarioAdministrador(usuario.getIdentificador());
 
 		ParticipacionEnProcesoBO p = new ParticipacionEnProcesoBO();
@@ -430,7 +476,7 @@ public class ProcesoEspecificoController implements Serializable {
 
 		GestionEvaluacion gEvaluacion = new GestionEvaluacion();
 		GestionUsos gUsos = new GestionUsos();
-		if (gUsos.consultarCapacidadUsos(usuario.getIdentificador(), 1)) {
+		if (gUsos.consultarCapacidadUsos(idUsuario, 1)) {
 			int result = gEvaluacion.agregarParticipacionEnProceso(usuario
 					.getIdentificador(), p.getUsuarioBasico()
 					.getIdentificador(), proceso.getIdentificador(), p);
@@ -439,7 +485,24 @@ public class ProcesoEspecificoController implements Serializable {
 						.listarParticipacionesEnProceso(
 								usuario.getIdentificador(),
 								proceso.getIdentificador()));
+
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_INFO, "Evaluado creado.", ""));
+			} else {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_WARN,
+						"El evaluado no se pudo crear.", ""));
 			}
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El evaluado no se pudo crear.",
+					"No dispone de los usos suficientes."));
 		}
 		return null;
 	}
@@ -464,19 +527,26 @@ public class ProcesoEspecificoController implements Serializable {
 				pruebas.add(pHas.getPruebasUsuario());
 			}
 			setPruebasProcesoEspecifico(pruebas);
-			System.out.println("EXITO");
-		} else {
-			System.out.println("FRACASO");
 
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Prueba creada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN, "La prueba no se pudo crear.",
+					""));
 		}
 		return null;
 	}
 
 	public String agregarEvaluadosAProceso() {
 		GestionUsos gUsos = new GestionUsos();
-		if (gUsos.consultarCapacidadUsos(usuario.getIdentificador(),
+		if (gUsos.consultarCapacidadUsos(idUsuario,
 				selectItemsEvaluadosRestantes.length)) {
 			GestionEvaluacion gEvaluacion = new GestionEvaluacion();
+			int result = 0;
 			for (Integer id : selectItemsEvaluadosRestantes) {
 				EvaluadoBO eva = new EvaluadoBO();
 				eva.setIdentificador(id);
@@ -486,7 +556,7 @@ public class ProcesoEspecificoController implements Serializable {
 				p.setFechaInicio(new Date());
 				p.setProcesoID(proceso.getIdentificador());
 				p.setEstaNotificado(Convencion.ESTADO_NOTIFICACION_NO_ENVIADA);
-				gEvaluacion.agregarParticipacionEnProceso(usuario
+				result = gEvaluacion.agregarParticipacionEnProceso(usuario
 						.getIdentificador(), p.getUsuarioBasico()
 						.getIdentificador(), proceso.getIdentificador(), p);
 			}
@@ -498,7 +568,16 @@ public class ProcesoEspecificoController implements Serializable {
 					gEvaluados
 							.listarUsuariosBasicos(usuario.getIdentificador()),
 					obtenerEvaluadosDeParticipacion(getParticipacionesProcesoEspecifico()))));
-
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Evaluado agregado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El evaluado no se pudo agregar.",
+					"No dispone de los usos suficientes."));
 		}
 		return null;
 	}
@@ -523,9 +602,11 @@ public class ProcesoEspecificoController implements Serializable {
 		}
 		setPruebasProcesoEspecifico(pruebas);
 		setPruebasRestantes(listaPruebasAArreglo(obtenerPruebasNoEnProceso(
-				gPruebas.listarPruebasUsuarioAdministrador(usuario
-						.getIdentificador()), getPruebasProcesoEspecifico())));
-
+				gPruebas.listarPruebasUsuarioAdministrador(idUsuario),
+				getPruebasProcesoEspecifico())));
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+				"Prueba agregada.", ""));
 		return null;
 	}
 
@@ -637,7 +718,20 @@ public class ProcesoEspecificoController implements Serializable {
 		GestionProcesos gProcesos = new GestionProcesos();
 		gProcesos.editarProcesoUsuarioAdministrador(usuario.getIdentificador(),
 				proceso);
-		SMTPSender.enviarCorreoProcesoRevision(usuario, proceso);
+		int result = SMTPSender.enviarCorreoProcesoRevision(usuario, proceso);
+		if (result == Convencion.CORRECTO) {
+
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Solicitud de revisión enviada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La solicitud de revisión no pudo ser enviada.", ""));
+		}
 		return null;
 	}
 

@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -18,12 +19,13 @@ body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
+
+.ui-growl {
+	left: 20px;
+	top: 50px;
+	height: 60;
+}
 </style>
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
-    <![endif]-->
 	<title>Pruebas - Mind Management</title>
 </h:head>
 <body>
@@ -93,6 +95,8 @@ body {
 		</div>
 		<!--Cierro Navegador-->
 		<div class="container-fluid">
+
+			<p:growl id="growl" showDetail="true" style="z-index:999;" life="2500"></p:growl>
 
 			<div class="row">
 
@@ -204,7 +208,6 @@ body {
 							actionListener="#{pruebasController.eliminarPrueba }"
 							onclick="closeDialog ();" rendered="#{not prueba.editar }"
 							style="padding: 5;" value="SI">
-							<f:ajax render=":formPanelTablaPruebas:panelTablaPruebas" />
 						</h:commandLink>
 					</div>
 
@@ -213,7 +216,7 @@ body {
 
 			<div id="myModalCrearPrueba" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 345px;">
+				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 395px;">
 				<div class="modal-header" style="height: 50px;">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
@@ -222,9 +225,9 @@ body {
 					</h3>
 				</div>
 				<h:form>
-					<div id="contenedorBotonesCrearPrueba">
+					<div id="contenedorBotonesCrearPrueba" style="margin-left: 115px;">
 						<div>
-							<p style="margin-left: 29px;">Nombre</p>
+							<p>Nombre</p>
 							<h:inputText required="true" id="inputCrearPrueba"
 								value="#{pruebasController.nombrePruebaCrear }"></h:inputText>
 						</div>
@@ -235,7 +238,9 @@ body {
 						</div>
 
 						<h:commandButton styleClass="btn btn-primary" id="botCrearPrueba"
-							action="#{pruebasController.crearPrueba }" value="Crear"></h:commandButton>
+							actionListener="#{pruebasController.crearPrueba }" value="Crear"
+							style="margin-left:65px;margin-top:5px;"
+							onclick="closeDialog ();"></h:commandButton>
 					</div>
 				</h:form>
 			</div>

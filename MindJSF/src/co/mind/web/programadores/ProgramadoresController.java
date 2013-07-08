@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -123,11 +125,11 @@ public class ProgramadoresController implements Serializable {
 
 	public String crearProgramador() {
 		UsuarioProgramadorBO programador = new UsuarioProgramadorBO();
-		programador.setIdentificador(idProgramadorCrear);
+		programador.setCedula(idProgramadorCrear);
 		programador.setNombres(nombreProgramadorCrear);
 		programador.setApellidos(apellidosProgramadorCrear);
 		programador.setEmpresa(usuario.getEmpresa());
-		programador.setCorreo_Electronico(correoProgramadorCrear);
+		programador.setCorreo_Electronico(correoProgramadorCrear.toLowerCase());
 		programador.setTelefono(telefonoProgramadorCrear);
 		GestionUsuariosProgramadores gProgramadores = new GestionUsuariosProgramadores();
 		int result = gProgramadores.agregarUsuarioProgramador(
@@ -136,6 +138,15 @@ public class ProgramadoresController implements Serializable {
 			setProgramadores(gProgramadores.listarUsuariosProgramadores(usuario
 					.getIdentificador()));
 			programadoresTemp = programadores;
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Programador creado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El programador no se pudo crear.", ""));
 		}
 		return null;
 	}
@@ -162,6 +173,15 @@ public class ProgramadoresController implements Serializable {
 			setProgramadores(gProgramadores.listarUsuariosProgramadores(usuario
 					.getIdentificador()));
 			programadoresTemp = programadores;
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Programador editado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El programador no se pudo editar.", ""));
 		}
 		return null;
 	}
@@ -178,6 +198,15 @@ public class ProgramadoresController implements Serializable {
 			setProgramadores(gProgramadores.listarUsuariosProgramadores(usuario
 					.getIdentificador()));
 			programadoresTemp = programadores;
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Programador eliminado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El programador no se pudo eliminar.", ""));
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("programadorEliminar");
@@ -202,6 +231,15 @@ public class ProgramadoresController implements Serializable {
 			setProgramadores(gProgramadores.listarUsuariosProgramadores(usuario
 					.getIdentificador()));
 			programadoresTemp = programadores;
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Programador activado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El programador no se pudo activar.", ""));
 		}
 		return null;
 	}
@@ -218,6 +256,15 @@ public class ProgramadoresController implements Serializable {
 			setProgramadores(gProgramadores.listarUsuariosProgramadores(usuario
 					.getIdentificador()));
 			programadoresTemp = programadores;
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Programador desactivado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El programador no se pudo desactivar.", ""));
 		}
 		return null;
 	}

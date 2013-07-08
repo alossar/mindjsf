@@ -53,17 +53,25 @@ public class GestionAccesos implements IGestionAccesos {
 						.getFechaFinalizacion();
 				Date fechaActual = new Date();
 				if (fechaFinal != null) {
-					if (fechaActual.compareTo(fechaInicio) <= 0
-							|| fechaActual.compareTo(fechaFinal) >= 0) {
-						System.out.println("fecha final");
+					if (fechaInicio != null) {
+						if (fechaActual.before(fechaInicio)
+								|| fechaActual.after(fechaFinal)) {
+							return Convencion.VERIFICACION_USUARIO_BASICO_PARTICIPACION_NO_EXISTE;
+						}
+					} else {
+						if (fechaActual.after(fechaFinal)) {
+							return Convencion.VERIFICACION_USUARIO_BASICO_PARTICIPACION_NO_EXISTE;
+						}
+					}
+				}
+				if (fechaInicio != null) {
+					if (fechaActual.before(fechaInicio)) {
+						System.out.println("fecha inicial");
+						System.out.println(fechaActual);
+						System.out.println(fechaInicio);
+						System.out.println(fechaActual.compareTo(fechaInicio));
 						return Convencion.VERIFICACION_USUARIO_BASICO_PARTICIPACION_NO_EXISTE;
 					}
-				} else if (fechaActual.compareTo(fechaInicio) <= 0) {
-					System.out.println("fecha inicial");
-					System.out.println(fechaActual);
-					System.out.println(fechaInicio);
-					System.out.println(fechaActual.compareTo(fechaInicio));
-					return Convencion.VERIFICACION_USUARIO_BASICO_PARTICIPACION_NO_EXISTE;
 				}
 
 				if (par.getEstado().equalsIgnoreCase(
@@ -124,6 +132,7 @@ public class GestionAccesos implements IGestionAccesos {
 					resultado = new UsuarioBO();
 				}
 				resultado.setIdentificador(u.getIdentificador());
+				resultado.setCedula(u.getCedula());
 				resultado.setApellidos(u.getApellidos());
 				resultado.setCargo(u.getCargo());
 				resultado.setCiudad(u.getCiudad());

@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,12 +16,13 @@ body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
+
+.ui-growl {
+	left: 20px;
+	top: 50px;
+	height: 60;
+}
 </style>
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
-    <![endif]-->
 	<title>Proceso de Evaluación - Mind Management</title>
 </h:head>
 <body>
@@ -104,7 +106,8 @@ body {
 
 				<div class="container-fluid">
 					<div class="row-fluid">
-
+						<p:growl id="growl" showDetail="true" style="z-index:999;"
+							life="2500"></p:growl>
 						<div class="span3" id="panelInfoProceso">
 							<h:form>
 								<div id="tituloProceso">
@@ -117,7 +120,7 @@ body {
 									<p>Cédula</p>
 									<h:inputText styleClass="textoProceso" style="width: 180px;"
 										readonly="true"
-										value="#{programadorEspecificoController.programador.identificador }"></h:inputText>
+										value="#{programadorEspecificoController.programador.cedula }"></h:inputText>
 									<p>Correo Electrónico</p>
 									<h:inputText styleClass="textoProceso" style="width: 180px;"
 										readonly="true"

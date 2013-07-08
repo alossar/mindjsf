@@ -6,6 +6,7 @@ import java.util.Date;
 public class UsuarioBO implements Serializable {
 
 	private int identificador;
+	private int cedula;
 	private String apellidos;
 	private String cargo;
 	private String ciudad;
@@ -170,6 +171,14 @@ public class UsuarioBO implements Serializable {
 
 	public void setFechaVencimiento(Date fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	public int getCedula() {
+		return cedula;
+	}
+
+	public void setCedula(int cedula) {
+		this.cedula = cedula;
 	}
 
 }

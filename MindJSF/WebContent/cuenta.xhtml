@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -26,12 +27,13 @@ body {
 #infoGeneral input {
 	margin-top: -10px;
 }
+
+.ui-growl {
+	left: 20px;
+	top: 50px;
+	height: 60;
+}
 </style>
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
-    <![endif]-->
 	<title>Cuenta - Mind Management</title>
 </h:head>
 <body>
@@ -104,7 +106,8 @@ body {
 
 				<div class="container-fluid">
 					<div class="row-fluid">
-
+						<p:growl id="growl" showDetail="true" style="z-index:999;"
+							life="2500"></p:growl>
 						<div class="span3" id="panelInfoProceso"
 							style="background-color: rgba(245, 245, 245, 0.8);">
 							<h:form>
@@ -124,8 +127,8 @@ body {
 										value="#{cuentaController.usuario.apellidos}"></h:inputText>
 									<p>Cédula</p>
 									<h:inputText styleClass="textoProceso" style="width: 170px;"
-										value="#{cuentaController.usuario.identificador}"
-										readonly="true" disabled="true">
+										value="#{cuentaController.usuario.cedula}" readonly="true"
+										disabled="true">
 										<f:validateLength maximum="10"></f:validateLength>
 										<f:convertNumber integerOnly="true" />
 									</h:inputText>
@@ -220,7 +223,8 @@ body {
 									<div id="buscarProceso">
 										<a class="btn btn-primary btn-small  pull-right"
 											data-toggle="modal" href="#myModalEnviarCorreo"
-											title="Enviar comentarios" style="height: 20px;"> <i
+											title="Enía tus comentarios y sugerencias a 2M."
+											style="height: 20px;"> <i
 											class="icon-envelope icon-white" style="margin-top: 3px;"
 											role="button"></i>
 										</a>
@@ -270,15 +274,18 @@ body {
 												aria-hidden="true">x</button>
 											<h3 id="myModalLabel"
 												style="margin-top: 5px; text-align: center;">
-												<img src="img/logoPruebasCrear.png" />Enviar Comentario
+												<img src="img/logoPruebasCrear.png" />Envíanos un correo
+												electrónico
 											</h3>
 										</div>
 
 										<div class="modal-body">
-											<div id="modalCrearProceso">
+											<div id="modalCrearProceso"
+												style="width: 230px; margin-left: 95px;">
 
 												<div class="control-group">
-													<label class="control-label">Mensaje</label>
+													<label class="control-label" style="font-weight: bold;">
+														Mensaje</label>
 													<div class="controls">
 														<h:inputTextarea style="height: 100px;" required="true"
 															id="descripcionProcesoTA"
@@ -294,7 +301,8 @@ body {
 														<h:commandButton
 															styleClass="btn btn-primary show-notification"
 															value="Enviar"
-															style=" margin-left:65px; width:100px; height:45px;"
+															style=" margin-left:65px; width:100px; height:45px;
+															margin-left:65px;"
 															id="botCrearPrueba"
 															actionListener="#{cuentaController.enviarCorreo}">
 														</h:commandButton>

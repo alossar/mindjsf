@@ -36,12 +36,22 @@ public class ProgramadorEspecificoController {
 			setNombreUsuario(usuario.getNombres() + " "
 					+ usuario.getApellidos());
 			programador = obtenerProgramadorDeSesion();
-			setNombreProgramador(programador.getNombres() + " "
-					+ programador.getApellidos());
-			GestionProcesos gProcesos = new GestionProcesos();
-			setProcesos(gProcesos.listarProcesoUsuarioAdministrador(programador
-					.getIdentificador()));
-
+			if (programador != null) {
+				setNombreProgramador(programador.getNombres() + " "
+						+ programador.getApellidos());
+				GestionProcesos gProcesos = new GestionProcesos();
+				setProcesos(gProcesos
+						.listarProcesoUsuarioAdministrador(programador
+								.getIdentificador()));
+			} else {
+				HttpServletResponse response = MindHelper.obtenerResponse();
+				try {
+					response.sendRedirect("programadores.do");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

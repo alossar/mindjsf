@@ -37,12 +37,22 @@ public class EvaluadoEspecificoController {
 			setNombreUsuario(usuario.getNombres() + " "
 					+ usuario.getApellidos());
 			evaluado = obtenerEvaluadoDeSesion();
-			setNombreEvaluado(evaluado.getNombres() + " "
-					+ evaluado.getApellidos());
-			GestionEvaluacion gProcesos = new GestionEvaluacion();
-			setParticipaciones(gProcesos.listarParticipacionesEvaluado(usuario,
-					evaluado));
-			setEditar(false);
+			if (evaluado != null) {
+				setNombreEvaluado(evaluado.getNombres() + " "
+						+ evaluado.getApellidos());
+				GestionEvaluacion gProcesos = new GestionEvaluacion();
+				setParticipaciones(gProcesos.listarParticipacionesEvaluado(
+						usuario, evaluado));
+				setEditar(false);
+			} else {
+				HttpServletResponse response = MindHelper.obtenerResponse();
+				try {
+					response.sendRedirect("evaluados.do");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

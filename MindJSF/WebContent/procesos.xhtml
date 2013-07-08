@@ -3,10 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta>
+	<meta http-equiv="
+	Content-Type"
+		content="text/html; charset=ISO-8859-1"></meta>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
 	<!-- Bootstrap -->
 	<link rel="stylesheet" href="css/2mstyle.css"></link>
@@ -18,12 +21,13 @@ body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
+
+.ui-growl {
+	left: 20px;
+	top: 50px;
+	height: 60;
+}
 </style>
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
-    <![endif]-->
 	<title>Procesos - Mind Management</title>
 </h:head>
 <body>
@@ -93,7 +97,11 @@ body {
 		</div>
 		<div class="container-fluid">
 
+
 			<div class="row">
+
+				<p:growl id="growl" showDetail="true" style="z-index:999;"
+					life="2500"></p:growl>
 
 				<h:form id="formsearch" styleClass="form-search pull-right"
 					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
@@ -185,23 +193,26 @@ body {
 							</h:column> <h:column>
 								<h:commandLink styleClass="btn btn-info btn-small "
 									action="#{procesosController.editarProceso }"
-									rendered="#{not proceso.editar }" style="padding: 5;">
+									title="Editar proceso." rendered="#{not proceso.editar }"
+									style="padding: 5;">
 									<i class="icon-pencil icon-white"></i>
 								</h:commandLink>
 								<h:commandLink styleClass="btn btn-success btn-small "
+									title="Guardar cambios."
 									action="#{procesosController.guardarEditarProceso }"
 									rendered="#{proceso.editar }" style="padding: 5;">
 									<i class="icon-ok icon-white"></i>
 								</h:commandLink>
 								&nbsp;
-								<h:commandLink styleClass="btn btn-warning btn-small "
+								<h:commandLink styleClass="btn btn-primary btn-small "
 									onclick="$('#myModalDuplicarProceso').modal('show');"
-									rendered="#{not proceso.editar }">
+									title="Duplicar el proceso." rendered="#{not proceso.editar }">
 									<i class="icon-th-large icon-white"></i>
 									<f:ajax
 										listener="#{procesosController.seleccionarProcesoDuplicar }"></f:ajax>
 								</h:commandLink>
 								<h:commandLink styleClass="btn btn-danger btn-small "
+									title="Cancelar."
 									action="#{procesosController.cancelarEditarProceso }"
 									rendered="#{proceso.editar }" style="padding: 5;">
 									<i class="icon-remove icon-white"></i>
@@ -209,7 +220,7 @@ body {
 								&nbsp;				
 								<h:commandLink styleClass="btn btn-danger btn-small "
 									onclick="$('#myModal').modal('show');"
-									rendered="#{not proceso.editar }">
+									title="Eliminar proceso." rendered="#{not proceso.editar }">
 									<f:ajax
 										listener="#{procesosController.seleccionarProcesoEliminar }"></f:ajax>
 									<i class="icon-trash icon-white"></i>
@@ -241,11 +252,10 @@ body {
 					<div class="modal-footer">
 						<button class="btn btn-danger" data-dismiss="modal"
 							aria-hidden="true">No</button>
-						<h:commandLink styleClass="btn btn-primary show-notification"
+						<h:commandLink styleClass="btn btn-primary"
 							actionListener="#{procesosController.eliminarProceso }"
 							onclick="closeDialog ();" rendered="#{not proceso.editar }"
 							style="padding: 5;" value="SI">
-							<f:ajax render=":formPanelTablaProcesos:panelTablaProcesos" />
 						</h:commandLink>
 					</div>
 
@@ -298,13 +308,10 @@ body {
 
 							<div class="control-group">
 								<div class="controls">
-									<h:commandButton styleClass="btn btn-primary show-notification"
-										value="Agregar"
+									<h:commandButton styleClass="btn btn-primary " value="Agregar"
 										style=" margin-left:65px; width:100px; height:45px;"
 										id="botCrearPrueba" onclick="closeDialog ();"
 										actionListener="#{procesosController.crearProceso}">
-										<f:ajax execute="@form"
-											render=":formPanelTablaProcesos:panelTablaProcesos :mensajeNoHay" />
 									</h:commandButton>
 								</div>
 							</div>
@@ -361,13 +368,10 @@ body {
 
 							<div class="control-group">
 								<div class="controls">
-									<h:commandButton styleClass="btn btn-primary show-notification"
-										value="Duplicar"
+									<h:commandButton styleClass="btn btn-primary" value="Duplicar"
 										style=" margin-left:65px; width:100px; height:45px;"
 										id="botDuplicarPrueba" onclick="closeDialog ();"
 										actionListener="#{procesosController.duplicarProceso}">
-										<f:ajax execute="@form"
-											render="@form :formPanelTablaProcesos:panelTablaProcesos"></f:ajax>
 									</h:commandButton>
 								</div>
 							</div>
@@ -394,19 +398,9 @@ body {
 	<script src="js/bootstrap-datepicker.js"></script>
 	<script src="js/bootstrap-transition.js"></script>
 	<script src="js/bootstrap-alert.js"></script>
-	<script src="js/bootstrap-notify.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('.datepicker').datepicker();
-		});
-	</script>
-	<script>
-		$('.show-notification').click(function(e) {
-			$('.top-left').notify({
-				message : {
-					text : 'Proceso agregado'
-				}
-			}).show();
 		});
 	</script>
 	<script>

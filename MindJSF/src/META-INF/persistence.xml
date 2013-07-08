@@ -22,15 +22,12 @@
 				value="jdbc:mysql://localhost:3306/mind_measurement" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="admin" />
-		</properties> 
+		</properties>
 
-<!-- 		<properties> -->
-<!-- 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" /> -->
-<!-- 			<property name="javax.persistence.jdbc.url" -->
-<!-- 				value="jdbc:mysql://192.168.13.62:3306/mind_measurement" /> -->
-<!-- 			<property name="javax.persistence.jdbc.user" value="root" /> -->
-<!-- 			<property name="javax.persistence.jdbc.password" value="WUWV1ITjkI" /> -->
-<!-- 		</properties> -->
+		<!-- <properties> <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" 
+			/> <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.9.24:3306/mind_measurement" 
+			/> <property name="javax.persistence.jdbc.user" value="root" /> <property 
+			name="javax.persistence.jdbc.password" value="cbvBpsfyRV" /> </properties> -->
 
 	</persistence-unit>
 </persistence>

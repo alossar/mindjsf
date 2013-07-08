@@ -89,9 +89,5 @@ public interface IGestionClientes {
 			UsuarioAdministradorBO usuario, UsoBO usos,
 			List<PruebaUsuarioBO> pruebas);
 
-	public Object listarClientesPorCedulaParcial(int valor);
-
-	public Object listarClientesPorEmpresaParcial(String keyword);
-
 	public int cambiarContrasena(UsuarioBO usuarioMaestro, String pass);
 }

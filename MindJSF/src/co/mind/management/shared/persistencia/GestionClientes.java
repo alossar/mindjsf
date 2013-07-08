@@ -50,7 +50,7 @@ public class GestionClientes implements IGestionClientes {
 			u.setApellidos(usuarioAdministrador.getApellidos());
 			u.setCorreo_Electronico(usuarioAdministrador
 					.getCorreo_Electronico());
-			u.setIdentificador(usuarioAdministrador.getIdentificador());
+			u.setCedula(usuarioAdministrador.getCedula());
 			u.setNombres(usuarioAdministrador.getNombres());
 			u.setCargo(usuarioAdministrador.getCargo());
 			u.setCiudad(usuarioAdministrador.getCiudad());
@@ -110,7 +110,7 @@ public class GestionClientes implements IGestionClientes {
 					u.setApellidos(usuarioAdministrador.getApellidos());
 					u.setCorreo_Electronico(usuarioAdministrador
 							.getCorreo_Electronico());
-					u.setIdentificador(usuarioAdministrador.getIdentificador());
+					u.setCedula(usuarioAdministrador.getCedula());
 					u.setNombres(usuarioAdministrador.getNombres());
 					u.setCargo(usuarioAdministrador.getCargo());
 					u.setCiudad(usuarioAdministrador.getCiudad());
@@ -129,6 +129,7 @@ public class GestionClientes implements IGestionClientes {
 						entityManager.persist(u);
 						entityManager.flush();
 						userTransaction.commit();
+						entityManager.refresh(u);
 						GestionLaminas gLaminas = new GestionLaminas();
 						List<ImagenUsuarioBO> imagenes = gLaminas
 								.listarLaminasUsuarioAdministrador(usuarioMaestroID);
@@ -228,7 +229,6 @@ public class GestionClientes implements IGestionClientes {
 					usuario.getIdentificador());
 			u.setApellidos(usuario.getApellidos());
 			u.setCorreo_Electronico(usuario.getCorreo_Electronico());
-			u.setIdentificador(usuario.getIdentificador());
 			u.setNombres(usuario.getNombres());
 			u.setCargo(usuario.getCargo());
 			u.setCiudad(usuario.getCiudad());
@@ -266,6 +266,7 @@ public class GestionClientes implements IGestionClientes {
 			resultado.setApellidos(usuario.getApellidos());
 			resultado.setCorreo_Electronico(usuario.getCorreo_Electronico());
 			resultado.setIdentificador(usuario.getIdentificador());
+			resultado.setCedula(usuario.getCedula());
 			resultado.setNombres(usuario.getNombres());
 			resultado.setCargo(usuario.getCargo());
 			resultado.setCiudad(usuario.getCiudad());
@@ -333,93 +334,6 @@ public class GestionClientes implements IGestionClientes {
 		}
 	}
 
-	public List<UsuarioAdministradorBO> listarClientesPorEmpresaParcial(
-			String empresa) {
-		String query = "SELECT DISTINCT(u) FROM Usuario u WHERE u.tipo =:tipoU AND u.empresa LIKE :empresa";
-		Query q = entityManager.createQuery(query);
-		q.setParameter("tipoU", Convencion.TIPO_USUARIO_ADMINISTRADOR);
-		q.setParameter("empresa", "%" + empresa + "%");
-		List<Usuario> usuarios = q.getResultList();
-		// Valida que se encuentre un usuario.
-		if (usuarios != null) {
-			if (usuarios.size() > 0) {
-				List<UsuarioAdministradorBO> lista = new ArrayList<UsuarioAdministradorBO>();
-				for (int i = 0; i < usuarios.size(); i++) {
-					UsuarioAdministradorBO resultado = new UsuarioAdministradorBO();
-					Usuario usuario = usuarios.get(i);
-
-					resultado.setApellidos(usuario.getApellidos());
-					resultado.setCorreo_Electronico(usuario
-							.getCorreo_Electronico());
-					resultado.setIdentificador(usuario.getIdentificador());
-					resultado.setNombres(usuario.getNombres());
-					resultado.setCargo(usuario.getCargo());
-					resultado.setCiudad(usuario.getCiudad());
-					resultado.setEmpresa(usuario.getEmpresa());
-					resultado.setEstado_Cuenta(usuario.getEstado_Cuenta());
-					resultado.setFecha_Creacion(usuario.getFecha_Creacion());
-					resultado.setIdentificador(usuario.getIdentificador());
-					resultado.setNombres(usuario.getNombres());
-					resultado.setPais(usuario.getPais());
-					resultado.setTelefono(usuario.getTelefono());
-					resultado
-							.setTelefono_Celular(usuario.getTelefono_Celular());
-					resultado.setTipo(usuario.getTipo());
-
-					lista.add(resultado);
-				}
-				return lista;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
-	public List<UsuarioAdministradorBO> listarClientesPorCedulaParcial(int id) {
-		String query = "SELECT DISTINCT(u) FROM Usuario u WHERE u.tipo =:tipoU AND u.identificador =:empresa";
-		Query q = entityManager.createQuery(query);
-		q.setParameter("tipoU", Convencion.TIPO_USUARIO_ADMINISTRADOR);
-		q.setParameter("empresa", id);
-		List<Usuario> usuarios = q.getResultList();
-		// Valida que se encuentre un usuario.
-		if (usuarios != null) {
-			if (usuarios.size() > 0) {
-				List<UsuarioAdministradorBO> lista = new ArrayList<UsuarioAdministradorBO>();
-				for (int i = 0; i < usuarios.size(); i++) {
-					UsuarioAdministradorBO resultado = new UsuarioAdministradorBO();
-					Usuario usuario = usuarios.get(i);
-
-					resultado.setApellidos(usuario.getApellidos());
-					resultado.setCorreo_Electronico(usuario
-							.getCorreo_Electronico());
-					resultado.setIdentificador(usuario.getIdentificador());
-					resultado.setNombres(usuario.getNombres());
-					resultado.setCargo(usuario.getCargo());
-					resultado.setCiudad(usuario.getCiudad());
-					resultado.setEmpresa(usuario.getEmpresa());
-					resultado.setEstado_Cuenta(usuario.getEstado_Cuenta());
-					resultado.setFecha_Creacion(usuario.getFecha_Creacion());
-					resultado.setIdentificador(usuario.getIdentificador());
-					resultado.setNombres(usuario.getNombres());
-					resultado.setPais(usuario.getPais());
-					resultado.setTelefono(usuario.getTelefono());
-					resultado
-							.setTelefono_Celular(usuario.getTelefono_Celular());
-					resultado.setTipo(usuario.getTipo());
-
-					lista.add(resultado);
-				}
-				return lista;
-			} else {
-				return null;
-			}
-		} else {
-			return null;
-		}
-	}
-
 	@Override
 	public List<UsuarioAdministradorBO> listarUsuariosAdministradores() {
 		String query = "SELECT DISTINCT(u) FROM Usuario u WHERE u.tipo =:tipoU";
@@ -438,13 +352,13 @@ public class GestionClientes implements IGestionClientes {
 					resultado.setCorreo_Electronico(usuario
 							.getCorreo_Electronico());
 					resultado.setIdentificador(usuario.getIdentificador());
+					resultado.setCedula(usuario.getCedula());
 					resultado.setNombres(usuario.getNombres());
 					resultado.setCargo(usuario.getCargo());
 					resultado.setCiudad(usuario.getCiudad());
 					resultado.setEmpresa(usuario.getEmpresa());
 					resultado.setEstado_Cuenta(usuario.getEstado_Cuenta());
 					resultado.setFecha_Creacion(usuario.getFecha_Creacion());
-					resultado.setIdentificador(usuario.getIdentificador());
 					resultado.setNombres(usuario.getNombres());
 					resultado.setPais(usuario.getPais());
 					resultado.setTelefono(usuario.getTelefono());

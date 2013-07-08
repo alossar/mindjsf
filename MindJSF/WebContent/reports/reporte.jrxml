@@ -101,7 +101,7 @@
 				<imageExpression><![CDATA["https://dl.dropboxusercontent.com/u/61881861/logo.png"]]></imageExpression>
 			</image>
 			<image>
-				<reportElement uuid="31f43b56-02f4-432a-b805-44695a2289a3" x="498" y="20" width="38" height="27">
+				<reportElement uuid="31f43b56-02f4-432a-b805-44695a2289a3" x="498" y="12" width="38" height="27">
 					<property name="local_mesure_unitwidth" value="pixel"/>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 					<property name="local_mesure_unitheight" value="pixel"/>

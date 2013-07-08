@@ -7,25 +7,23 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import co.mind.management.shared.dto.EvaluadoBO;
-import co.mind.management.shared.dto.ProcesoUsuarioBO;
-import co.mind.management.shared.dto.ProcesoUsuarioHasPruebaUsuarioBO;
 import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsoBO;
 import co.mind.management.shared.dto.UsuarioAdministradorBO;
 import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.persistencia.GestionClientes;
-import co.mind.management.shared.persistencia.GestionProcesos;
 import co.mind.management.shared.persistencia.GestionPruebas;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
@@ -45,8 +43,6 @@ public class ClientesController implements Serializable {
 	private List<UsuarioAdministradorBO> clientesTemp;
 	private UsuarioAdministradorBO cliente;
 	private String parametroBusqueda;
-	private boolean mostrarMensajeFeedBack;
-	private String mensajeFeedBack;
 
 	private boolean continuar = true;
 
@@ -140,13 +136,13 @@ public class ClientesController implements Serializable {
 
 	public String crearCliente() {
 		UsuarioAdministradorBO cli = new UsuarioAdministradorBO();
-		cli.setIdentificador(idClienteCrear);
+		cli.setCedula(idClienteCrear);
 		cli.setNombres(nombreClienteCrear);
 		cli.setApellidos(apellidosClienteCrear);
 		cli.setCargo(cargoClienteCrear);
 		cli.setEmpresa(empresaClienteCrear);
 		cli.setTelefono(telefonoClienteCrear);
-		cli.setCorreo_Electronico(correoClienteCrear);
+		cli.setCorreo_Electronico(correoClienteCrear.toLowerCase());
 		UsoBO us = new UsoBO();
 		us.setFechaAsignacion(new Date());
 		us.setUsosAsignados(usosClienteCrear);
@@ -156,6 +152,16 @@ public class ClientesController implements Serializable {
 		if (result == Convencion.CORRECTO) {
 			setClientes(gClientes.listarUsuariosAdministradores());
 			clientesTemp = clientes;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Cliente creado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN, "El cliente no se pudo crear.",
+					""));
 		}
 		return null;
 	}
@@ -180,6 +186,16 @@ public class ClientesController implements Serializable {
 		if (result == Convencion.CORRECTO) {
 			setClientes(gCLientes.listarUsuariosAdministradores());
 			clientesTemp = clientes;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Cliente editado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El cliente no se pudo editar.", ""));
 		}
 		return null;
 	}
@@ -195,6 +211,16 @@ public class ClientesController implements Serializable {
 		if (result == Convencion.CORRECTO) {
 			setClientes(gClientes.listarUsuariosAdministradores());
 			clientesTemp = clientes;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Cliente desactivado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El cliente no se pudo desactivar.", ""));
 		}
 		return null;
 	}
@@ -210,6 +236,16 @@ public class ClientesController implements Serializable {
 		if (result == Convencion.CORRECTO) {
 			setClientes(gClientes.listarUsuariosAdministradores());
 			clientesTemp = clientes;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Cliente activado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El cliente no se pudo activar.", ""));
 		}
 		return null;
 	}
@@ -224,6 +260,16 @@ public class ClientesController implements Serializable {
 		if (result == Convencion.CORRECTO) {
 			setClientes(gCLientes.listarUsuariosAdministradores());
 			clientesTemp = clientes;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Cliente eliminado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El cliente no se pudo eliminar.", ""));
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("clienteEliminar");
@@ -315,6 +361,11 @@ public class ClientesController implements Serializable {
 					((UsuarioAdministradorBO) ((HttpServletRequest) request)
 							.getSession().getAttribute("clienteAgregarPruebas"))
 							.getIdentificador(), prueba);
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Pruebas agregadas.", ""));
+
 		}
 		return null;
 	}

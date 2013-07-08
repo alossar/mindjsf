@@ -45,6 +45,7 @@ public class GestionUsuariosProgramadores implements
 			u.setCorreo_Electronico(usuarioAdministrador
 					.getCorreo_Electronico());
 			u.setIdentificador(usuarioAdministrador.getIdentificador());
+			u.setCedula(usuarioAdministrador.getCedula());
 			u.setNombres(usuarioAdministrador.getNombres());
 			u.setCargo(usuarioAdministrador.getCargo());
 			u.setCiudad(usuarioAdministrador.getCiudad());
@@ -90,6 +91,7 @@ public class GestionUsuariosProgramadores implements
 			u.setCorreo_Electronico(usuarioAdministrador
 					.getCorreo_Electronico());
 			u.setIdentificador(usuarioAdministrador.getIdentificador());
+			u.setCedula(usuarioAdministrador.getCedula());
 			u.setNombres(usuarioAdministrador.getNombres());
 			u.setCargo(usuarioAdministrador.getCargo());
 			u.setCiudad(usuarioAdministrador.getCiudad());
@@ -127,6 +129,7 @@ public class GestionUsuariosProgramadores implements
 			resultado.setApellidos(usuario.getApellidos());
 			resultado.setCorreo_Electronico(usuario.getCorreo_Electronico());
 			resultado.setIdentificador(usuario.getIdentificador());
+			resultado.setCedula(usuario.getCedula());
 			resultado.setNombres(usuario.getNombres());
 			resultado.setCargo(usuario.getCargo());
 			resultado.setCiudad(usuario.getCiudad());
@@ -196,6 +199,7 @@ public class GestionUsuariosProgramadores implements
 						resultado.setCorreo_Electronico(l
 								.getCorreo_Electronico());
 						resultado.setIdentificador(l.getIdentificador());
+						resultado.setCedula(l.getCedula());
 						resultado.setNombres(l.getNombres());
 						resultado.setCargo(l.getCargo());
 						resultado.setCiudad(l.getCiudad());

@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
@@ -17,12 +18,13 @@ body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
+
+.ui-growl {
+	left: 20px;
+	top: 50px;
+	height: 60;
+}
 </style>
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
-    <![endif]-->
 	<title>Clientes - Mind Management</title>
 </h:head>
 <body>
@@ -93,7 +95,8 @@ body {
 		<div class="container-fluid">
 
 			<div class="row">
-
+				<p:growl id="growl" showDetail="true" style="z-index:999;"
+					life="2500"></p:growl>
 				<h:form id="formsearch" styleClass="form-search pull-right"
 					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
@@ -120,7 +123,7 @@ body {
 							<f:facet name="header">
 								<h:outputText value="Cédula"></h:outputText>
 							</f:facet>
-							<h:outputText value="#{cliente.identificador }">
+							<h:outputText value="#{cliente.cedula }">
 							</h:outputText>
 
 						</h:column> <h:column>
@@ -205,7 +208,7 @@ body {
 
 			<div id="myModalCrearCliente" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 490px;">
+				style="width: 450px; left: 35%; margin-left: auto; margin-right: auto; height: 640px; margin-top: -50px;">
 				<div class="modal-header" style="height: 50px;">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
@@ -214,62 +217,63 @@ body {
 					</h3>
 				</div>
 				<h:form>
-					<div id="contenedorBotonesCrearPrueba">
-						<div style="margin-top: 4px;">
-							<p>Cedula</p>
+					<div id="contenedorBotonesCrearPrueba"
+						style="margin-left: 115px; margin-top: 15px;">
+						<div style="margin-top: 4px; margin-left: -8px;">
+							<p style="margin-bottom: -2px;">Cedula</p>
 							<h:inputText id="inputCrearEvaluado3"
 								value="#{clientesController.idClienteCrear}" required="true">
 								<f:validateLength maximum="10"></f:validateLength>
 								<f:convertNumber integerOnly="true" />
 							</h:inputText>
 						</div>
-						<div>
-							<p>Nombre</p>
+						<div style="margin-left: -8px;">
+							<p style="margin-bottom: -2px;">Nombre</p>
 							<h:inputText id="inputCrearEvaluado0" required="true"
 								value="#{clientesController.nombreClienteCrear}"
-								style="margin-left:-8px;">
+								style="margin-left:-1px;">
 								<f:validateLength maximum="30"></f:validateLength>
 							</h:inputText>
 						</div>
-						<div style="margin-top: 4px;">
-							<p>Apellido</p>
+						<div style="margin-top: 4px; margin-left: -8px;">
+							<p style="margin-bottom: -2px;">Apellido</p>
 							<h:inputText required="true" id="inputCrearEvaluado"
 								value="#{clientesController.apellidosClienteCrear}"
-								style="margin-left:-8px;">
+								style="margin-left:-1px;">
 								<f:validateLength maximum="30"></f:validateLength>
 							</h:inputText>
 						</div>
-						<div style="margin-top: 4px;">
-							<p>Correo</p>
+						<div style="margin-top: 4px; margin-left: -8px;">
+							<p style="margin-bottom: -1px;">Correo</p>
 							<h:inputText id="inputCrearEvaluado2"
 								value="#{clientesController.correoClienteCrear}">
 								<f:validateRegex
 									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 							</h:inputText>
 						</div>
-						<div style="margin-top: 4px;">
-							<p>Empresa</p>
+						<div style="margin-top: 4px; margin-left: -8px;">
+							<p style="margin-bottom: -1px;">Empresa</p>
 							<h:inputText id="inputCrearEvaluado5"
 								value="#{clientesController.empresaClienteCrear}">
 								<f:validateLength maximum="20"></f:validateLength>
 							</h:inputText>
 						</div>
-						<div style="margin-top: 4px;">
-							<p>Cargo</p>
+						<div style="margin-top: 4px; margin-left: -8px;">
+							<p style="margin-bottom: -1px;">Cargo</p>
 							<h:inputText id="inputCrearEvaluado6"
 								value="#{clientesController.cargoClienteCrear}">
 								<f:validateLength maximum="45"></f:validateLength>
 							</h:inputText>
 						</div>
-						<div style="margin-top: 4px;">
-							<p>Telefono</p>
+						<div style="margin-top: 4px; margin-left: -8px;">
+							<p style="margin-bottom: -1px;">Telefono</p>
 							<h:inputText id="inputCrearEvaluado7"
 								value="#{clientesController.telefonoClienteCrear}">
 								<f:validateLength maximum="10"></f:validateLength>
 							</h:inputText>
 						</div>
-						<div style="margin-top: 4px;">
-							<p>Usos</p>
+						<div style="margin-top: 4px; margin-left: -8px;">
+							<p style="margin-bottom: -1px;">Usos</p>
 							<h:inputText id="inputCrearEvaluado8"
 								value="#{clientesController.usosClienteCrear}" required="true">
 								<f:validateLength maximum="10"></f:validateLength>
@@ -277,6 +281,8 @@ body {
 							</h:inputText>
 						</div>
 						<h:commandButton styleClass="btn btn-primary"
+							style="margin-left:65px; width:100px; 
+						height:45px; padding-top:5px; margin-top:5px;"
 							action="#{clientesController.crearCliente}" id="botCrearEvaluado"
 							value="Crear"></h:commandButton>
 

@@ -4,7 +4,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
@@ -17,12 +18,13 @@ body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
+
+.ui-growl {
+	left: 20px;
+	top: 50px;
+	height: 60;
+}
 </style>
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
-    <![endif]-->
 	<title>Proceso de Evaluación - Mind Management</title>
 </h:head>
 <body>
@@ -93,6 +95,8 @@ body {
 		</div>
 
 		<div class="container-fluid">
+			<p:growl id="growl" showDetail="true" style="z-index:999;"
+				life="2500"></p:growl>
 			<div class="container contenedorProcesos">
 
 				<h:form>
@@ -199,7 +203,8 @@ body {
 											role="button"></i>
 										</a> <a class="btn btn-info btn-small  pull-right"
 											data-toggle="modal" href="#myModalCrearEvaluado"
-											title="Crear un evaluado nuevo" style="height: 20px;"> <i
+											title="Crear un evaluado nuevo"
+											style="height: 20px; margin-right: 5px;"> <i
 											class="icon-plus icon-white" style="margin-top: 3px;"
 											role="button"></i>
 										</a>
@@ -217,12 +222,16 @@ body {
 											title="Agregar pruebas" style="height: 20px;"> <i
 											class="icon-plus icon-white" style="margin-top: 3px;"
 											role="button"></i>
-										</a><a class="btn btn-info btn-small  pull-right"
-											data-toggle="modal" href="#myModalCrearPrueba"
-											title="Crear una prueba nueva" style="height: 20px;"> <i
-											class="icon-plus icon-white" style="margin-top: 3px;"
-											role="button"></i>
 										</a>
+										<h:panelGroup rendered="#{autorizacionController.cliente}">
+											<a class="btn btn-info btn-small  pull-right"
+												data-toggle="modal" href="#myModalCrearPrueba"
+												title="Crear una prueba nueva"
+												style="height: 20px; margin-right: 5px;"> <i
+												class="icon-plus icon-white" style="margin-top: 3px;"
+												role="button"></i>
+											</a>
+										</h:panelGroup>
 									</div>
 
 								</div>
@@ -425,7 +434,7 @@ body {
 						<img src="img/logoPruebasCrear.png" />Agregar Prueba
 					</h3>
 				</div>
-				<div id="contenedorBotonesAgregarPrueba">
+				<div id="contenedorBotonesAgregarPrueba" style="margin-left: 120px;">
 					<p>Pruebas</p>
 					<h:form>
 						<h:selectManyListbox converter="javax.faces.Integer"
@@ -437,6 +446,8 @@ body {
 						</h:selectManyListbox>
 
 						<h:commandLink styleClass="btn btn-primary" value="Agregar"
+							style="width:75px; 
+						height:30px; padding-top:12px; margin-left:60px; margin-top:10px;"
 							action="#{procesoEspecificoController.agregarPruebasAProceso}">
 						</h:commandLink>
 					</h:form>
@@ -445,7 +456,7 @@ body {
 
 			<div id="myModalCrearPrueba" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 330px;">
+				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 420px;">
 				<div class="modal-header" style="height: 50px;">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
@@ -453,10 +464,10 @@ body {
 						<img src="img/logoPruebasCrear.png" />Crear Prueba
 					</h3>
 				</div>
-				<div id="contenedorBotonesCrearPrueba">
+				<div id="contenedorBotonesCrearPrueba" style="margin-left: 115px;">
 					<h:form>
 						<div>
-							<p style="margin-left: 29px;">Nombre</p>
+							<p>Nombre</p>
 							<h:inputText required="true" id="inputCrearPrueba"
 								value="#{procesoEspecificoController.nombrePruebaCrear }"></h:inputText>
 						</div>
@@ -468,6 +479,7 @@ body {
 
 						<h:commandLink styleClass="btn btn-primary" id="botCrearPrueba"
 							value="Crear"
+							style="margin-left:65px; margin-top:10px; height:30px; width:70px; padding-top:17px;"
 							action="#{procesoEspecificoController.crearPruebaEnProceso}">
 						</h:commandLink>
 					</h:form>
@@ -477,7 +489,7 @@ body {
 			<div id="myModalAgregarEvaluado" class="modal hide fade"
 				tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 				aria-hidden="true"
-				style="width: 30%; left: 35%; margin-left: auto; margin-right: auto; height: 380px;">
+				style="width: 450px; left: 35%; margin-left: auto; margin-right: auto; height: 380px;">
 				<div class="modal-header" style="height: 50px;">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
@@ -485,7 +497,7 @@ body {
 						<img src="img/logoPruebasCrear.png" />Agregar Evaluado
 					</h3>
 				</div>
-				<div id="contenedorBotonesAgregarPrueba">
+				<div id="contenedorBotonesAgregarPrueba" style="margin-left: 110px;">
 					<p>Evaluados</p>
 					<h:form>
 						<h:selectManyListbox styleClass="span1"
@@ -498,6 +510,8 @@ body {
 								itemValue="#{e.identificador}" />
 						</h:selectManyListbox>
 						<h:commandLink styleClass="btn btn-primary" value="Agregar"
+							style="margin-left:70px; 
+						width:70px; height:30px; padding-top:13px; margin-top:10px;"
 							action="#{procesoEspecificoController.agregarEvaluadosAProceso}">
 						</h:commandLink>
 					</h:form>
@@ -506,7 +520,7 @@ body {
 
 			<div id="myModalCrearEvaluado" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 370px;">
+				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 470px;">
 				<div class="modal-header" style="height: 50px;">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
@@ -514,7 +528,7 @@ body {
 						<img src="img/logoPruebasCrear.png" />Crear Evluado
 					</h3>
 				</div>
-				<div id="contenedorBotonesCrearPrueba">
+				<div id="contenedorBotonesCrearPrueba" style="margin-left: 117px;">
 					<h:form>
 						<div style="margin-top: 4px;">
 							<p>Cedula</p>
@@ -528,14 +542,14 @@ body {
 							<p>Nombre</p>
 							<h:inputText id="inputCrearEvaluado0" required="true"
 								value="#{procesoEspecificoController.nombreEvaluadoCrear}">
-								<f:validateLength maximum="10"></f:validateLength>
+								<f:validateLength maximum="30"></f:validateLength>
 							</h:inputText>
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Apellido</p>
 							<h:inputText required="true" id="inputCrearEvaluado"
 								value="#{procesoEspecificoController.apellidoEvaluadoCrear}">
-								<f:validateLength maximum="10"></f:validateLength>
+								<f:validateLength maximum="30"></f:validateLength>
 							</h:inputText>
 						</div>
 						<div style="margin-top: 4px;">
@@ -548,6 +562,8 @@ body {
 						</div>
 						<h:commandLink styleClass="btn btn-primary" id="botCrearEvaluado"
 							value="Crear" onclick="closeDialog ();"
+							style="width:70px; height:30px; 
+							margin-left:70px; padding-top:13px; margin-top:10px;"
 							action="#{procesoEspecificoController.crearEvaluadoEnProceso}">
 						</h:commandLink>
 					</h:form>

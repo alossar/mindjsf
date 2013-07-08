@@ -7,10 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -63,8 +66,6 @@ public class ProcesosController implements Serializable {
 			setNombreUsuario(usuario.getNombres() + " "
 					+ usuario.getApellidos());
 			procesosTemp = procesos;
-			setMensajeFeedBack("Proceso creado");
-			System.out.println("Cantidad de procesos" + procesos.size());
 		}
 	}
 
@@ -114,18 +115,28 @@ public class ProcesosController implements Serializable {
 			setDescripcionProcesoCrear("");
 			setProcesos(gProcesos.listarProcesoUsuarioAdministrador(usuario
 					.getIdentificador()));
+			procesosTemp = procesos;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Proceso creado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN, "El proceso no se pudo crear.",
+					""));
 		}
 	}
 
 	public void duplicarProceso(ActionEvent event) {
-		System.out.println("Duplicando...");
 		GestionProcesos gProcesos = new GestionProcesos();
 		HttpServletRequest request = MindHelper.obtenerRequest();
 		ProcesoUsuarioBO procesoADuplicar = gProcesos
 				.consultarProcesoUsuarioAdministrador(usuario
 						.getIdentificador(),
 						((ProcesoUsuarioBO) ((HttpServletRequest) request)
-								.getSession().getAttribute("pruebaEliminar"))
+								.getSession().getAttribute("procesoDuplicar"))
 								.getIdentificador());
 		procesoADuplicar.setNombre(nombreProcesoDuplicar);
 		procesoADuplicar.setDescripcion(descripcionProcesoDuplicar);
@@ -135,6 +146,17 @@ public class ProcesosController implements Serializable {
 		if (result == Convencion.CORRECTO) {
 			setProcesos(gProcesos.listarProcesoUsuarioAdministrador(usuario
 					.getIdentificador()));
+			procesosTemp = procesos;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Proceso duplicado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El proceso no se pudo duplicar.", ""));
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("procesoDuplicar");
@@ -160,6 +182,17 @@ public class ProcesosController implements Serializable {
 		if (result == Convencion.CORRECTO) {
 			setProcesos(gProcesos.listarProcesoUsuarioAdministrador(usuario
 					.getIdentificador()));
+			procesosTemp = procesos;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Proceso editado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El proceso no se pudo editar.", ""));
 		}
 		return null;
 	}
@@ -175,6 +208,17 @@ public class ProcesosController implements Serializable {
 		if (result == Convencion.CORRECTO) {
 			setProcesos(gProcesos.listarProcesoUsuarioAdministrador(usuario
 					.getIdentificador()));
+			procesosTemp = procesos;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Proceso eliminado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El proceso no se pudo eliminar.", ""));
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("procesoEliminar");
@@ -214,14 +258,12 @@ public class ProcesosController implements Serializable {
 		HttpSession session = MindHelper.obtenerSesion();
 		session.setAttribute("procesoEliminar",
 				(ProcesoUsuarioBO) dataTable.getRowData());
-		System.out.println("Proceso seleccionado para eliminar");
 	}
 
 	public void seleccionarProcesoDuplicar(AjaxBehaviorEvent event) {
 		HttpSession session = MindHelper.obtenerSesion();
 		session.setAttribute("procesoDuplicar",
 				(ProcesoUsuarioBO) dataTable.getRowData());
-		System.out.println("Proceso seleccionado para duplicar");
 	}
 
 	public List<ProcesoUsuarioBO> getProcesos() {

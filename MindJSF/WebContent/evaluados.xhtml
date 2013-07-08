@@ -3,7 +3,8 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:h="http://java.sun.com/jsf/html">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta>
@@ -16,12 +17,13 @@ body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
+
+.ui-growl {
+	left: 20px;
+	top: 50px;
+	height: 60;
+}
 </style>
-	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-	<!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
-      <link rel="stylesheet" href="css/2mstyleIE8.css"></link>
-    <![endif]-->
 	<title>Evaluados - Mind Management</title>
 </h:head>
 <body>
@@ -92,7 +94,8 @@ body {
 		<div class="container-fluid">
 
 			<div class="row">
-
+				<p:growl id="growl" showDetail="true" style="z-index:999;"
+					life="2500"></p:growl>
 				<h:form id="formsearch" styleClass="form-search pull-right"
 					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
@@ -190,7 +193,7 @@ body {
 
 			<div id="myModalCrearEvaluado" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 370px;">
+				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 470px;">
 				<div class="modal-header" style="height: 50px;">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
@@ -199,7 +202,7 @@ body {
 					</h3>
 				</div>
 				<h:form>
-					<div id="contenedorBotonesCrearPrueba">
+					<div id="contenedorBotonesCrearPrueba" style="margin-left: 115px;">
 						<div>
 							<p>Nombre</p>
 							<h:inputText id="inputCrearEvaluado0" required="true"
@@ -233,7 +236,7 @@ body {
 							</h:inputText>
 						</div>
 						<h:commandButton styleClass="btn btn-primary"
-							id="botCrearEvaluado" value="Crear"
+							id="botCrearEvaluado" value="Crear" style="margin-left:66px;"
 							action="#{evaluadosController.crearEvaluado }"></h:commandButton>
 					</div>
 				</h:form>

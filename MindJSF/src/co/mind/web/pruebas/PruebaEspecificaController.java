@@ -5,9 +5,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -138,33 +141,60 @@ public class PruebaEspecificaController implements Serializable {
 		return "proceso";
 	}
 
-	public void mostrarInformacionPregunta(
-			javax.faces.event.AjaxBehaviorEvent event) {
+	public void mostrarInformacionPregunta(AjaxBehaviorEvent event) {
 		pregunta = (PreguntaUsuarioBO) event.getComponent().getAttributes()
 				.get("pregunta");
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
+				"Pregunta seleccionada.", ""));
+
 	}
 
-	public void actualizarImagenModal(javax.faces.event.AjaxBehaviorEvent event) {
+	public void actualizarImagenModal(AjaxBehaviorEvent event) {
 		setImagen((ImagenUsuarioBO) event.getComponent().getAttributes()
 				.get("imagen"));
+		setPreguntaCrear(preguntaCrear);
+		setCaracteresCrear(caracteresCrear);
+		setTiempoCrear(tiempoCrear);
 	}
 
-	public String crearPregunta() {
-		PreguntaUsuarioBO pr = new PreguntaUsuarioBO();
-		pr.setCaracteresMaximo(caracteresCrear);
-		pr.setTiempoMaximo(tiempoCrear);
-		pr.setPregunta(preguntaCrear);
-		pr.setImagenesUsuarioID(imagen);
-		pr.setPruebaUsuario(prueba);
-		GestionPreguntas gPreguntas = new GestionPreguntas();
-		int result = gPreguntas.agregarPreguntaUsuarioAdministrador(
-				usuario.getIdentificador(), pr, prueba);
-		if (result == Convencion.CORRECTO) {
-			GestionPruebas gPruebas = new GestionPruebas();
-			setPreguntas(gPruebas.listarPreguntasPrueba(
-					usuario.getIdentificador(), prueba.getIdentificador()));
+	public void crearPregunta(ActionEvent event) {
+		if (tiempoCrear != 0 && caracteresCrear != 0) {
+			PreguntaUsuarioBO pr = new PreguntaUsuarioBO();
+			pr.setCaracteresMaximo(caracteresCrear);
+			pr.setTiempoMaximo(tiempoCrear);
+			pr.setPregunta(preguntaCrear);
+			pr.setImagenesUsuarioID(imagen);
+			pr.setPruebaUsuario(prueba);
+			pr.setPosicionPreguntaX(50);
+			pr.setPosicionPreguntaY(50);
+			GestionPreguntas gPreguntas = new GestionPreguntas();
+			int result = gPreguntas.agregarPreguntaUsuarioAdministrador(
+					usuario.getIdentificador(), pr, prueba);
+			if (result == Convencion.CORRECTO) {
+				GestionPruebas gPruebas = new GestionPruebas();
+				setPreguntas(gPruebas.listarPreguntasPrueba(
+						usuario.getIdentificador(), prueba.getIdentificador()));
+
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_INFO, "Pregunta creada.", ""));
+			} else {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_WARN,
+						"La pregunta no se pudo crear.", ""));
+			}
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La pregunta no se pudo crear.",
+					"El tiempo o la cantidad de caracteres no pueden ser 0."));
 		}
-		return null;
 	}
 
 	public void eliminarPregunta(ActionEvent event) {
@@ -176,6 +206,15 @@ public class PruebaEspecificaController implements Serializable {
 			setPreguntas(gPruebas.listarPreguntasPrueba(
 					usuario.getIdentificador(), prueba.getIdentificador()));
 			pregunta = null;
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Pregunta eliminada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La pregunta no se pudo eliminar.", ""));
 		}
 	}
 
@@ -187,6 +226,15 @@ public class PruebaEspecificaController implements Serializable {
 			GestionPruebas gPruebas = new GestionPruebas();
 			setPreguntas(gPruebas.listarPreguntasPrueba(
 					usuario.getIdentificador(), prueba.getIdentificador()));
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Pregunta editada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La pregunta no se pudo editar.", ""));
 		}
 	}
 

@@ -1,6 +1,7 @@
 package co.mind.web.login;
 
 import java.io.IOException;
+import java.util.Date;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,10 @@ import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
 import co.mind.management.shared.recursos.SMTPSender;
 
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+
 public class LoginController {
 
 	private String correo;
@@ -24,10 +29,14 @@ public class LoginController {
 
 	private GestionAccesos gestionAccesos = new GestionAccesos();
 
+	static Logger logger = Logger.getLogger(LoginController.class.getName());
+
 	public String autenticar() {
 		Object user = gestionAccesos.verificarTipoUsuario(correo, pass);
 		if (user != null) {
-
+			logger.info((new Date()).toString() + ". El usuario "
+					+ ((UsuarioBO) user).getNombres() + " "
+					+ ((UsuarioBO) user).getApellidos() + " se autenticó.");
 			String sid = MindHelper.obtenerSesion().getId();
 			((UsuarioBO) user).setSesionID(sid);
 			guardarUsuarioEnSesion((UsuarioBO) user);

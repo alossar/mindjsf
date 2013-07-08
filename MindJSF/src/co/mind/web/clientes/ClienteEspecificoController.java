@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
@@ -58,21 +59,31 @@ public class ClienteEspecificoController implements Serializable {
 			setNombreUsuario(usuario.getNombres() + " "
 					+ usuario.getApellidos());
 			cliente = obtenerClienteDeSesion();
-			setNombreCliente(cliente.getNombres() + " "
-					+ cliente.getApellidos());
-			GestionUsos gUsos = new GestionUsos();
-			setUsos(gUsos.listarUsos(cliente.getIdentificador()));
-			Date fecha = new Date();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(fecha);
-			setParametroFechaFinal((cal.get(Calendar.MONTH) + 1) + "/"
-					+ cal.get(Calendar.DAY_OF_MONTH) + "/"
-					+ cal.get(Calendar.YEAR));
-			setParametroFechaInicial((cal.get(Calendar.MONTH) + 1) + "/" + 1
-					+ "/" + cal.get(Calendar.YEAR));
-			fechaFinal = fecha;
-			cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 1);
-			fechaInicial = cal.getTime();
+			if (cliente != null) {
+				setNombreCliente(cliente.getNombres() + " "
+						+ cliente.getApellidos());
+				GestionUsos gUsos = new GestionUsos();
+				setUsos(gUsos.listarUsos(cliente.getIdentificador()));
+				Date fecha = new Date();
+				Calendar cal = Calendar.getInstance();
+				cal.setTime(fecha);
+				setParametroFechaFinal((cal.get(Calendar.MONTH) + 1) + "/"
+						+ cal.get(Calendar.DAY_OF_MONTH) + "/"
+						+ cal.get(Calendar.YEAR));
+				setParametroFechaInicial((cal.get(Calendar.MONTH) + 1) + "/"
+						+ 1 + "/" + cal.get(Calendar.YEAR));
+				fechaFinal = fecha;
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), 1);
+				fechaInicial = cal.getTime();
+			} else {
+				HttpServletResponse response = MindHelper.obtenerResponse();
+				try {
+					response.sendRedirect("clientes.do");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 
@@ -117,7 +128,6 @@ public class ClienteEspecificoController implements Serializable {
 	}
 
 	public String agregarUsos() {
-		System.out.print("agregando usos...");
 		UsoBO uso = new UsoBO();
 		uso.setFechaAsignacion(new Date());
 		uso.setUsosAsignados(cantidadUsos);
@@ -125,10 +135,17 @@ public class ClienteEspecificoController implements Serializable {
 		GestionUsos gUsos = new GestionUsos();
 		int result = gUsos.agregarUso(cliente.getIdentificador(), uso);
 		if (result == Convencion.CORRECTO) {
-			System.out.println("EXITO");
 			setUsos(gUsos.listarUsos(cliente.getIdentificador()));
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Usos asignados.", ""));
 		} else {
-			System.out.println("FRACASo");
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"Los usos no se pudieron asignar.", ""));
 		}
 		return null;
 	}

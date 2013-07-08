@@ -5,10 +5,12 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -121,37 +123,104 @@ public class CuentaController implements Serializable {
 		if (permiso
 				.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_ADMINISTRADOR)) {
 			GestionClientes gClientes = new GestionClientes();
-			gClientes
+			int result = gClientes
 					.editarUsuarioAdministrador((UsuarioAdministradorBO) usuario);
+			if (result == Convencion.CORRECTO) {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_INFO,
+						"Información modificada correctamente.", ""));
+			} else {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_WARN,
+						"La información no se pudo modificar.", ""));
+			}
 		} else if (permiso
 				.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_PROGRAMADOR)) {
 			GestionUsuariosProgramadores gProgramadores = new GestionUsuariosProgramadores();
-			gProgramadores.editarUsuarioProgramador(usuario.getIdentificador(),
-					(UsuarioProgramadorBO) usuario);
+			int result = gProgramadores.editarUsuarioProgramador(
+					usuario.getIdentificador(), (UsuarioProgramadorBO) usuario);
+			if (result == Convencion.CORRECTO) {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_INFO,
+						"Información modificada correctamente.", ""));
+			} else {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_WARN,
+						"La información no se pudo modificar.", ""));
+			}
 
 		} else if (permiso
 				.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_MAESTRO)) {
 			GestionClientes gClientes = new GestionClientes();
-			gClientes.editarUsuarioAdministrador(usuario);
+			int result = gClientes.editarUsuarioAdministrador(usuario);
+			if (result == Convencion.CORRECTO) {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_INFO,
+						"Información modificada correctamente.", ""));
+			} else {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_WARN,
+						"La información no se pudo modificar.", ""));
+			}
 		}
 		return null;
 	}
 
 	public String cambiarContrasena() {
 		GestionAccesos gAccesos = new GestionAccesos();
-		System.out.print("Validando usuario...");
 		Object user = gAccesos.verificarTipoUsuario(
 				usuario.getCorreo_Electronico(), passActual);
 		if (user != null && passNueva.equalsIgnoreCase(passNuevaRepetir)) {
-			System.out.print("Uusuario validado. Cambiando Contraseña...");
 			GestionClientes gClientes = new GestionClientes();
-			gClientes.cambiarContrasena(usuario, passNueva);
+			int result = gClientes.cambiarContrasena(usuario, passNueva);
+			// Mensaje para el feedback
+			if (result == Convencion.CORRECTO) {
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_INFO,
+						"Contraseña modificada correctamente.", ""));
+			} else {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_WARN,
+						"La contraseña no se pudo modificar.", ""));
+			}
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La contraseña no se pudo modificar.", ""));
 		}
 		return null;
 	}
 
 	public void enviarCorreo(ActionEvent event) {
-		SMTPSender.enviarMensajeAMaestro(usuario, mensajeCorreo);
+		int result = SMTPSender.enviarMensajeAMaestro(usuario, mensajeCorreo);
+		if (result == Convencion.CORRECTO) {
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Mensaje enviado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El mensaje no pudo ser enviado.", ""));
+		}
 	}
 
 	public String getNombreUsuario() {

@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.context.FacesContext;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -102,7 +104,7 @@ public class EvaluadosController implements Serializable {
 		eva.setApellidos(apellidoEvaluadoCrear);
 		eva.setCedula(cedulaEvaluadoCrear);
 		eva.setNombres(nombreEvaluadoCrear);
-		eva.setCorreoElectronico(correoEvaluadoCrear);
+		eva.setCorreoElectronico(correoEvaluadoCrear.toLowerCase());
 		eva.setIdentificadorUsuarioAdministrador(usuario.getIdentificador());
 		GestionEvaluados gEvaluados = new GestionEvaluados();
 		int result = gEvaluados.agregarUsuarioBasico(
@@ -111,6 +113,16 @@ public class EvaluadosController implements Serializable {
 			setEvaluados(gEvaluados.listarUsuariosBasicos(usuario
 					.getIdentificador()));
 			evaluadosTemp = evaluados;
+
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Evaluado creado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El evaluado no se pudo crear.", ""));
 		}
 		return null;
 	}
@@ -140,6 +152,16 @@ public class EvaluadosController implements Serializable {
 			setEvaluados(gEvaluados.listarUsuariosBasicos(usuario
 					.getIdentificador()));
 			evaluadosTemp = evaluados;
+
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Evaluado editado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El evaluado no se pudo editar.", ""));
 		}
 		return null;
 	}
@@ -163,6 +185,16 @@ public class EvaluadosController implements Serializable {
 			setEvaluados(gEvaluados.listarUsuariosBasicos(usuario
 					.getIdentificador()));
 			evaluadosTemp = evaluados;
+
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Evaluado eliminado.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"El evaluado no se pudo eliminar.", ""));
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("evaluadoEliminar");

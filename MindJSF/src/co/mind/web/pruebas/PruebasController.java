@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
@@ -117,7 +119,7 @@ public class PruebasController implements Serializable {
 		}
 	}
 
-	public String crearPrueba() {
+	public void crearPrueba(ActionEvent event) {
 		PruebaUsuarioBO pru = new PruebaUsuarioBO();
 		pru.setDescripcion(descripcionPruebaCrear);
 		pru.setNombre(nombrePruebaCrear);
@@ -129,8 +131,17 @@ public class PruebasController implements Serializable {
 			setPruebas(gPruebas.listarPruebasUsuarioAdministrador(usuario
 					.getIdentificador()));
 			pruebasTemp = pruebas;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Prueba creada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN, "La prueba no se pudo crear.",
+					""));
 		}
-		return null;
 	}
 
 	public String editarPrueba() {
@@ -158,6 +169,16 @@ public class PruebasController implements Serializable {
 			setPruebas(gPruebas.listarPruebasUsuarioAdministrador(usuario
 					.getIdentificador()));
 			pruebasTemp = pruebas;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Prueba editada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN, "La prueba no se pudo crear.",
+					""));
 		}
 		return null;
 	}
@@ -180,6 +201,16 @@ public class PruebasController implements Serializable {
 			setPruebas(gPruebas.listarPruebasUsuarioAdministrador(usuario
 					.getIdentificador()));
 			pruebasTemp = pruebas;
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO, "Prueba eliminada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La prueba no se pudo eliminar.", ""));
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("pruebaEliminar");

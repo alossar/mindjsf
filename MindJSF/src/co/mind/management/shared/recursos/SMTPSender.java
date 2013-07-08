@@ -16,7 +16,8 @@ import co.mind.management.shared.dto.UsuarioBO;
 
 public class SMTPSender {
 
-	private static String urlEvaluacion = "http://mindm.jelastic.servint.net/MindEvaluacion";
+	private static String urlEvaluacion = "http://2mmind.jelastic.servint.net/MindEvaluacion";
+	private static String urlMind = "http://2mmindm.jelastic.servint.net/MindJSF";
 
 	public static int enviarCorreoParticipacionAProceso(
 			ParticipacionEnProcesoBO participacion, String empresa) {
@@ -101,7 +102,9 @@ public class SMTPSender {
 					+ contrasena
 					+ "</p></div>	<div id='mail'>	<p>Cantidad de Usos: </p><p id='pass' style=' color:rgb(17,170,209); font-style:italic;'>"
 					+ usos
-					+ "</p>	</div></div><a style='color:rgb(17,170,209);' href='http://mindm.jelastic.servint.net/Mind/'><div id='mailLink'><p style='font-family:Arial; font-size:14px; clear:both; text-align:center; color:rgb(17,170,209); cursor:pointer;'>Click Aqui para Ingresar</p></div></a><div id='mailFooter'><p style='height:37px; width:100%; margin-top:25px;  padding-top:15px; color:grey; text-align:center;  font-family:Arial; font-size:12px;'>www.mindmanagement.co</p></div></div></div><!--<div id='botonEntrarServicios'><p>Registrate</p></div>--></div><!-- Cierro Cont Total---></body></html> ";
+					+ "</p>	</div></div><a style='color:rgb(17,170,209);' href='"
+					+ urlMind
+					+ "'><div id='mailLink'><p style='font-family:Arial; font-size:14px; clear:both; text-align:center; color:rgb(17,170,209); cursor:pointer;'>Click Aqui para Ingresar</p></div></a><div id='mailFooter'><p style='height:37px; width:100%; margin-top:25px;  padding-top:15px; color:grey; text-align:center;  font-family:Arial; font-size:12px;'>www.mindmanagement.co</p></div></div></div><!--<div id='botonEntrarServicios'><p>Registrate</p></div>--></div><!-- Cierro Cont Total---></body></html> ";
 
 			message.setContent(i, "text/html");
 			Transport transport = session.getTransport("smtp");
@@ -147,7 +150,9 @@ public class SMTPSender {
 					+ "<div id='mail'>	<p>Contraseña: </p><p id='pass' style=' color:rgb(17,170,209); font-style:italic;'>"
 					+ pass
 					+ "</p></div>"
-					+ "</div><a style='color:rgb(17,170,209);' href='http://mindm.jelastic.servint.net/Mind/'><div id='mailLink'><p style='font-family:Arial; font-size:14px; clear:both; text-align:center; color:rgb(17,170,209); cursor:pointer;'>Click Aqui para Ingresar</p></div></a><div id='mailFooter'><p style='height:37px; width:100%; margin-top:25px;  padding-top:15px; color:grey; text-align:center;  font-family:Arial; font-size:12px;'>www.mindmanagement.co</p></div></div></div><!--<div id='botonEntrarServicios'><p>Registrate</p></div>--></div><!-- Cierro Cont Total---></body></html> ";
+					+ "</div><a style='color:rgb(17,170,209);' href='"
+					+ urlMind
+					+ "'><div id='mailLink'><p style='font-family:Arial; font-size:14px; clear:both; text-align:center; color:rgb(17,170,209); cursor:pointer;'>Click Aqui para Ingresar</p></div></a><div id='mailFooter'><p style='height:37px; width:100%; margin-top:25px;  padding-top:15px; color:grey; text-align:center;  font-family:Arial; font-size:12px;'>www.mindmanagement.co</p></div></div></div><!--<div id='botonEntrarServicios'><p>Registrate</p></div>--></div><!-- Cierro Cont Total---></body></html> ";
 
 			message.setContent(i, "text/html");
 			Transport transport = session.getTransport("smtp");
@@ -213,7 +218,9 @@ public class SMTPSender {
 					+ empresa
 					+ "</p></div>	<div id='mail'>	<p>Proceso: </p><p id='pass' style=' color:rgb(17,170,209); font-style:italic;'>"
 					+ proceso.getNombre()
-					+ "</p>	</div></div><a style='color:rgb(17,170,209);' href='http://mindm.jelastic.servint.net/Mind/'><div id='mailLink'><p style='font-family:Arial; font-size:14px; clear:both; text-align:center; color:rgb(17,170,209); cursor:pointer;'>Click Aqui para Ingresar</p></div></a><div id='mailFooter'><p style='height:37px; width:100%; margin-top:25px;  padding-top:15px; color:grey; text-align:center;  font-family:Arial; font-size:12px;'>www.mindmanagement.co</p></div></div></div><!--<div id='botonEntrarServicios'><p>Registrate</p></div>--></div><!-- Cierro Cont Total---></body></html> ";
+					+ "</p>	</div></div><a style='color:rgb(17,170,209);' href='"
+					+ urlMind
+					+ "'><div id='mailLink'><p style='font-family:Arial; font-size:14px; clear:both; text-align:center; color:rgb(17,170,209); cursor:pointer;'>Click Aqui para Ingresar</p></div></a><div id='mailFooter'><p style='height:37px; width:100%; margin-top:25px;  padding-top:15px; color:grey; text-align:center;  font-family:Arial; font-size:12px;'>www.mindmanagement.co</p></div></div></div><!--<div id='botonEntrarServicios'><p>Registrate</p></div>--></div><!-- Cierro Cont Total---></body></html> ";
 
 			message.setContent(i, "text/html");
 			Transport transport = session.getTransport("smtp");
@@ -253,17 +260,18 @@ public class SMTPSender {
 		String password = Convencion.CONTRASENA_NOTIFICACION;
 		Session session = obtenerSesion();
 		try {
-
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("no-reply@mindmanagement.co",
-					"Mind Management"));
-			message.setSubject("Proceso de Revisión");
 			String empresa = usuario.getEmpresa();
 			if (empresa == null) {
 				empresa = "";
 			} else {
 				empresa = " de " + empresa;
 			}
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("no-reply@mindmanagement.co",
+					"Mind Management"));
+			message.setSubject("Tiene un comentario de " + usuario.getNombres()
+					+ " " + usuario.getApellidos() + empresa);
+
 			String i = usuario.getNombres() + " " + usuario.getApellidos()
 					+ " " + empresa + " le envía el siguiente comentario. <p>"
 					+ mensajeCorreo + "</p><p>Su correo es: "
