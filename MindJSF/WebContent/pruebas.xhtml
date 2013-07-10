@@ -50,27 +50,24 @@ body {
 							<ul class="nav">
 								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink
-											action="#{indexController.irAProcesos }"
-											style="color:white; " value="Procesos"></h:commandLink></li>
+											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
-									<li><h:commandLink action="#{indexController.irAPruebas }"
-											value="Pruebas" style="color:white;"></h:commandLink></li>
+									<li class="active"><h:commandLink
+											action="#{indexController.irAPruebas }" value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink
-											action="#{indexController.irAEvaluados }" value="Evaluados"
-											style="color:white;"></h:commandLink></li>
+											action="#{indexController.irAEvaluados }" value="Evaluados"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
 									<li><h:commandLink
 											action="#{indexController.irAProgramadores }"
-											value="Programadores" style="color:white;"></h:commandLink></li>
+											value="Programadores"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.maestro }">
 									<li><h:commandLink
-											action="#{indexController.irAClientes }" value="Clientes"
-											style="color:white;"></h:commandLink></li>
+											action="#{indexController.irAClientes }" value="Clientes"></h:commandLink></li>
 								</h:panelGroup>
 							</ul>
 							<ul class="navbar-text pull-right">
@@ -96,7 +93,8 @@ body {
 		<!--Cierro Navegador-->
 		<div class="container-fluid">
 
-			<p:growl id="growl" showDetail="true" style="z-index:999;" life="2500"></p:growl>
+			<p:growl id="growl" showDetail="true" style="z-index:999;"
+				life="2500"></p:growl>
 
 			<div class="row">
 
@@ -109,7 +107,8 @@ body {
 						<i class="icon-search icon-white"></i>
 					</h:commandLink>
 					<a data-toggle="modal" class="btn btn-info "
-						href="#myModalCrearPrueba"> <i class="icon-plus icon-white"></i>
+						title="Crear una prueba." href="#myModalCrearPrueba"> <i
+						class="icon-plus icon-white"></i>
 					</a>
 				</h:form>
 			</div>
@@ -159,16 +158,18 @@ body {
 						</h:column> <h:column>
 							<h:commandLink styleClass="btn btn-info btn-small"
 								action="#{pruebasController.editarPrueba }"
-								rendered="#{not prueba.editar }" style="padding: 5;">
+								title="Editar prueba." rendered="#{not prueba.editar }"
+								style="padding: 5;">
 								<i class="icon-pencil icon-white"></i>
 							</h:commandLink>
 							<h:commandLink styleClass="btn btn-success btn-small"
 								action="#{pruebasController.guardarEditarPrueba }"
-								rendered="#{prueba.editar }" style="padding: 5;">
+								title="Guardar cambios." rendered="#{prueba.editar }"
+								style="padding: 5;">
 								<i class="icon-ok icon-white"></i>
 							</h:commandLink>&nbsp;
 							<h:commandLink styleClass="btn btn-danger btn-small "
-								onclick="$('#myModal').modal('show');"
+								onclick="$('#myModal').modal('show');" title="Eliminar prueba."
 								rendered="#{not prueba.editar }">
 								<f:ajax
 									listener="#{pruebasController.seleccionarPruebaEliminar }"></f:ajax>
@@ -176,7 +177,8 @@ body {
 							</h:commandLink>
 							<h:commandLink styleClass="btn btn-danger btn-small"
 								action="#{pruebasController.cancelarEditarPrueba }"
-								rendered="#{prueba.editar }" style="padding: 5;">
+								title="Cancelar." rendered="#{prueba.editar }"
+								style="padding: 5;">
 								<i class="icon-remove icon-white"></i>
 							</h:commandLink>
 

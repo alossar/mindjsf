@@ -48,28 +48,25 @@ body {
 
 							<ul class="nav">
 								<h:panelGroup rendered="#{autorizacionController.programador }">
-									<li><h:commandLink
-											action="#{indexController.irAProcesos }"
-											style="color:white; " value="Procesos"></h:commandLink></li>
+									<li class="active"><h:commandLink
+											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
-											value="Pruebas" style="color:white;"></h:commandLink></li>
+											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink
-											action="#{indexController.irAEvaluados }" value="Evaluados"
-											style="color:white;"></h:commandLink></li>
+											action="#{indexController.irAEvaluados }" value="Evaluados"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
 									<li><h:commandLink
 											action="#{indexController.irAProgramadores }"
-											value="Programadores" style="color:white;"></h:commandLink></li>
+											value="Programadores"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.maestro }">
 									<li><h:commandLink
-											action="#{indexController.irAClientes }" value="Clientes"
-											style="color:white;"></h:commandLink></li>
+											action="#{indexController.irAClientes }" value="Clientes"></h:commandLink></li>
 								</h:panelGroup>
 							</ul>
 							<ul class="navbar-text pull-right">
@@ -347,13 +344,26 @@ body {
 							<h:form target="_blank"
 								rendered="#{procesoEspecificoController.enResultados and not empty procesoEspecificoController.resultadosProcesoEspecifico }"
 								binding="#{procesoEspecificoController.tableFormResultados}">
+								<div id="navProceso">
+									<div id="buscarProceso">
+										<h:commandLink styleClass="btn btn-info btn-small pull-right"
+											title="Generar reporte en excel de los resultados seleccionados."
+											actionListener="#{procesoEspecificoController.reporteExcel}"
+											style="height: 20px; margin-right: 5px;">
+											<i class="icon-file icon-white"></i>
+										</h:commandLink>
+
+									</div>
+
+								</div>
 								<h:dataTable
 									styleClass="table table-hover table-condensed table-striped"
 									binding="#{procesoEspecificoController.dataTableResultados }"
 									value="#{procesoEspecificoController.resultadosProcesoEspecifico }"
 									var="resultado">
 									<small><h:column>
-											<h:selectBooleanCheckbox></h:selectBooleanCheckbox>
+											<h:selectBooleanCheckbox
+												value="#{procesoEspecificoController.resultadosReporte[resultado.identificador]}"></h:selectBooleanCheckbox>
 										</h:column> <h:column>
 											<f:facet name="header">
 												<h:outputText value="Cédula"></h:outputText>

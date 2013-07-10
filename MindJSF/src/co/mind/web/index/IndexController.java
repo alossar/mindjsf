@@ -1,6 +1,5 @@
 package co.mind.web.index;
 
-import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -14,70 +13,51 @@ public class IndexController {
 		HttpSession session = httpServletRequest.getSession();
 		session.removeAttribute(Convencion.CLAVE_USUARIO);
 		session.removeAttribute("permiso");
+		eliminarAtributos();
 		return "index";
 	}
 
 	public String irAIndex() {
-		MindHelper.obtenerSesion().removeAttribute("proceso");
-		MindHelper.obtenerSesion().removeAttribute("prueba");
-		MindHelper.obtenerSesion().removeAttribute("programador");
-		MindHelper.obtenerSesion().removeAttribute("evaluado");
-		MindHelper.obtenerSesion().removeAttribute("cliente");
+		eliminarAtributos();
 		return "index";
 	}
 
 	public String irACuenta() {
-		MindHelper.obtenerSesion().removeAttribute("proceso");
-		MindHelper.obtenerSesion().removeAttribute("prueba");
-		MindHelper.obtenerSesion().removeAttribute("programador");
-		MindHelper.obtenerSesion().removeAttribute("evaluado");
-		MindHelper.obtenerSesion().removeAttribute("cliente");
+		eliminarAtributos();
 		return "cuenta";
 	}
 
 	public String irAProcesos() {
-		MindHelper.obtenerSesion().removeAttribute("proceso");
-		MindHelper.obtenerSesion().removeAttribute("prueba");
-		MindHelper.obtenerSesion().removeAttribute("programador");
-		MindHelper.obtenerSesion().removeAttribute("evaluado");
-		MindHelper.obtenerSesion().removeAttribute("cliente");
+		eliminarAtributos();
 		return "procesos";
 	}
 
 	public String irAPruebas() {
-		MindHelper.obtenerSesion().removeAttribute("proceso");
-		MindHelper.obtenerSesion().removeAttribute("prueba");
-		MindHelper.obtenerSesion().removeAttribute("programador");
-		MindHelper.obtenerSesion().removeAttribute("evaluado");
-		MindHelper.obtenerSesion().removeAttribute("cliente");
+		eliminarAtributos();
 		return "pruebas";
 	}
 
 	public String irAEvaluados() {
-		MindHelper.obtenerSesion().removeAttribute("proceso");
-		MindHelper.obtenerSesion().removeAttribute("prueba");
-		MindHelper.obtenerSesion().removeAttribute("programador");
-		MindHelper.obtenerSesion().removeAttribute("evaluado");
-		MindHelper.obtenerSesion().removeAttribute("cliente");
+		eliminarAtributos();
 		return "evaluados";
 	}
 
 	public String irAProgramadores() {
-		MindHelper.obtenerSesion().removeAttribute("proceso");
-		MindHelper.obtenerSesion().removeAttribute("prueba");
-		MindHelper.obtenerSesion().removeAttribute("programador");
-		MindHelper.obtenerSesion().removeAttribute("evaluado");
-		MindHelper.obtenerSesion().removeAttribute("cliente");
+		eliminarAtributos();
 		return "programadores";
 	}
 
 	public String irAClientes() {
+		eliminarAtributos();
+		return "clientes";
+	}
+
+	private void eliminarAtributos() {
 		MindHelper.obtenerSesion().removeAttribute("proceso");
 		MindHelper.obtenerSesion().removeAttribute("prueba");
 		MindHelper.obtenerSesion().removeAttribute("programador");
 		MindHelper.obtenerSesion().removeAttribute("evaluado");
 		MindHelper.obtenerSesion().removeAttribute("cliente");
-		return "clientes";
 	}
 
 }

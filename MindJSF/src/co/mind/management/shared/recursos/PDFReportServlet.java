@@ -60,6 +60,9 @@ public class PDFReportServlet extends HttpServlet {
 
 				response.setContentType("application/pdf");
 				response.setContentLength(bytes.length);
+				response.setHeader("Content-Disposition",
+						"attachment;filename=reporte.pdf");
+
 				servletOutputStream.write(bytes, 0, bytes.length);
 				servletOutputStream.flush();
 				servletOutputStream.close();

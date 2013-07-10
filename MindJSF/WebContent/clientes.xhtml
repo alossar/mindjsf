@@ -49,27 +49,24 @@ body {
 							<ul class="nav">
 								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink
-											action="#{indexController.irAProcesos }"
-											style="color:white; " value="Procesos"></h:commandLink></li>
+											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
-											value="Pruebas" style="color:white;"></h:commandLink></li>
+											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink
-											action="#{indexController.irAEvaluados }" value="Evaluados"
-											style="color:white;"></h:commandLink></li>
+											action="#{indexController.irAEvaluados }" value="Evaluados"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
 									<li><h:commandLink
 											action="#{indexController.irAProgramadores }"
-											value="Programadores" style="color:white;"></h:commandLink></li>
+											value="Programadores"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.maestro }">
-									<li><h:commandLink
-											action="#{indexController.irAClientes }" value="Clientes"
-											style="color:white;"></h:commandLink></li>
+									<li class="active"><h:commandLink
+											action="#{indexController.irAClientes }" value="Clientes"></h:commandLink></li>
 								</h:panelGroup>
 							</ul>
 							<ul class="navbar-text pull-right">
@@ -106,7 +103,8 @@ body {
 						<i class="icon-search icon-white"></i>
 					</h:commandLink>
 					<a data-toggle="modal" class="btn btn-info "
-						href="#myModalCrearCliente"> <i class="icon-plus icon-white"></i>
+						title="Crear una cuenta cliente." href="#myModalCrearCliente">
+						<i class="icon-plus icon-white"></i>
 					</a>
 				</h:form>
 			</div>
@@ -128,7 +126,7 @@ body {
 
 						</h:column> <h:column>
 							<f:facet name="header">
-								<h:outputText value="Nombre del Programdor"></h:outputText>
+								<h:outputText value="Nombre del Cliente"></h:outputText>
 							</f:facet>
 							<h:commandLink value="#{cliente.nombres } #{cliente.apellidos }"
 								style="color:black; "
@@ -167,19 +165,21 @@ body {
 						</h:column> <h:column>
 							<h:commandLink styleClass="btn btn-warning btn-small "
 								action="#{clientesController.desactivarCliente }"
+								title="Desactivar la cuenta del cliente."
 								rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }"
 								style="padding: 5;">
 								<i class="icon-ban-circle icon-white"></i>
 							</h:commandLink>
 							<h:commandLink styleClass="btn btn-info btn-small "
 								action="#{clientesController.activarCliente }"
+								title="Activar la cuenta del cliente."
 								rendered="#{not cliente.editar and not (cliente.estado_Cuenta == 'cuenta_activa')}"
 								style="padding: 5;">
 								<i class="icon-ok-circle icon-white"></i>
 							</h:commandLink>
 								&nbsp;
 							<h:commandLink styleClass="btn btn-danger btn-small "
-								onclick="$('#myModal').modal('show');"
+								onclick="$('#myModal').modal('show');" title="Eliminar cliente."
 								rendered="#{not cliente.editar }">
 								<f:ajax
 									listener="#{clientesController.seleccionarClienteEliminar }"></f:ajax>
@@ -189,7 +189,7 @@ body {
 						</h:column> <h:column>
 							<h:commandLink styleClass="btn btn-info btn-small "
 								onclick="$('#myModalAgregarPrueba').modal('show');"
-								title="Agregar pruebas"
+								title="Agregar pruebas a la cuenta del cliente."
 								rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }">
 								<f:ajax
 									listener="#{clientesController.seleccionarClienteAgregarPruebas }"></f:ajax>

@@ -2,6 +2,7 @@ package co.mind.web.cuenta;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -10,11 +11,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
 import javax.faces.component.html.HtmlDataTable;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import co.mind.management.shared.dto.ParticipacionEnProcesoBO;
 import co.mind.management.shared.dto.ProcesoUsuarioBO;
 import co.mind.management.shared.dto.UsoBO;
 import co.mind.management.shared.dto.UsuarioAdministradorBO;
@@ -22,6 +26,7 @@ import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.dto.UsuarioProgramadorBO;
 import co.mind.management.shared.persistencia.GestionAccesos;
 import co.mind.management.shared.persistencia.GestionClientes;
+import co.mind.management.shared.persistencia.GestionEvaluacion;
 import co.mind.management.shared.persistencia.GestionProcesos;
 import co.mind.management.shared.persistencia.GestionUsos;
 import co.mind.management.shared.persistencia.GestionUsuariosProgramadores;
@@ -220,6 +225,54 @@ public class CuentaController implements Serializable {
 			context.addMessage(null, new FacesMessage(
 					FacesMessage.SEVERITY_WARN,
 					"El mensaje no pudo ser enviado.", ""));
+		}
+	}
+
+	public void generarReporteProceso(ActionEvent event) {
+
+		ProcesoUsuarioBO proceso = (ProcesoUsuarioBO) dataTable.getRowData();
+		GestionEvaluacion gEvaluacion = new GestionEvaluacion();
+		List<ParticipacionEnProcesoBO> participaciones = gEvaluacion
+				.listarParticipacionesEnProceso(usuario.getIdentificador(),
+						proceso.getIdentificador());
+		List<Integer> identificadoresParticipaciones = new ArrayList<Integer>();
+		for (ParticipacionEnProcesoBO participacionEnProcesoBO : participaciones) {
+			identificadoresParticipaciones.add(participacionEnProcesoBO
+					.getIdentificador());
+		}
+		String url = "ExcelReportServlet";
+		FacesContext context = FacesContext.getCurrentInstance();
+		ExternalContext ctx = context.getExternalContext();
+		HttpSession sess = (HttpSession) ctx.getSession(true);
+		sess.setAttribute("participaciones", identificadoresParticipaciones);
+		try {
+			context.getExternalContext().dispatch(url);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			context.responseComplete();
+		}
+
+	}
+
+	public void reporteRevisado(ActionEvent event) {
+		ProcesoUsuarioBO proceso = (ProcesoUsuarioBO) dataTable.getRowData();
+		proceso.setEstadoValoracion(Convencion.ESTADO_SOLICITUD_REALIZADA);
+		GestionProcesos gProcesos = new GestionProcesos();
+		int result = gProcesos.editarProcesoUsuarioAdministrador(proceso
+				.getUsuario().getIdentificador(), proceso);
+		if (result == Convencion.CORRECTO) {
+			setProcesosRevisar(gProcesos.listarProcesosParaRevisar());
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_INFO,
+					"Revisión del proceso confirmada.", ""));
+		} else {
+			// Mensaje para el feedback
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"La revisión del proceso no pudo ser confirmada.", ""));
 		}
 	}
 

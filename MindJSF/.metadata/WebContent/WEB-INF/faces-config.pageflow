@@ -14,17 +14,17 @@
   <nodes xsi:type="pageflow:PFPage" name="cuenta" x="156" y="576" id="pf137133125500313" referenceLink="//@navigationRule.10/@navigationCase.0/@toViewId|" inlinks="pf137133125500212" path="/cuenta.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="cliente" x="468" y="480" id="pf13720474257922" referenceLink="//@navigationRule.11/@navigationCase.0/@toViewId|" inlinks="pf13720474257920" path="/cliente.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="programador" x="420" y="576" id="pf13720474257923" referenceLink="//@navigationRule.12/@navigationCase.0/@toViewId|" inlinks="pf13720474257921" path="/programador.xhtml"/>
-  <links id="pf13709125077832" target="pf13709125077834" source="pf13709125077831" outcome="recuperar"/>
-  <links id="pf13709125077833" target="pf13709125077835" source="pf13709125077831" outcome="index"/>
-  <links id="pf13710073236520" target="pf13710073236531" source="pf13709125077835" outcome="procesos"/>
-  <links id="pf13710073236532" target="pf13710073236533" source="pf13710073236531" outcome="proceso"/>
-  <links id="pf13713262339170" target="pf13713262339174" source="pf13709125077835" outcome="pruebas"/>
-  <links id="pf13713262339171" target="pf13713262339175" source="pf13709125077835" outcome="evaluados"/>
-  <links id="pf13713262339172" target="pf13713262339176" source="pf13709125077835" outcome="clientes"/>
-  <links id="pf13713262339173" target="pf13713262339177" source="pf13709125077835" outcome="programadores"/>
-  <links id="pf13713277429228" target="pf137132774292210" source="pf13713262339174" outcome="prueba"/>
-  <links id="pf13713277429229" target="pf137132774292211" source="pf13713262339175" outcome="evaluado"/>
-  <links id="pf137133125500212" target="pf137133125500313" source="pf13709125077835" outcome="cuenta"/>
-  <links id="pf13720474257920" target="pf13720474257922" source="pf13713262339176" outcome="cliente"/>
-  <links id="pf13720474257921" target="pf13720474257923" source="pf13713262339177" outcome="programador"/>
+  <links id="pf13709125077832" target="pf13709125077834" source="pf13709125077831" outcome="recuperar" redirect="true"/>
+  <links id="pf13709125077833" target="pf13709125077835" source="pf13709125077831" outcome="index" redirect="true"/>
+  <links id="pf13710073236520" target="pf13710073236531" source="pf13709125077835" outcome="procesos" redirect="true"/>
+  <links id="pf13710073236532" target="pf13710073236533" source="pf13710073236531" outcome="proceso" redirect="true"/>
+  <links id="pf13713262339170" target="pf13713262339174" source="pf13709125077835" outcome="pruebas" redirect="true"/>
+  <links id="pf13713262339171" target="pf13713262339175" source="pf13709125077835" outcome="evaluados" redirect="true"/>
+  <links id="pf13713262339172" target="pf13713262339176" source="pf13709125077835" outcome="clientes" redirect="true"/>
+  <links id="pf13713262339173" target="pf13713262339177" source="pf13709125077835" outcome="programadores" redirect="true"/>
+  <links id="pf13713277429228" target="pf137132774292210" source="pf13713262339174" outcome="prueba" redirect="true"/>
+  <links id="pf13713277429229" target="pf137132774292211" source="pf13713262339175" outcome="evaluado" redirect="true"/>
+  <links id="pf137133125500212" target="pf137133125500313" source="pf13709125077835" outcome="cuenta" redirect="true"/>
+  <links id="pf13720474257920" target="pf13720474257922" source="pf13713262339176" outcome="cliente" redirect="true"/>
+  <links id="pf13720474257921" target="pf13720474257923" source="pf13713262339177" outcome="programador" redirect="true"/>
 </pageflow:Pageflow>

@@ -442,10 +442,11 @@ public class GestionProcesos implements IGestionProcesos {
 	}
 
 	public List<ProcesoUsuarioBO> listarProcesosParaRevisar() {
-		String query = "SELECT DISTINCT(u) FROM ProcesoUsuario u WHERE (u.estadoValoracion = :pendiente OR u.estadoValoracion = :aceptada) ";
+		String query = "SELECT DISTINCT(u) FROM ProcesoUsuario u WHERE (u.estadoValoracion = :pendiente OR u.estadoValoracion = :aceptada OR u.estadoValoracion = :realizada) ";
 		Query q = entityManager.createQuery(query);
 		q.setParameter("pendiente", Convencion.ESTADO_SOLICITUD_PENDIENTE);
 		q.setParameter("aceptada", Convencion.ESTADO_SOLICITUD_ACEPTADA);
+		q.setParameter("realizada", Convencion.ESTADO_SOLICITUD_REALIZADA);
 		List<ProcesoUsuario> usuarios = q.getResultList();
 		if (usuarios != null) {
 			if (usuarios.size() > 0) {

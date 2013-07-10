@@ -58,27 +58,24 @@ body {
 							<ul class="nav">
 								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink
-											action="#{indexController.irAProcesos }"
-											style="color:white; " value="Procesos"></h:commandLink></li>
+											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
-											value="Pruebas" style="color:white;"></h:commandLink></li>
+											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink
-											action="#{indexController.irAEvaluados }" value="Evaluados"
-											style="color:white;"></h:commandLink></li>
+											action="#{indexController.irAEvaluados }" value="Evaluados"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
 									<li><h:commandLink
 											action="#{indexController.irAProgramadores }"
-											value="Programadores" style="color:white;"></h:commandLink></li>
+											value="Programadores"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.maestro }">
 									<li><h:commandLink
-											action="#{indexController.irAClientes }" value="Clientes"
-											style="color:white;"></h:commandLink></li>
+											action="#{indexController.irAClientes }" value="Clientes"></h:commandLink></li>
 								</h:panelGroup>
 							</ul>
 							<ul class="navbar-text pull-right">
@@ -103,11 +100,11 @@ body {
 		</div>
 		<div class="container-fluid">
 			<div class="container contenedorProcesos">
-
+				<p:growl id="growl" showDetail="true" style="z-index:999;"
+					life="2500"></p:growl>
 				<div class="container-fluid">
 					<div class="row-fluid">
-						<p:growl id="growl" showDetail="true" style="z-index:999;"
-							life="2500"></p:growl>
+
 						<div class="span3" id="panelInfoProceso"
 							style="background-color: rgba(245, 245, 245, 0.8);">
 							<h:form>
@@ -177,7 +174,8 @@ body {
 											</h:column> <h:column>
 												<f:facet name="header">
 													<center>
-														<h:outputText value="Fecha de Creación"></h:outputText>
+														<h:outputText value="Fecha de Creación"
+															title="Fecha en que el proceso fue creado."></h:outputText>
 													</center>
 												</f:facet>
 												<center>
@@ -188,21 +186,40 @@ body {
 											</h:column> <h:column>
 												<f:facet name="header">
 													<center>
-														<h:outputText value="Solicitante"></h:outputText>
+														<h:outputText value="Solicitante"
+															title="Cliente que realizó la solicitud de la revisión."></h:outputText>
 													</center>
 												</f:facet>
 												<center>
-													<h:outputText value="#{proceso.usuario.nombres } ">
+													<h:outputText
+														value="#{proceso.usuario.nombres } #{proceso.usuario.apellidos } "
+														title="Empresa: #{proceso.usuario.empresa }, Cédula: #{proceso.usuario.cedula }">
 													</h:outputText>
 												</center>
 											</h:column> <h:column>
+												<f:facet name="header">
+													<center>
+														<h:outputText value="Estado de Revisión"
+															title="Estado en el que se encuentra el proceso."></h:outputText>
+													</center>
+												</f:facet>
+												<center>
+													<h:panelGroup styleClass="label label-success"
+														rendered="#{proceso.estadoValoracion == 'realizada' }">COMPLETA</h:panelGroup>
+													<h:panelGroup styleClass="label label-warning"
+														rendered="#{proceso.estadoValoracion == 'pendiente'}">PENDIENTE</h:panelGroup>
+												</center>
+											</h:column> <h:column>
 												<h:commandLink styleClass="btn btn-info btn-small "
-													title="Marcar como revisado." style="padding: 5;">
+													title="Marcar como revisado." style="padding: 5;"
+													actionListener="#{cuentaController.reporteRevisado}"
+													rendered="#{proceso.estadoValoracion == 'pendiente'}">
 													<i class="icon-ok icon-white"></i>
 												</h:commandLink>&nbsp;
 											<h:commandLink styleClass="btn btn-primary btn-small "
 													title="Generar reporte de evaluados en XLS"
-													style="padding: 5;">
+													style="padding: 5;"
+													actionListener="#{cuentaController.generarReporteProceso}">
 													<i class="icon-file icon-white"></i>
 												</h:commandLink>
 
@@ -223,8 +240,7 @@ body {
 									<div id="buscarProceso">
 										<a class="btn btn-primary btn-small  pull-right"
 											data-toggle="modal" href="#myModalEnviarCorreo"
-											title="Enía tus comentarios y sugerencias a 2M."
-											style="height: 20px;"> <i
+											title="Enviar comentarios" style="height: 20px;"> <i
 											class="icon-envelope icon-white" style="margin-top: 3px;"
 											role="button"></i>
 										</a>
@@ -275,7 +291,6 @@ body {
 											<h3 id="myModalLabel"
 												style="margin-top: 5px; text-align: center;">
 												<img src="img/logoPruebasCrear.png" />Envíanos un correo
-												electrónico
 											</h3>
 										</div>
 
@@ -317,33 +332,39 @@ body {
 							</h:panelGroup>
 							<h:form styleClass="form-horizontal">
 								<legend>Cambiar Contraseña</legend>
-								<div class="control-group">
-									<label class="control-label">Contraseña Actual</label>
-									<div class="controls">
-										<h:inputSecret required="true"
-											value="#{cuentaController.passActual}"></h:inputSecret>
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">Nueva Contraseña</label>
-									<div class="controls">
-										<h:inputSecret required="true"
-											value="#{cuentaController.passNueva}"></h:inputSecret>
-									</div>
-								</div>
-								<div class="control-group">
-									<label class="control-label">Repetir Nueva Contraseña</label>
-									<div class="controls">
-										<h:inputSecret required="true"
-											value="#{cuentaController.passNuevaRepetir}"></h:inputSecret>
-									</div>
-								</div>
-								<div class="control-group">
-									<div class="controls">
-										<h:commandButton styleClass="btn bnt-primary" value="Cambiar"
-											action="#{cuentaController.cambiarContrasena}"></h:commandButton>
-									</div>
-								</div>
+
+								<p:accordionPanel activeIndex="-1">
+									<p:tab title="Mostrar">
+										<div class="control-group">
+											<label class="control-label">Contraseña Actual</label>
+											<div class="controls">
+												<h:inputSecret required="true"
+													value="#{cuentaController.passActual}"></h:inputSecret>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">Nueva Contraseña</label>
+											<div class="controls">
+												<h:inputSecret required="true"
+													value="#{cuentaController.passNueva}"></h:inputSecret>
+											</div>
+										</div>
+										<div class="control-group">
+											<label class="control-label">Repetir Nueva Contraseña</label>
+											<div class="controls">
+												<h:inputSecret required="true"
+													value="#{cuentaController.passNuevaRepetir}"></h:inputSecret>
+											</div>
+										</div>
+										<div class="control-group">
+											<div class="controls">
+												<h:commandButton styleClass="btn btn-primary"
+													value="Cambiar"
+													action="#{cuentaController.cambiarContrasena}"></h:commandButton>
+											</div>
+										</div>
+									</p:tab>
+								</p:accordionPanel>
 							</h:form>
 						</div>
 					</div>

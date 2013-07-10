@@ -13,6 +13,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import co.mind.management.shared.dto.ImagenUsuarioBO;
 import co.mind.management.shared.dto.PreguntaUsuarioBO;
@@ -141,9 +142,11 @@ public class PruebaEspecificaController implements Serializable {
 		return "proceso";
 	}
 
-	public void mostrarInformacionPregunta(AjaxBehaviorEvent event) {
+	public void mostrarInformacionPregunta(ActionEvent event) {
 		pregunta = (PreguntaUsuarioBO) event.getComponent().getAttributes()
 				.get("pregunta");
+		HttpSession session = MindHelper.obtenerSesion();
+		session.setAttribute("pregunta", pregunta);
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 				"Pregunta seleccionada.", ""));
@@ -153,9 +156,12 @@ public class PruebaEspecificaController implements Serializable {
 	public void actualizarImagenModal(AjaxBehaviorEvent event) {
 		setImagen((ImagenUsuarioBO) event.getComponent().getAttributes()
 				.get("imagen"));
-		setPreguntaCrear(preguntaCrear);
-		setCaracteresCrear(caracteresCrear);
-		setTiempoCrear(tiempoCrear);
+	}
+
+	public void actualizarImagenPreguntaModal(AjaxBehaviorEvent event) {
+		ImagenUsuarioBO img = (ImagenUsuarioBO) event.getComponent()
+				.getAttributes().get("imagen");
+		pregunta.setImagenesUsuarioID(img);
 	}
 
 	public void crearPregunta(ActionEvent event) {

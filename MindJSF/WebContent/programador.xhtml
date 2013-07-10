@@ -47,27 +47,24 @@ body {
 							<ul class="nav">
 								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink
-											action="#{indexController.irAProcesos }"
-											style="color:white; " value="Procesos"></h:commandLink></li>
+											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
-											value="Pruebas" style="color:white;"></h:commandLink></li>
+											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink
-											action="#{indexController.irAEvaluados }" value="Evaluados"
-											style="color:white;"></h:commandLink></li>
+											action="#{indexController.irAEvaluados }" value="Evaluados"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.cliente }">
-									<li><h:commandLink
+									<li class="active"><h:commandLink
 											action="#{indexController.irAProgramadores }"
-											value="Programadores" style="color:white;"></h:commandLink></li>
+											value="Programadores"></h:commandLink></li>
 								</h:panelGroup>
 								<h:panelGroup rendered="#{autorizacionController.maestro }">
 									<li><h:commandLink
-											action="#{indexController.irAClientes }" value="Clientes"
-											style="color:white;"></h:commandLink></li>
+											action="#{indexController.irAClientes }" value="Clientes"></h:commandLink></li>
 								</h:panelGroup>
 							</ul>
 							<ul class="navbar-text pull-right">
@@ -105,9 +102,10 @@ body {
 				</h:form>
 
 				<div class="container-fluid">
+					<p:growl id="growl" showDetail="true" style="z-index:999;"
+						life="2500"></p:growl>
 					<div class="row-fluid">
-						<p:growl id="growl" showDetail="true" style="z-index:999;"
-							life="2500"></p:growl>
+
 						<div class="span3" id="panelInfoProceso">
 							<h:form>
 								<div id="tituloProceso">

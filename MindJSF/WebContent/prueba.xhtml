@@ -58,29 +58,25 @@ body {
 										<h:panelGroup
 											rendered="#{autorizacionController.programador }">
 											<li><h:commandLink
-													action="#{indexController.irAProcesos }"
-													style="color:white; " value="Procesos"></h:commandLink></li>
+													action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 										</h:panelGroup>
 										<h:panelGroup rendered="#{autorizacionController.cliente }">
-											<li><h:commandLink
-													action="#{indexController.irAPruebas }" value="Pruebas"
-													style="color:white;"></h:commandLink></li>
+											<li class="active"><h:commandLink
+													action="#{indexController.irAPruebas }" value="Pruebas"></h:commandLink></li>
 										</h:panelGroup>
 										<h:panelGroup
 											rendered="#{autorizacionController.programador }">
 											<li><h:commandLink
-													action="#{indexController.irAEvaluados }" value="Evaluados"
-													style="color:white;"></h:commandLink></li>
+													action="#{indexController.irAEvaluados }" value="Evaluados"></h:commandLink></li>
 										</h:panelGroup>
 										<h:panelGroup rendered="#{autorizacionController.cliente }">
 											<li><h:commandLink
 													action="#{indexController.irAProgramadores }"
-													value="Programadores" style="color:white;"></h:commandLink></li>
+													value="Programadores"></h:commandLink></li>
 										</h:panelGroup>
 										<h:panelGroup rendered="#{autorizacionController.maestro }">
 											<li><h:commandLink
-													action="#{indexController.irAClientes }" value="Clientes"
-													style="color:white;"></h:commandLink></li>
+													action="#{indexController.irAClientes }" value="Clientes"></h:commandLink></li>
 										</h:panelGroup>
 									</ul>
 									<ul class="navbar-text pull-right">
@@ -138,17 +134,16 @@ body {
 									href="#myModalCrearPregunta" data-toggle="modal">+</button>
 							</h:panelGroup>
 							<ui:repeat value="#{pruebaEspecificaController.preguntas}"
-								var="preg" varStatus="loop">
-								<h:commandLink id="panelPregunta_#{loop.count}">
+								var="preg">
+								<h:commandLink
+									actionListener="#{pruebaEspecificaController.mostrarInformacionPregunta }">
+
 									<h:graphicImage title="#{preg.pregunta}" width="150"
 										height="100" styleClass="img-polaroid"
-										id="pregunta_#{preg.identificador}"
 										value="images/Thumbnails/#{preg.imagenesUsuario.imagen.imagenURI }">
-
 									</h:graphicImage>
-									<f:ajax render=":formContenedorPanelInfo:contenedorPanelInfo"
-										listener="#{pruebaEspecificaController.mostrarInformacionPregunta }" />
 									<f:attribute name="pregunta" value="#{preg }" />
+									<f:ajax render=":formContenedorPanelInfo"></f:ajax>
 								</h:commandLink>
 							</ui:repeat>
 
@@ -163,9 +158,13 @@ body {
 										<strong>Información</strong> General
 									</h5>
 									<div id="imgInfoZona">
-										<h:commandLink onclick="$('#myModal').modal('show');">
+										<h:commandLink
+											rendered="#{not empty pruebaEspecificaController.pregunta}"
+											onclick="$('#myModalCambiarImagen').modal('show');">
+											<f:ajax
+												render=":formContenedorCambiarImagen:contenedorPanelCambiarImagen" />
+
 											<h:graphicImage title="#{preg.pregunta}" width="150"
-												rendered="#{not empty pruebaEspecificaController.pregunta}"
 												height="100"
 												value="images/Thumbnails/#{pruebaEspecificaController.pregunta.imagenesUsuario.imagen.imagenURI }"></h:graphicImage>
 										</h:commandLink>
@@ -214,7 +213,7 @@ body {
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">x</button>
 						<h3 id="myModalLabel" style="margin-top: 5px;">
-							<img src="img/logoEditar.png" />Editar Laminas
+							<img src="img/logoEditar.png" />Editar Láminas
 						</h3>
 					</div>
 					<h:form id="formContenedorEditarLaminas">
@@ -275,11 +274,10 @@ body {
 								<div id="contenedorDeLaminasGaleria">
 									<h5>Galeria de Imágenes</h5>
 									<ui:repeat value="#{pruebaEspecificaController.imagenes}"
-										varStatus="loop" var="image">
-										<h:commandLink id="panelImagen_#{loop.count}">
+										var="image">
+										<h:commandLink>
 											<h:graphicImage width="150" height="100"
 												styleClass="img-polaroid"
-												identificador="imagen_#{image.identificador}"
 												value="images/Thumbnails/#{image.imagen.imagenURI }">
 											</h:graphicImage>
 											<f:ajax
@@ -297,6 +295,70 @@ body {
 					</h:form>
 				</div>
 				<!-- cierro MOdal -->
+
+
+				<div id="myModalCambiarImagen" class="modal hide fade" tabindex="-1"
+					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+					style="width: 840px; height: 600px; margin-top: -45px;">
+					<div class="modal-header" style="height: 50px;">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-hidden="true">x</button>
+						<h3 id="myModalLabel" style="margin-top: 5px;">
+							<img src="img/logoEditar.png" />Cambiar la Lámina
+						</h3>
+					</div>
+					<h:form id="formContenedorCambiarImagen">
+						<div class="contenedorEditarLaminas" style="height: 530px;">
+
+							<h:panelGroup id="contenedorPanelCambiarImagen">
+								<div id="panelEditarLaminas">
+									<div id="verLaminaEditar">
+										<div id="relojDeTiempo">
+											<p>0 m</p>
+										</div>
+										<div id="mostradorEditarLaminas">
+											<h:graphicImage width="600" height="400"
+												value="images/#{pruebaEspecificaController.pregunta.imagenesUsuario.imagen.imagenURI }">
+											</h:graphicImage>
+										</div>
+										<div id="panelEdicionLamina">
+											<div id="botCrearLamina">
+												<h:commandButton styleClass="btn btn-inverse"
+													value="Cambiar"
+													style="margin:20px -20px; width:75px; height:75px;"
+													actionListener="#{pruebaEspecificaController.editarPregunta}"></h:commandButton>
+											</div>
+										</div>
+									</div>
+								</div>
+							</h:panelGroup>
+							<div id="panelEditarGaleria">
+
+								<div id="contenedorDeLaminasGaleria">
+									<h5>Galeria de Imágenes</h5>
+									<ui:repeat value="#{pruebaEspecificaController.imagenes}"
+										var="image">
+										<h:commandLink>
+											<h:graphicImage width="150" height="100"
+												styleClass="img-polaroid"
+												value="images/Thumbnails/#{image.imagen.imagenURI }">
+											</h:graphicImage>
+											<f:ajax
+												render=":formContenedorCambiarImagen:contenedorPanelCambiarImagen"
+												listener="#{pruebaEspecificaController.actualizarImagenPreguntaModal }" />
+
+											<f:attribute name="imagen" value="#{image }" />
+
+										</h:commandLink>
+
+									</ui:repeat>
+								</div>
+							</div>
+						</div>
+					</h:form>
+				</div>
+				<!-- cierro MOdal -->
+
 
 
 				<!-- Modal -->

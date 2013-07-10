@@ -17,7 +17,7 @@ import co.mind.management.shared.dto.UsuarioBO;
 public class SMTPSender {
 
 	private static String urlEvaluacion = "http://2mmind.jelastic.servint.net/MindEvaluacion";
-	private static String urlMind = "http://2mmindm.jelastic.servint.net/MindJSF";
+	private static String urlMind = "http://2mmind.jelastic.servint.net/MindJSF";
 
 	public static int enviarCorreoParticipacionAProceso(
 			ParticipacionEnProcesoBO participacion, String empresa) {

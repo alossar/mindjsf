@@ -7,7 +7,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -96,6 +98,8 @@ public class ProcesoEspecificoController implements Serializable {
 	private String parametroFechaInicial;
 	private String parametroFechaFinal;
 	private int idUsuario;
+
+	private Map<Integer, Boolean> resultadosReporte = new HashMap<Integer, Boolean>();
 
 	@PostConstruct
 	public void init() {
@@ -331,6 +335,11 @@ public class ProcesoEspecificoController implements Serializable {
 			setParticipacionesProcesoEspecifico(gEvaluacion
 					.listarParticipacionesEnProceso(usuario.getIdentificador(),
 							proceso.getIdentificador()));
+			GestionEvaluados gEvaluados = new GestionEvaluados();
+			setEvaluadosRestantes(listaEvaluadosAArreglo(obtenerEvaluadosNoEnProceso(
+					gEvaluados
+							.listarUsuariosBasicos(usuario.getIdentificador()),
+					obtenerEvaluadosDeParticipacion(getParticipacionesProcesoEspecifico()))));
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage(
 					FacesMessage.SEVERITY_INFO,
@@ -485,7 +494,11 @@ public class ProcesoEspecificoController implements Serializable {
 						.listarParticipacionesEnProceso(
 								usuario.getIdentificador(),
 								proceso.getIdentificador()));
-
+				GestionEvaluados gEvaluados = new GestionEvaluados();
+				setEvaluadosRestantes(listaEvaluadosAArreglo(obtenerEvaluadosNoEnProceso(
+						gEvaluados.listarUsuariosBasicos(usuario
+								.getIdentificador()),
+						obtenerEvaluadosDeParticipacion(getParticipacionesProcesoEspecifico()))));
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage(
 						FacesMessage.SEVERITY_INFO, "Evaluado creado.", ""));
@@ -527,6 +540,9 @@ public class ProcesoEspecificoController implements Serializable {
 				pruebas.add(pHas.getPruebasUsuario());
 			}
 			setPruebasProcesoEspecifico(pruebas);
+			setPruebasRestantes(listaPruebasAArreglo(obtenerPruebasNoEnProceso(
+					gPruebas.listarPruebasUsuarioAdministrador(usuario
+							.getIdentificador()), getPruebasProcesoEspecifico())));
 
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage(
@@ -733,6 +749,43 @@ public class ProcesoEspecificoController implements Serializable {
 					"La solicitud de revisión no pudo ser enviada.", ""));
 		}
 		return null;
+	}
+
+	public void reporteExcel(ActionEvent event) {
+		if (resultadosReporte != null) {
+			if (resultadosReporte.size() > 0) {
+				List<Integer> participaciones = new ArrayList<Integer>();
+
+				for (ParticipacionEnProcesoBO item : resultadosProcesoEspecifico) {
+					if (resultadosReporte.get(item.getIdentificador())) {
+						participaciones.add(item.getIdentificador());
+					}
+				}
+
+				resultadosReporte.clear(); // If necessary.
+
+				String url = "ExcelReportServlet";
+				FacesContext context = FacesContext.getCurrentInstance();
+				ExternalContext ctx = context.getExternalContext();
+				HttpSession sess = (HttpSession) ctx.getSession(true);
+				sess.setAttribute("participaciones", participaciones);
+				try {
+					context.getExternalContext().dispatch(url);
+				} catch (Exception e) {
+					e.printStackTrace();
+				} finally {
+					context.responseComplete();
+				}
+
+			} else {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_WARN,
+						"Debe seleccionar los resultados para exportar", ""));
+
+			}
+		}
 	}
 
 	public List<PruebaUsuarioBO> getPruebasProcesoEspecifico() {
@@ -1003,6 +1056,14 @@ public class ProcesoEspecificoController implements Serializable {
 
 	public void setParametroFechaFinal(String parametroFechaFinal) {
 		this.parametroFechaFinal = parametroFechaFinal;
+	}
+
+	public Map<Integer, Boolean> getResultadosReporte() {
+		return resultadosReporte;
+	}
+
+	public void setResultadosReporte(Map<Integer, Boolean> resultadosReporte) {
+		this.resultadosReporte = resultadosReporte;
 	}
 
 }

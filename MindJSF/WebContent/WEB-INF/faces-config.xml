@@ -25,11 +25,6 @@
 		</managed-property>
 	</managed-bean>
 	<managed-bean>
-		<managed-bean-name>indexController</managed-bean-name>
-		<managed-bean-class>co.mind.web.index.IndexController</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
 		<managed-bean-name>homeController</managed-bean-name>
 		<managed-bean-class>co.mind.web.index.HomeController</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
@@ -49,12 +44,18 @@
 		<managed-bean-class>co.mind.web.autorizacion.AutorizacionController</managed-bean-class>
 		<managed-bean-scope>request</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>indexController</managed-bean-name>
+		<managed-bean-class>co.mind.web.index.IndexController</managed-bean-class>
+		<managed-bean-scope>request</managed-bean-scope>
+	</managed-bean>
 	<navigation-rule>
 		<display-name>login</display-name>
 		<from-view-id>/login.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>recuperar</from-outcome>
 			<to-view-id>/recuperar.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -63,6 +64,7 @@
 		<navigation-case>
 			<from-outcome>index</from-outcome>
 			<to-view-id>/index.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -71,6 +73,7 @@
 		<navigation-case>
 			<from-outcome>procesos</from-outcome>
 			<to-view-id>/procesos.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -79,6 +82,7 @@
 		<navigation-case>
 			<from-outcome>proceso</from-outcome>
 			<to-view-id>/proceso.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -87,6 +91,7 @@
 		<navigation-case>
 			<from-outcome>pruebas</from-outcome>
 			<to-view-id>/pruebas.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -95,6 +100,7 @@
 		<navigation-case>
 			<from-outcome>evaluados</from-outcome>
 			<to-view-id>/evaluados.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -103,6 +109,7 @@
 		<navigation-case>
 			<from-outcome>clientes</from-outcome>
 			<to-view-id>/clientes.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -111,6 +118,7 @@
 		<navigation-case>
 			<from-outcome>programadores</from-outcome>
 			<to-view-id>/programadores.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -119,6 +127,7 @@
 		<navigation-case>
 			<from-outcome>prueba</from-outcome>
 			<to-view-id>/prueba.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -127,6 +136,7 @@
 		<navigation-case>
 			<from-outcome>evaluado</from-outcome>
 			<to-view-id>/evaluado.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -135,6 +145,7 @@
 		<navigation-case>
 			<from-outcome>cuenta</from-outcome>
 			<to-view-id>/cuenta.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -143,6 +154,7 @@
 		<navigation-case>
 			<from-outcome>cliente</from-outcome>
 			<to-view-id>/cliente.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
@@ -151,6 +163,10 @@
 		<navigation-case>
 			<from-outcome>programador</from-outcome>
 			<to-view-id>/programador.xhtml</to-view-id>
+			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	<!-- <lifecycle>
+		<phase-listener>co.mind.web.index.PostRedirectGetListener</phase-listener>
+	</lifecycle> -->
 </faces-config>
