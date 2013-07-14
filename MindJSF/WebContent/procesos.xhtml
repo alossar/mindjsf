@@ -116,7 +116,9 @@ body {
 				</h:form>
 			</div>
 
-			<legend>Procesos</legend>
+			<legend class="legendTitles">
+				<img src="img/icoprocesos.png"></img>Procesos
+			</legend>
 			<h:form id="formPanelTablaProcesos">
 				<h:panelGroup layout="block" id="panelTablaProcesos">
 					<h:dataTable binding="#{procesosController.dataTable}"
@@ -127,7 +129,8 @@ body {
 								<f:facet name="header">
 									<h:outputText value="Nombre del Proceso"></h:outputText>
 								</f:facet>
-
+								<img style="margin-top: -4px; margin-right: 5px;"
+									src="img/icofolder.png"></img>
 								<h:commandLink value="#{proceso.nombre }" style="color:black; "
 									title="#{proceso.descripcion }"
 									action="#{procesosController.irAProcesoEspecifico }"
@@ -182,11 +185,6 @@ body {
 										rendered="#{proceso.abierto}">ABIERTO</h:panelGroup>
 									<h:panelGroup styleClass="label label-warning"
 										rendered="#{not proceso.abierto }">CERRADO</h:panelGroup>
-									&nbsp;
-									<h:panelGroup styleClass="label label-info"
-										rendered="#{proceso.iniciado}">INICIADO</h:panelGroup>
-									<h:panelGroup styleClass="label label-warning"
-										rendered="#{not proceso.iniciado }">SIN INICIAR</h:panelGroup>
 								</center>
 							</h:column> <h:column rendered="#{autorizacionController.onlyCliente}">
 								<f:facet name="header">
@@ -220,7 +218,7 @@ body {
 								<h:commandLink styleClass="btn btn-primary btn-small "
 									onclick="$('#myModalDuplicarProceso').modal('show');"
 									title="Duplicar el proceso." rendered="#{not proceso.editar }">
-									<i class="icon-th-large icon-white"></i>
+									<img height="12" width="12" src="img/icoduplicar.png"></img>
 									<f:ajax
 										listener="#{procesosController.seleccionarProcesoDuplicar }"></f:ajax>
 								</h:commandLink>
@@ -307,8 +305,9 @@ body {
 							<div class="control-group">
 								<label class="control-label">Descripción</label>
 								<div class="controls">
-									<h:inputTextarea style="height: 100px;" required="true"
-										id="descripcionProcesoTA" requiredMessage="Campo necesario."
+									<h:inputTextarea style="height: 100px; resize:none;"
+										required="true" id="descripcionProcesoTA"
+										requiredMessage="Campo necesario."
 										value="#{procesosController.descripcionProcesoCrear }">
 										<f:validateLength maximum="100"></f:validateLength>
 									</h:inputTextarea>
@@ -321,7 +320,7 @@ body {
 
 							<div class="control-group">
 								<div class="controls">
-									<h:commandButton styleClass="btn btn-primary " value="Agregar"
+									<h:commandButton styleClass="btn btn-primary " value="Crear"
 										style=" margin-left:65px; width:100px; height:45px;"
 										id="botCrearPrueba" onclick="closeDialog ();"
 										actionListener="#{procesosController.crearProceso}">
@@ -367,8 +366,9 @@ body {
 							<div class="control-group">
 								<label class="control-label">Descripción</label>
 								<div class="controls">
-									<h:inputTextarea style="height: 100px;" required="true"
-										id="descripcionProcesoTAD" requiredMessage="Campo necesario."
+									<h:inputTextarea style="height: 100px; resize:none;"
+										required="true" id="descripcionProcesoTAD"
+										requiredMessage="Campo necesario."
 										value="#{procesosController.descripcionProcesoDuplicar }">
 										<f:validateLength maximum="100"></f:validateLength>
 									</h:inputTextarea>

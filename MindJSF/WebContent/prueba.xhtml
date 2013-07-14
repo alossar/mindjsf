@@ -171,7 +171,7 @@ body {
 									</div>
 									<h6>Pregunta</h6>
 									<h:inputTextarea id="infoLaminaEscogida"
-										style="height:120px; font-size:8pt;line-height:100%;"
+										style="height:120px; font-size:8pt;line-height:100%; resize:none;"
 										value="#{pruebaEspecificaController.pregunta.pregunta }"></h:inputTextarea>
 
 									<div id="tiempoLamina">
@@ -208,7 +208,7 @@ body {
 
 				<div id="myModalCrearPregunta" class="modal hide fade" tabindex="-1"
 					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-					style="width: 840px; height: 600px; margin-top: -45px;">
+					style="width: 860px; height: 600px; margin-top: -45px;">
 					<div class="modal-header" style="height: 50px;">
 						<button type="button" class="close" data-dismiss="modal"
 							aria-hidden="true">x</button>
@@ -235,7 +235,7 @@ body {
 											<div id="espacioPreguntaEditar">
 												<p>Pregunta</p>
 												<h:inputTextarea id="espacioTextoPregunta" required="true"
-													style="width:370px; margin-top:-10px; height: 60px;"
+													style="width:370px; margin-top:-10px; height: 60px; resize:none;"
 													value="#{pruebaEspecificaController.preguntaCrear}">
 													<f:validateLength maximum="2000"></f:validateLength>
 												</h:inputTextarea>
@@ -312,20 +312,17 @@ body {
 
 							<h:panelGroup id="contenedorPanelCambiarImagen">
 								<div id="panelEditarLaminas">
-									<div id="verLaminaEditar">
-										<div id="relojDeTiempo">
-											<p>0 m</p>
-										</div>
+									<div id="verLaminaEditar">										
 										<div id="mostradorEditarLaminas">
 											<h:graphicImage width="600" height="400"
 												value="images/#{pruebaEspecificaController.pregunta.imagenesUsuario.imagen.imagenURI }">
 											</h:graphicImage>
 										</div>
-										<div id="panelEdicionLamina">
+										<div id="panelCambiarLamina">
 											<div id="botCrearLamina">
 												<h:commandButton styleClass="btn btn-inverse"
 													value="Cambiar"
-													style="margin:20px -20px; width:75px; height:75px;"
+													style="margin-top:10px; margin-left:210px; width:155px; height:75px;"
 													actionListener="#{pruebaEspecificaController.editarPregunta}"></h:commandButton>
 											</div>
 										</div>
@@ -358,11 +355,14 @@ body {
 					</h:form>
 				</div>
 				<!-- cierro MOdal -->
-
+				
 
 
 				<!-- Modal -->
-
+				<hr></hr>
+			<footer>
+				<p>&copy; Mind Management 2013</p>
+			</footer>
 
 			</div>
 		</div>

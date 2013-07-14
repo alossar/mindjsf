@@ -180,24 +180,36 @@ body {
 									value="#{clienteEspecificoController.usos }" var="uso">
 									<small> <h:column>
 											<f:facet name="header">
-												<h:outputText value="Usos Asignados"></h:outputText>
+												<center>
+													<h:outputText value="Usos Asignados"></h:outputText>
+												</center>
 											</f:facet>
-											<h:outputText value="#{uso.usosAsignados}"
-												style="color:black; "></h:outputText>
+											<center>
+												<h:outputText value="#{uso.usosAsignados}"
+													style="color:black; "></h:outputText>
+											</center>
 										</h:column> <h:column>
 											<f:facet name="header">
-												<h:outputText value="Usos Gastados"></h:outputText>
+												<center>
+													<h:outputText value="Usos Gastados"></h:outputText>
+												</center>
 											</f:facet>
-											<h:outputText value="#{uso.usosRedimidos}"
-												style="color:black; "></h:outputText>
+											<center>
+												<h:outputText value="#{uso.usosRedimidos}"
+													style="color:black; "></h:outputText>
+											</center>
 										</h:column> <h:column>
 											<f:facet name="header">
-												<h:outputText value="Fecha de Asignación"></h:outputText>
+												<center>
+													<h:outputText value="Fecha de Asignación"></h:outputText>
+												</center>
 											</f:facet>
-											<h:outputText value="#{uso.fechaAsignacion}"
-												style="color:black; ">
-												<f:convertDateTime type="date" pattern="MMM d, yyyy" />
-											</h:outputText>
+											<center>
+												<h:outputText value="#{uso.fechaAsignacion}"
+													style="color:black; ">
+													<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+												</h:outputText>
+											</center>
 										</h:column>
 									</small>
 								</h:dataTable>

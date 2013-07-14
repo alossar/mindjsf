@@ -62,7 +62,7 @@ html,body {
 
 #panelEvaLamina{
 	width:900px;
-	height:130px;
+	height:150px;
 	position:absolute;
 	top:470px;
 	background-color:rgb(234,234,234);  
@@ -118,7 +118,7 @@ html,body {
 #timerEva p{
 
 	color:white;
-	font-size:11pt;
+	font-size:12pt;
 	padding-top:23px;
 }
 

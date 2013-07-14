@@ -151,7 +151,7 @@ public class GestionUsuariosProgramadores implements
 	public int eliminarUsuarioProgramador(int usuarioAdministradorID,
 			int usuarioProgramadorID) {
 		Usuario usuario = entityManager.find(Usuario.class,
-				usuarioAdministradorID);
+				usuarioProgramadorID);
 		EntityTransaction userTransaction = entityManager.getTransaction();
 		try {
 			userTransaction.begin();

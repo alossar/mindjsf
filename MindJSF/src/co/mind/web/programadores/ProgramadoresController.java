@@ -191,8 +191,8 @@ public class ProgramadoresController implements Serializable {
 		HttpServletRequest request = MindHelper.obtenerRequest();
 		int result = gProgramadores.eliminarUsuarioProgramador(usuario
 				.getIdentificador(),
-				((EvaluadoBO) ((HttpServletRequest) request).getSession()
-						.getAttribute("programadorEliminar"))
+				((UsuarioProgramadorBO) ((HttpServletRequest) request)
+						.getSession().getAttribute("programadorEliminar"))
 						.getIdentificador());
 		if (result == Convencion.CORRECTO) {
 			setProgramadores(gProgramadores.listarUsuariosProgramadores(usuario

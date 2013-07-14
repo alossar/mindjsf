@@ -107,7 +107,8 @@ body {
 
 						<div class="span3" id="panelInfoProceso">
 							<h:form>
-								<div id="tituloProceso">
+								<div id="tituloProceso"
+									style="text-align: center; font-weight: bold; font-style: italic;">
 									<h4>
 										<h:outputText
 											value="#{evaluadoEspecificoController.nombreEvaluado }"></h:outputText>
@@ -127,7 +128,9 @@ body {
 						</div>
 
 						<div class="span9" id="parrillaInfoProceso">
-							<legend>Participaciones en Procesos</legend>
+							<legend>
+								<img src="img/icocuenta.png"></img>Participaciones en Procesos
+							</legend>
 
 							<h:form
 								rendered="#{not empty evaluadoEspecificoController.participaciones }"
@@ -141,6 +144,7 @@ body {
 											<f:facet name="header">
 												<h:outputText value="Proceso"></h:outputText>
 											</f:facet>
+											<i class="icon-folder-close" style="margin-right: 5px;"></i>
 											<h:outputText value="#{participacion.proceso.nombre}"
 												style="color:black; "
 												title="#{participacion.proceso.descripcion }"></h:outputText>
@@ -154,14 +158,20 @@ body {
 											<f:facet name="header">
 												<h:outputText value="¿Notificado?"></h:outputText>
 											</f:facet>
-											<h:outputText value="#{participacion.estaNotificado}"
-												style="color:black; "></h:outputText>
+											<h:panelGroup styleClass="label label-success"
+												rendered="#{participacion.estaNotificado == 'correo_si'}">SI</h:panelGroup>
+											<h:panelGroup styleClass="label label-warning"
+												rendered="#{participacion.notificado == 'correo_no' }">NO</h:panelGroup>
 										</h:column> <h:column>
 											<f:facet name="header">
 												<h:outputText value="Estado"></h:outputText>
 											</f:facet>
-											<h:outputText value="#{participacion.estado}"
-												style="color:black; "></h:outputText>
+											<h:panelGroup styleClass="label label-success"
+												rendered="#{participacion.estado == 'participacion_inactiva' }">COMPLETA</h:panelGroup>
+											<h:panelGroup styleClass="label label-warning"
+												rendered="#{participacion.estado == 'participacion_espera'}">PENDIENTE</h:panelGroup>
+											<h:panelGroup styleClass="label label-info"
+												rendered="#{participacion.estado == 'participacion_ejecucion'}">EN PROCESO</h:panelGroup>
 										</h:column>
 									</small>
 								</h:dataTable>

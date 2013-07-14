@@ -108,7 +108,7 @@ body {
 
 						<div class="span3" id="panelInfoProceso">
 							<h:form>
-								<div id="tituloProceso">
+								<div id="tituloProceso" style="text-align:center; font-weight:bold; font-style:italic;">
 									<h4>
 										<h:outputText
 											value="#{programadorEspecificoController.nombreProgramador }"></h:outputText>
@@ -132,7 +132,7 @@ body {
 						</div>
 
 						<div class="span9" id="parrillaInfoProceso">
-							<legend>Procesos del Programador</legend>
+							<legend><img src="img/icoprogra.png" style="margin-right:5px;"></img>Procesos del Programador</legend>
 
 							<h:form
 								rendered="#{not empty programadorEspecificoController.procesos }"
@@ -146,7 +146,7 @@ body {
 											<f:facet name="header">
 												<h:outputText value="Nombre del Proceso"></h:outputText>
 											</f:facet>
-
+											<i class="icon-folder-close" style="margin-right:5px;"></i>
 											<h:outputText value="#{proceso.nombre }"
 												style="color:black; " title="#{proceso.descripcion }"></h:outputText>
 
@@ -191,11 +191,13 @@ body {
 					</div>
 				</div>
 				<!-- Cierro Contenedor Principal -->
-			</div>
-			<hr />
-			<footer>
+				<hr />
+				<footer>
 			<p>&copy; Mind Management 2013</p>
 			</footer>
+			</div>
+			
+			
 
 		</div>
 		<!--/.fluid-container-->

@@ -8,7 +8,7 @@ import co.mind.management.shared.dto.ProcesoUsuarioHasPruebaUsuarioBO;
 public interface IGestionProcesos {
 	public int agregarProcesoUsuarioAdministrador(int usuarioAdministradorID,
 			ProcesoUsuarioBO proceso);
-	
+
 	public int editarProcesoUsuarioAdministrador(int usuarioAdministradorID,
 			ProcesoUsuarioBO proceso);
 
@@ -26,9 +26,6 @@ public interface IGestionProcesos {
 			ProcesoUsuarioBO proceso,
 			List<ProcesoUsuarioHasPruebaUsuarioBO> procesoUsuarioHasPruebaUsuario);
 
-	public Object listarProcesosPorNombreParcial(int identificador,
-			String keyword);
-
-	public Object listarProcesosParaRevisar();
+	public List<ProcesoUsuarioBO> listarProcesosParaRevisar();
 
 }

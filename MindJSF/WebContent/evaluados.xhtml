@@ -109,7 +109,7 @@ body {
 			</div>
 
 
-			<legend>Evaluados</legend>
+			<legend class="legendTitles"><img src="img/icoevaluados.png"></img>Evaluados</legend>
 			<h:form id="formPanelTablaEvaluados">
 				<h:dataTable id="panelTablaEvaluados"
 					rendered="#{not empty evaluadosController.evaluados }"
@@ -121,9 +121,10 @@ body {
 							<f:facet name="header">
 								<h:outputText value="Cédula"></h:outputText>
 							</f:facet>
+							<i class="icon-user" style="margin-right:5px;"></i>
 							<h:outputText value="#{evaluado.cedula }">
 							</h:outputText>
-
+					
 						</h:column> <h:column>
 							<f:facet name="header">
 								<h:outputText value="Nombre del Evaluado"></h:outputText>
@@ -223,7 +224,7 @@ body {
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Correo</p>
-							<h:inputText id="inputCrearEvaluado2"
+							<h:inputText id="inputCrearEvaluado2" style="margin-left:-8px;"
 								value="#{evaluadosController.correoEvaluadoCrear }">
 								<f:validateRegex
 									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
@@ -231,7 +232,7 @@ body {
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Cedula</p>
-							<h:inputText id="inputCrearEvaluado3"
+							<h:inputText id="inputCrearEvaluado3" style="margin-left:-8px;"
 								value="#{evaluadosController.cedulaEvaluadoCrear }">
 								<f:validateLength maximum="10"></f:validateLength>
 								<f:convertNumber integerOnly="true" />

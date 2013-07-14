@@ -113,7 +113,7 @@ body {
 				</h:form>
 			</div>
 
-			<legend>Pruebas</legend>
+			<legend class="legendTitles"><img src="img/icopruebas.png"></img>Pruebas</legend>
 			<h:form id="formPanelTablaPruebas">
 				<h:dataTable rendered="#{not empty pruebasController.pruebas }"
 					id="panelTablaPruebas"
@@ -124,6 +124,7 @@ body {
 							<f:facet name="header">
 								<h:outputText value="Nombre de la Prueba"></h:outputText>
 							</f:facet>
+							<img style="margin-top:-4px; margin-right:5px;" src="img/icofolder.png"></img>
 							<h:commandLink value="#{prueba.nombre }" style="color:black; "
 								title="#{prueba.descripcion }"
 								action="#{pruebasController.irAPruebaEspecifica }"
@@ -235,7 +236,7 @@ body {
 						</div>
 						<div style="margin-top: 5px;">
 							<p>Descripción</p>
-							<h:inputTextarea required="true" style="height: 100px;"
+							<h:inputTextarea required="true" style="height: 100px; resize:none;"
 								value="#{pruebasController.descripcionPruebaCrear }"></h:inputTextarea>
 						</div>
 

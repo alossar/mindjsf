@@ -148,7 +148,7 @@ body {
 									<p>Descripción</p>
 									<h:inputTextarea
 										value="#{procesoEspecificoController.proceso.descripcion }"
-										rows="3" styleClass="textoProceso" style="width: 180px;"></h:inputTextarea>
+										rows="3" styleClass="textoProceso" style="width: 180px; resize:none;"></h:inputTextarea>
 									<p>Fecha de Creación</p>
 									<h:inputText readonly="true" disabled="true"
 										style="width: 180px;"
@@ -246,6 +246,7 @@ body {
 											<f:facet name="header">
 												<h:outputText value="Cédula"></h:outputText>
 											</f:facet>
+											<i class="icon-user" style="margin-right:5px;"></i>
 											<h:outputText value="#{participacion.usuarioBasico.cedula}"
 												style="color:black; "></h:outputText>
 										</h:column> <h:column>
@@ -314,6 +315,7 @@ body {
 											<f:facet name="header">
 												<h:outputText value="Nombre"></h:outputText>
 											</f:facet>
+											<i class="icon-folder-close" style="margin-right:5px;"></i>
 											<h:commandLink value="#{prueba.nombre}"
 												title="#{prueba.descripcion }" style="color:black; "
 												action="#{procesoEspecificoController.irAPrueba }"></h:commandLink>
@@ -368,6 +370,7 @@ body {
 											<f:facet name="header">
 												<h:outputText value="Cédula"></h:outputText>
 											</f:facet>
+											<i class="icon-user" style="margin-right:5px;"></i>
 											<h:outputText value="#{resultado.usuarioBasico.cedula}"
 												style="color:black; "></h:outputText>
 										</h:column> <h:column>
@@ -483,7 +486,7 @@ body {
 						</div>
 						<div style="margin-top: 5px;">
 							<p>Descripción</p>
-							<h:inputTextarea required="true" style="height: 100px;"
+							<h:inputTextarea required="true" style="height: 100px; resize:none;"
 								value="#{procesoEspecificoController.descripcionPruebaCrear }"></h:inputTextarea>
 						</div>
 

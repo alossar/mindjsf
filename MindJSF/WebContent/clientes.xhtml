@@ -109,7 +109,9 @@ body {
 				</h:form>
 			</div>
 
-			<legend>Clientes</legend>
+			<legend class="legendTitles">
+				<img src="img/icoclientes.png"></img>Clientes
+			</legend>
 			<h:form id="formPanelTablaClientes">
 				<h:dataTable id="panelTablaClientes"
 					rendered="#{not empty clientesController.clientes }"
@@ -121,6 +123,7 @@ body {
 							<f:facet name="header">
 								<h:outputText value="Cédula"></h:outputText>
 							</f:facet>
+							<i class="icon-user" style="margin-right: 5px;"></i>
 							<h:outputText value="#{cliente.cedula }">
 							</h:outputText>
 
@@ -334,7 +337,6 @@ body {
 							actionListener="#{clientesController.eliminarCliente }"
 							onclick="closeDialog ();" rendered="#{not cliente.editar }"
 							style="padding: 5;" value="SI">
-							<f:ajax render=":formPanelTablaClientes:panelTablaClientes" />
 						</h:commandLink>
 					</div>
 

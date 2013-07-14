@@ -1,6 +1,7 @@
 package co.mind.management.shared.recursos;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -12,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 
 import co.mind.management.shared.dto.ParticipacionEnProcesoBO;
 import co.mind.management.shared.dto.ProcesoUsuarioBO;
+import co.mind.management.shared.dto.ResultadoBO;
 import co.mind.management.shared.dto.UsuarioBO;
 
 public class SMTPSender {
@@ -303,6 +305,57 @@ public class SMTPSender {
 			e.printStackTrace();
 			return Convencion.INCORRECTO;
 		}
+	}
+
+	public static int enviarResultados(List<ResultadoBO> resultados) {
+		String host = "smtp.gmail.com";
+		int port = 587;
+		String username = Convencion.CORREO_NOTIFICACION;
+		String password = Convencion.CONTRASENA_NOTIFICACION;
+		Session session = obtenerSesion();
+		try {
+
+			Message message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("no-reply@mindmanagement.co",
+					"Mind Management"));
+			message.setSubject("Recuperacion de Contraseña");
+
+			String respuesta = "<html><head></head><body><center><table>";
+			for (ResultadoBO resultadoBO : resultados) {
+				respuesta += "<tr><td>"
+						+ resultadoBO.getPreguntasUsuario().getPregunta()
+						+ "</td><td>" + resultadoBO.getRespuesta()
+						+ "</td></tr>";
+			}
+			respuesta += "</table></center></body></html>";
+			message.setContent(respuesta, "text/html");
+			Transport transport = session.getTransport("smtp");
+			try {
+				transport.connect(host, port, username, password);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("connection refused");
+				return Convencion.INCORRECTO;
+			}
+
+			transport.sendMessage(message,
+					InternetAddress.parse("raymond.chaux@gmail.com"));
+			System.out.println("Done");
+			return Convencion.CORRECTO;
+		} catch (UnsupportedEncodingException ex) {
+			ex.printStackTrace();
+			return Convencion.INCORRECTO;
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			return Convencion.INCORRECTO;
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			return Convencion.INCORRECTO;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return Convencion.INCORRECTO;
+		}
+
 	}
 
 }

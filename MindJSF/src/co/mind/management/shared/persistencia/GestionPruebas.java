@@ -709,4 +709,75 @@ public class GestionPruebas implements IGestionPruebas {
 		}
 
 	}
+
+	public List<PreguntaUsuarioBO> listarPreguntasDemo(String demo) {
+		String query = "SELECT DISTINCT(u) FROM PruebaUsuario u WHERE u.nombre = :pendiente and u.usuario = :user";
+		Query q = entityManager.createQuery(query);
+		String parametro = "DEMO";
+		if (demo.equalsIgnoreCase("demoa")) {
+			parametro = "DEMO1";
+		} else if (demo.equalsIgnoreCase("demob")) {
+			parametro = "DEMO2";
+		} else if (demo.equalsIgnoreCase("democ")) {
+			parametro = "DEMO3";
+		}
+		Usuario user = entityManager.find(Usuario.class, 1);
+		q.setParameter("pendiente", parametro);
+		q.setParameter("user", user);
+		try {
+			List<PruebaUsuario> pruebas = q.getResultList();
+			PruebaUsuario prueba = pruebas.get(0);
+			entityManager.refresh(prueba);
+			List<PreguntaUsuario> preguntas = prueba.getPreguntasUsuarios();
+			// Valida que se encuentre un usuario.
+			if (preguntas != null) {
+				if (preguntas.size() > 0) {
+					List<PreguntaUsuarioBO> lista = new ArrayList<PreguntaUsuarioBO>();
+					for (int i1 = 0; i1 < preguntas.size(); i1++) {
+						PreguntaUsuario pregunta = preguntas.get(i1);
+						entityManager.refresh(pregunta);
+
+						PruebaUsuarioBO p = new PruebaUsuarioBO();
+						p.setDescripcion(pregunta.getPruebasUsuario()
+								.getDescripcion());
+						p.setIdentificador(pregunta.getPruebasUsuario()
+								.getIdentificador());
+						p.setNombre(pregunta.getPruebasUsuario().getNombre());
+						p.setUsuarioAdministradorID(pregunta
+								.getPruebasUsuario().getUsuario()
+								.getIdentificador());
+
+						PreguntaUsuarioBO preguntaUsuario = new PreguntaUsuarioBO();
+						preguntaUsuario.setCaracteresMaximo(pregunta
+								.getCaracteresMaximo());
+						preguntaUsuario.setIdentificador(pregunta
+								.getIdentificador());
+						preguntaUsuario.setPosicionPreguntaX(pregunta
+								.getPosicionPreguntaX());
+						preguntaUsuario.setPosicionPreguntaY(pregunta
+								.getPosicionPreguntaY());
+						preguntaUsuario.setPregunta(pregunta.getPregunta());
+						preguntaUsuario.setTiempoMaximo(pregunta
+								.getTiempoMaximo());
+						ImagenUsuarioBO imagen = new ImagenUsuarioBO();
+						imagen.setIdentificador(pregunta.getImagenesUsuario()
+								.getIdentificador());
+						ImagenBO img = new ImagenBO();
+						img.setIdentificador(pregunta.getImagenesUsuario()
+								.getImagene().getIdentificador());
+						img.setImagenURI(pregunta.getImagenesUsuario()
+								.getImagene().getImagenURI());
+						imagen.setImagene(img);
+						preguntaUsuario.setImagenesUsuarioID(imagen);
+						preguntaUsuario.setPruebaUsuario(p);
+						lista.add(preguntaUsuario);
+					}
+					return lista;
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

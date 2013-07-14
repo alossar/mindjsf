@@ -111,6 +111,7 @@ body {
 								<div id="tituloProceso"
 									style="text-align: center; margin-left: 13px; margin-bottom: 30px; width: 185px;">
 									<h4>
+										
 										<h:outputText style="font-style:italic;"
 											value="Información de la Cuenta de Usario"></h:outputText>
 									</h4>
@@ -154,7 +155,7 @@ body {
 
 						<div class="span9" id="parrillaInfoProceso">
 							<h:panelGroup rendered="#{autorizacionController.maestro}">
-								<legend>Procesos para Revisar</legend>
+								<legend><img src="img/icocuenta.png"></img>Procesos para Revisar</legend>
 
 								<h:form
 									rendered="#{not empty cuentaController.procesosRevisar }"
@@ -331,7 +332,7 @@ body {
 
 							</h:panelGroup>
 							<h:form styleClass="form-horizontal">
-								<legend>Cambiar Contraseña</legend>
+								<legend><img src="img/icocambioContrasena.png"></img>Cambiar Contraseña</legend>
 
 								<p:accordionPanel activeIndex="-1">
 									<p:tab title="Mostrar">
