@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank A4" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="ab1d72b0-408f-4243-9b2d-9f9663570ad9">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Conexion Mind Management"/>
+	<parameter name="participacionID" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR_PRE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT procesos_usuarios.Identificador as ProcesoID, procesos_usuarios.Nombre as NombreProceso, procesos_usuarios.Descripcion as DescripcionProceso, procesos_usuarios.FechaCreacion as FechaCreacion, procesos_usuarios.fechainicio as FechaInicio, evaluados.Nombres as NombreEvaluado, evaluados.Apellidos as ApellidosEvaluado, evaluados.Cedula as Cedula, evaluados.CorreoElectronico as Correo, participacion_en_proceso.Fecha_Realizacion as FechaPresentacion FROM procesos_usuarios,pruebas_usuarios,participacion_en_proceso,evaluados WHERE participacion_en_proceso.identificador= $P{participacionID} AND participacion_en_proceso.usuarios_basicos_identificador=evaluados.identificador AND participacion_en_proceso.procesos_usuarios_identificador=procesos_usuarios.identificador;]]>
+	</queryString>
+	<field name="NombreProceso" class="java.lang.String"/>
+	<field name="DescripcionProceso" class="java.lang.String"/>
+	<field name="FechaCreacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="FechaInicio" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="NombreEvaluado" class="java.lang.String"/>
+	<field name="ApellidosEvaluado" class="java.lang.String"/>
+	<field name="ProcesoID" class="java.lang.Integer"/>
+	<field name="Cedula" class="java.lang.Integer"/>
+	<field name="Correo" class="java.lang.String"/>
+	<field name="FechaPresentacion" class="java.sql.Timestamp">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<group name="NombreProceso"/>
+	<group name="DescripcionProceso"/>
+	<group name="FechaCreacion"/>
+	<group name="FechaPresentacion"/>
+	<group name="FechaInicio"/>
+	<group name="NombreEvaluado"/>
+	<group name="ApellidosEvaluado"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="82" splitType="Stretch">
+			<rectangle>
+				<reportElement uuid="cd792b95-a4b1-4351-9450-a3775f32299e" stretchType="RelativeToBandHeight" x="0" y="0" width="556" height="80" forecolor="#444444" backcolor="#2E373C"/>
+			</rectangle>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0e9945c4-ef96-4db5-962d-394611934ed3" key="textField" x="136" y="20" width="164" height="19" forecolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Proceso: " +$F{NombreProceso}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0e9945c4-ef96-4db5-962d-394611934ed3" key="textField" x="136" y="40" width="164" height="19" forecolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DescripcionProceso}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0e9945c4-ef96-4db5-962d-394611934ed3" key="textField" x="320" y="20" width="216" height="19" forecolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Evaluado: " +$F{NombreEvaluado} + " " + $F{ApellidosEvaluado}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="705067c3-819b-4062-bd8b-76cb9841b3b8" key="textField" x="320" y="40" width="216" height="19" forecolor="#FFFFFF"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Fecha de Presentación: " +$F{FechaPresentacion}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement uuid="3a02218b-33dc-4a96-a069-cb86957afe25" x="20" y="20" width="98" height="46">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["https://dl.dropboxusercontent.com/u/61881861/logo.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement uuid="31f43b56-02f4-432a-b805-44695a2289a3" x="498" y="12" width="38" height="27">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["https://dl.dropboxusercontent.com/u/61881861/matrix.png"]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="61" splitType="Stretch">
+			<subreport>
+				<reportElement uuid="64ce8a9c-a970-41aa-bd00-bee67c5aa061" x="0" y="10" width="556" height="40"/>
+				<subreportParameter name="procesoID">
+					<subreportParameterExpression><![CDATA[$F{ProcesoID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="participacionID">
+					<subreportParameterExpression><![CDATA[$P{participacionID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="SUBREPORT_DIR_PRE">
+					<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR_PRE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[new File($P{SUBREPORT_DIR})]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="45" splitType="Stretch">
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement uuid="beeed503-3618-44c3-ad13-245d1d15113c" x="20" y="15" width="145" height="14" forecolor="#000000"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="5bcf8ca2-fc39-48e1-9669-f3399c5b6efa" x="396" y="9" width="70" height="30" forecolor="#000000"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Página " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="714e57cb-2c45-476f-8da3-09a9f76c09f0" x="466" y="9" width="70" height="30" forecolor="#000000"/>
+				<textElement textAlignment="Left">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" de " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2c3ab01a-f308-46ff-ad9e-4d3cd968c9af" x="214" y="14" width="128" height="20" forecolor="#000000"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[www.mindmanagement.co]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

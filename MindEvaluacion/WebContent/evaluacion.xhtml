@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<title>Mind Management</title>
+	<link rel="stylesheet" href="css/2mstyle.css" />
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen" />
+	<link href="css/bootstrap-responsive.css" rel="stylesheet" />
+
+	<!--[if IE 8]>
+  <script src="js/html5shiv.js"></script>
+  <link rel="stylesheet" href="css/2mstyleIE8.css"/>
+<![endif]-->
+</h:head>
+<body>
+	<div id="wrap">
+		<div class="container" style="width: 900px;">
+			<div class="contenedorEvaLaminas">
+
+
+				<h:form id="formEvaluacion">
+					<h:graphicImage rendered="#{evaluacionController.enPregunta}"
+						library="images"
+						name="#{evaluacionController.preguntaActual.imagenesUsuario.imagen.imagenURI }" />
+					<h:graphicImage rendered="#{not evaluacionController.enPregunta}"
+						value="images/img/#{evaluacionController.imagenInstruccion}" />
+					<div id="panelEvaLamina">
+						<div id="espacioPreguntaEva">
+							<h:outputText value="Su respuesta"
+								rendered="#{evaluacionController.enPregunta}" />
+							<p:inputTextarea id="espacioTextoPreguntaEva"
+								maxlength="#{evaluacionController.caracteresMaximo}"
+								rendered="#{evaluacionController.enPregunta}" counter="counter"
+								counterTemplate="{0} caracteres restantes."
+								value="#{evaluacionController.respuesta}"
+								style="width:700px; height:75px; resize: none;"
+								autoResize="false"></p:inputTextarea>
+							<h:outputText id="counter"
+								rendered="#{evaluacionController.enPregunta}" />
+						</div>
+						<div id="espacioTiempoYCantidad"></div>
+						<div id="botSiguienteLaminaEva">
+							<p:commandLink styleClass="btn btn-inverse"
+								update="formEvaluacion"
+								rendered="#{evaluacionController.enPregunta}"
+								style="height:46px;	margin-top:33px; vertical-align:middle"
+								actionListener="#{evaluacionController.guardarResultado}"
+								value="Siguiente">
+							</p:commandLink>
+							<p:commandLink styleClass="btn btn-inverse"
+								rendered="#{not evaluacionController.enPregunta}"
+								update="formEvaluacion"
+								style="height:46px;	margin-top:33px; vertical-align:middle"
+								actionListener="#{evaluacionController.cerrarInstruccion}"
+								value="Continuar">
+							</p:commandLink>
+						</div>
+
+					</div>
+					<h:panelGroup rendered="#{evaluacionController.enPregunta}">
+						<div id="espacioPregunta">
+
+							<p:scrollPanel style="height:100%;  padding:10px; " mode="native"
+								rendered="#{evaluacionController.enPregunta}">
+								<h:outputText value="#{evaluacionController.pregunta}" />
+							</p:scrollPanel>
+
+						</div>
+						<div id="timerEva">
+							<p>
+								<h:outputText id="tiempoActual"
+									value="#{evaluacionController.tiempoRepresentado} #{evaluacionController.unidadRepresentada}"></h:outputText>
+							</p>
+							<p:poll interval="1"
+								listener="#{evaluacionController.actualizarTiempo}"
+								rendered="#{evaluacionController.enPregunta}"
+								update="tiempoActual" />
+						</div>
+					</h:panelGroup>
+					<p:poll interval="#{evaluacionController.tiempoMaximo}"
+						listener="#{evaluacionController.guardarResultado}"
+						rendered="#{evaluacionController.enPregunta}"
+						update="formEvaluacion" />
+
+				</h:form>
+
+
+
+			</div>
+			<!-- Cierro contenedor ver Laminas -->
+		</div>
+	</div>
+
+	<!-- Le javascript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+
+	<script src="http://code.jquery.com/jquery.js"></script>
+	<script src="js/bootstrap.js"></script>
+</body>
+</html>

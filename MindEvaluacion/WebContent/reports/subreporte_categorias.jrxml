@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank A4" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="289be1dc-d126-42e6-853c-bb64626d392f">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Conexion Mind Management"/>
+	<parameter name="procesoID" class="java.lang.String"/>
+	<parameter name="participacionID" class="java.lang.String"/>
+	<parameter name="SUBREPORT_DIR_PRE" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT DISTINCT pruebas_usuarios.nombre as Prueba, pruebas_usuarios.identificador as PruebaID FROM pruebas_usuarios, procesos_usuarios_has_pruebas_usuarios, procesos_usuarios WHERE procesos_usuarios.identificador= $P{procesoID} AND procesos_usuarios.identificador=procesos_usuarios_has_pruebas_usuarios.procesos_usuarios_identificador AND procesos_usuarios_has_pruebas_usuarios.pruebas_usuarios_identificador=pruebas_usuarios.identificador;]]>
+	</queryString>
+	<field name="Prueba" class="java.lang.String"/>
+	<field name="PruebaID" class="java.lang.Integer"/>
+	<group name="Prueba"/>
+	<group name="PruebaID"/>
+	<detail>
+		<band height="99" splitType="Stretch">
+			<image>
+				<reportElement uuid="82bcf354-15c1-4840-b5ad-a4d0ad91453b" x="187" y="2" width="180" height="58">
+					<property name="local_mesure_unitwidth" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="local_mesure_unitheight" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA["https://dl.dropboxusercontent.com/u/61881861/barraTitulo.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="34ef02a6-df9c-4f58-9747-05968424ad2a" key="staticText-1" x="0" y="14" width="554" height="20" forecolor="#000000">
+					<property name="local_mesure_unity" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<text><![CDATA[Prueba]]></text>
+			</staticText>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="0e9945c4-ef96-4db5-962d-394611934ed3" key="textField" x="0" y="27" width="555" height="20">
+					<property name="local_mesure_unity" value="pixel"/>
+				</reportElement>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="9" isBold="false" isItalic="true" pdfFontName="Helvetica-Bold"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{Prueba}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement uuid="88b9c765-6823-45de-89c8-012cf9da6aa1" x="20" y="60" width="490" height="30"/>
+				<subreportParameter name="participacionID">
+					<subreportParameterExpression><![CDATA[$P{participacionID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="pruebaID">
+					<subreportParameterExpression><![CDATA[$F{PruebaID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[new File($P{SUBREPORT_DIR_PRE})]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

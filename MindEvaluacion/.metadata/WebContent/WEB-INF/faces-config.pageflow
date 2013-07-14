@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13709124336360" configfile="/MindEvaluacion/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="login" x="60" y="312" id="pf13709125077831" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13709125077833" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="evaluacion" x="216" y="312" id="pf13709125077835" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf13737815854820" inlinks="pf13709125077833" path="/evaluacion.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="end.xhtml" x="360" y="312" id="pf13737815854821" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" inlinks="pf13737815854820" path="/end.xhtml"/>
+  <links id="pf13709125077833" target="pf13709125077835" source="pf13709125077831" outcome="evaluacion" redirect="true"/>
+  <links id="pf13737815854820" target="pf13737815854821" source="pf13709125077835" outcome="end" redirect="true"/>
+</pageflow:Pageflow>

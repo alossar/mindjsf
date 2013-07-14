@@ -1,0 +1,2081 @@
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+header,section,footer {
+	display: block;
+}
+
+body {
+	background: white;
+	background: rgb(58, 167, 201);
+	margin: auto auto;
+	-webkit-user-select: none;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+#cuerpo {
+	position: relative;
+	width: 600px;
+	height: 600px;
+	margin: 20px auto;
+}
+
+#registro {
+	box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+	position: absolute;
+	width: 300px;
+	height: 250px;
+	border-radius: 5px;
+	top: 200px;
+	left: 150px;
+	background-color: white;
+}
+
+#ingresar {
+	margin-top: 60px;
+}
+
+#ingresar li {
+	list-style: none;
+	margin: 20px auto;
+	width: 150px;
+}
+
+#ingresar p {
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 12px;
+}
+
+#entrar {
+	margin-left: 25px;
+	width: 100px;
+	height: 40px;
+}
+
+#entrar:hover {
+	cursor: pointer;
+	box-shadow: 0px 0px 10px rgba(58, 167, 201, 1);
+}
+
+#titulo {
+	position: absolute;
+	top: 125px;
+	left: 170px;
+}
+/*Animaciones*/
+#fondo {
+	margin: 25px 25px;
+	-webkit-transition: all 3s ease-in-out;
+	-moz-transition: all 3s ease-in-out;
+	-o-transition: all 3s ease-in-out;
+}
+
+#fondo:hover {
+	-webkit-transform: rotate(360deg);
+	-moz-transform: rotate(360deg);
+	-o-transform: rotate(360deg);
+}
+/*footer*/
+#footer {
+	width: 200px;
+	height: 15px;
+	margin-left: 200px;
+	/*background-color:white;*/
+}
+
+#footer p {
+	font-family: Arial;
+	font-size: 12px;
+	margin-left: 25%;
+	color: white;
+}
+
+#superFondoBlanco {
+	position: absolute;
+	z-index: 100;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.3);
+}
+/*--------------PANEL ADMIN---------------------*/
+/*---Nav---*/
+#navAdmin {
+	width: auto;
+	height: 34px;
+	background-color: rgb(58, 167, 201);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+	z-index: 5;
+}
+
+#adminLogo {
+	margin-top: 8px;
+	margin-left: 10px;
+	float: left;
+}
+
+#adminLogo:hover {
+	cursor: pointer;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+/*---Lista---*/
+#listaFunciones {
+	float: right;
+	margin-right: 0px;
+}
+
+#listaFunciones li {
+	list-style: none;
+	margin-left: 10px;
+	margin-right: 0px;
+	float: left;
+	font-family: Arial;
+}
+
+#listaFunciones li:hover {
+	cursor: pointer;
+	outline-style: solid;
+	outline-width: 1px;
+	outline-color: rgba(250, 250, 250, 0.4);
+}
+
+#listaFunciones li:active {
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+#listaFunciones li:nth-child (6){
+	margin-left: 0px;
+}
+
+#listaFuncionesUser {
+	width: 120px;
+	height: 37px;
+	/*background-color: rgba(255,255,255,0.1);*/
+}
+
+#listaFuncionesUser p {
+	color: white;
+	font-family: Arial;
+	font-size: 12px;
+	padding-top: 10px;
+	text-align: center;
+}
+
+/*#listaFunciones li:last-child{
+	margin-left:30px;
+	margin-right:15px;
+	padding-top: 8px;	
+}
+#listaFunciones li a{
+	font-family: Arial;
+	font-weight: bold;
+	color:white;
+	font-size: 12px;
+	font-style: none;
+	float:right;
+}*/
+#cerrarSesion {
+	height: 34px;
+	width: 20px;
+	margin-top: 0px;
+	padding-left: 7px;
+	border-left-style: solid;
+	border-width: 1px;
+	border-color: rgba(255, 255, 255, 0.5);
+}
+
+#lcerrarSesion:active {
+	background-color: rgba(255, 0, 0);
+}
+
+#cerrarSesion p {
+	font-size: 12px;
+	font-style: italic;
+	margin: 0px;
+	padding-top: 10px;
+	padding-left: 2px;
+	color: rgb(255, 255, 255);
+}
+
+#cerrarSesion:hover {
+	color: white;
+	background-color: rgba(255, 0, 0, 0.7);
+}
+/*---Panel---*/
+#panelAdmin {
+	position: absolute;
+	z-index: 1;
+	top: 34px;
+	width: 240px;
+	/*height:94.7%;*/
+	height: 570px;
+	background-color: rgb(247, 247, 247);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.9);
+}
+
+#info1 {
+	height: 98px;
+	background-color: white;
+	/*border-style:solid;*/
+	border-bottom-style: solid;
+	border-color: rgba(91, 91, 91, 0.2);
+	border-width: 1px;
+}
+
+#info1 p {
+	margin-left: 10px;
+	font-family: Arial;
+	font-size: 12px;
+}
+
+#titP1  p {
+	padding-top: 7px;
+	padding-bottom: 7px;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 14px;
+	color: rgb(58, 167, 201);
+}
+
+#userP p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+#userPDinamic p {
+	color: rgb(58, 167, 201);
+	font-style: italic;
+	margin-left: 15px;
+}
+
+#empresaP p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+#empresaPDinamic p {
+	color: rgb(58, 167, 201);
+	font-style: italic;
+	margin-left: 8px;
+}
+
+#emailP p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+#emailPDinamic p {
+	color: rgb(58, 167, 201);
+	font-style: italic;
+	margin-left: 27px;
+}
+
+#info2 {
+	height: 98px;
+	/*border-style:solid;*/
+	border-width: 1px;
+	border-bottom-style: solid;
+	border-color: rgba(91, 91, 91, 0.2);
+	border-width: 1px;
+}
+
+#info2 p {
+	margin-left: 10px;
+	font-family: Arial;
+	font-size: 12px;
+}
+
+#tit2P  p {
+	padding-top: 7px;
+	padding-bottom: 7px;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 14px;
+	color: rgb(58, 167, 201);
+}
+
+#estadoP p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+#estadoPDinamic p {
+	color: rgb(58, 167, 201);
+	font-style: italic;
+	float: right;
+	margin-right: 15px;
+}
+
+#planP p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+#planPDinamic p {
+	color: rgb(58, 167, 201);
+	font-style: italic;
+	margin-left: 110px;
+}
+
+#planPDinamic img {
+	float: right;
+	margin-right: 15px;
+}
+
+#usosP p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+#usosPDinamic p {
+	color: rgb(58, 167, 201);
+	font-style: italic;
+	margin-left: 126px;
+}
+
+#usosPDinamic img {
+	float: right;
+	margin-right: 15px;
+}
+
+/*info 2 Master*/
+#solicitudP p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+#solicitudPDinamic p {
+	color: rgb(58, 167, 201);
+	font-style: italic;
+	float: right;
+	margin-right: 15px;
+}
+
+#clientesP p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+#clientesPDinamic p {
+	color: rgb(58, 167, 201);
+	font-style: italic;
+	float: right;
+	margin-right: 15px;
+}
+
+#activosP p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+#activosPDinamic p {
+	color: rgb(58, 167, 201);
+	font-style: italic;
+	float: right;
+	margin-right: 15px;
+}
+
+/*-----------Evaluaciones Disponnibles------------*/
+#contenedorEvaluacionesDisponibles {
+	height: 81px;
+	background-color: black;
+}
+
+#info3 {
+	height: 128px;
+	border-bottom-style: solid;
+	border-color: rgba(91, 91, 91, 0.2);
+	border-width: 1px;
+}
+
+#info3 p {
+	margin-left: 10px;
+	font-family: Arial;
+	font-size: 12px;
+}
+
+#info3 img {
+	margin-left: 10px;
+}
+
+#tit3P p {
+	padding-top: 7px;
+	padding-bottom: 7px;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 14px;
+	color: rgb(58, 167, 201);
+}
+/*-----------CLASE DE EVALUACIONES PARA CREAR VARIAS DE ELLAS------------*/
+.pruebaP img {
+	float: left;
+}
+
+.pruebaPDinamic p {
+	color: rgb(91, 91, 91);
+	float: left;
+}
+
+.pruebaPDinamic img {
+	float: right;
+	margin-right: 15px;
+}
+/*----------- ZOna de PRUEBAS ------------*/
+#info4 {
+	height: 134px;
+}
+
+#info4 p {
+	margin-left: 10px;
+	font-family: Arial;
+	font-size: 12px;
+}
+
+#tit4P p {
+	padding-top: 7px;
+	padding-bottom: 7px;
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 14px;
+	color: rgb(58, 167, 201);
+}
+/*----------------------Ver Pruebas------------------*/
+#verPruebasP img {
+	margin-left: 10px;
+	float: left;
+}
+
+#verPruebasP {
+	height: 34px;
+	margin-bottom: 15px;
+}
+
+#verPruebasP h3 {
+	float: left;
+	font-size: 12px;
+	font-family: Arial;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(58, 167, 201);
+}
+
+#verPruebasP p {
+	margin-left: 0px;
+	font-size: 10px;
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+}
+
+#verPruebasP:hover {
+	cursor: pointer;
+	margin-left: 2px;
+}
+/*----------------------Ver Pruebas------------------*/
+#editarPruebasP img {
+	margin-left: 10px;
+	float: left;
+}
+
+#editarPruebasP {
+	height: 34px;
+	margin-bottom: 15px;
+}
+
+#editarPruebasP h3 {
+	float: left;
+	font-size: 12px;
+	font-family: Arial;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(58, 167, 201);
+}
+
+#editarPruebasP p {
+	margin-left: 0px;
+	font-size: 10px;
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+}
+
+#editarPruebasP:hover {
+	cursor: pointer;
+	margin-left: 2px;
+}
+/*----------------------CREAR------------------*/
+#crearP img {
+	margin-left: 10px;
+	float: left;
+}
+
+#crearP {
+	height: 34px;
+	margin-bottom: 15px;
+}
+
+#crearP h3 {
+	float: left;
+	font-size: 12px;
+	font-family: Arial;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(58, 167, 201);
+}
+
+#crearP p {
+	margin-left: 0px;
+	font-size: 10px;
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+}
+
+#crearP:hover {
+	cursor: pointer;
+	margin-left: 2px;
+}
+/*-----------------------VER---------------*/
+#verP img {
+	margin-left: 10px;
+	float: left;
+}
+
+#verP {
+	height: 34px;
+	margin-bottom: 15px;
+}
+
+#verP h3 {
+	float: left;
+	font-size: 12px;
+	font-family: Arial;
+	margin-top: 10px;
+	margin-left: 10px;
+	color: rgb(58, 167, 201);
+}
+
+#verP p {
+	margin-left: 0px;
+	font-size: 10px;
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+}
+
+#verP:hover {
+	cursor: pointer;
+	margin-left: 2px;
+}
+/*-----------------------CLIENTE---------------*/
+#clienteP img {
+	margin-left: 10px;
+	float: left;
+}
+
+#clienteP {
+	height: 34px;
+	margin-bottom: 15px;
+}
+
+#clienteP h3 {
+	float: left;
+	font-size: 12px;
+	font-family: Arial;
+	margin-top: 10px;
+	margin-left: 10px;
+	color: rgb(58, 167, 201);
+}
+
+#clienteP p {
+	margin-left: 0px;
+	font-size: 10px;
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+}
+
+#clienteP:hover {
+	cursor: pointer;
+	margin-left: 2px;
+}
+/*-----------------------Programador---------------*/
+#progP img {
+	margin-left: 10px;
+	float: left;
+}
+
+#progP {
+	height: 34px;
+	padding-bottom: 15px;
+	border-bottom-style: solid;
+	border-color: rgba(91, 91, 91, 0.2);
+	border-width: 1px;
+}
+
+#progP h3 {
+	float: left;
+	font-size: 12px;
+	font-family: Arial;
+	margin-top: 10px;
+	margin-left: 10px;
+	color: rgb(58, 167, 201);
+}
+
+#progP p {
+	margin-left: 0px;
+	font-size: 10px;
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+}
+
+#progP:hover {
+	cursor: pointer;
+	margin-left: 2px;
+}
+/*-----------------------CREAR CLIENTE---------------*/
+#clienteCrearP img {
+	margin-left: 10px;
+	float: left;
+}
+
+#clienteCrearP {
+	height: 34px;
+	padding-bottom: 15px;
+}
+
+#clienteCrearP h3 {
+	float: left;
+	font-size: 12px;
+	font-family: Arial;
+	margin-top: 10px;
+	margin-left: 10px;
+	color: rgb(58, 167, 201);
+}
+
+#clienteCrearP p {
+	margin-left: 0px;
+	font-size: 10px;
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+}
+
+#clienteCrearP:hover {
+	cursor: pointer;
+	margin-left: 2px;
+}
+/*-----------------------Boton Cerrar Sesión---------------*/
+#info5 {
+	height: 110px;
+	position: relative;
+}
+
+#botCerrarP {
+	position: absolute;
+	width: 130px;
+	height: 35px;
+	left: 48px;
+	top: 58px;
+	border-radius: 5px;
+	background-color: rgb(168, 168, 168);
+}
+
+#botCerrarP p {
+	margin-left: 25px;
+	padding-top: 10px;
+	font-size: 12px;
+	font-family: Arial;
+	font-weight: regular;
+	color: white;
+}
+
+#botCerrarP:hover {
+	cursor: pointer;
+	background-color: rgb(244, 14, 54);
+}
+/*---------------Bot Mas----------------*/
+.botMasP:hover {
+	cursor: pointer;
+}
+/*---------------Bot Configuracion----------------*/
+.botConfigP {
+	cursor: pointer;
+}
+
+.botConfigP img {
+	float: right;
+}
+/*---------------Ventana de Solicitud----------------*/
+#ventanaSolicitudP {
+	position: absolute;
+	top: 150px;
+	left: 580px;
+	width: 300px;
+	height: 254px;
+	background-color: white;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+}
+
+#ventanaSolicitudPBarra {
+	position: relative;
+	height: 37px;
+	background-color: rgb(58, 167, 201);
+}
+
+#ventanaSolicitudPBarra p {
+	font-family: Arial;
+	font-size: 16px;
+	position: absolute;
+	font-weight: bold;
+	top: 8px;
+	left: 110px;
+	color: white;
+}
+
+#botCerrarVentanaSolicitud {
+	position: absolute;
+	top: 6px;
+	left: 280px;
+	font-family: Arial;
+	font-size: 14px;
+	font-style: italic;
+	color: white;
+}
+
+#botCerrarVentanaSolicitud:hover {
+	cursor: pointer;
+}
+
+#ventTextOrg {
+	margin-top: 10px;
+	margin-left: 10px;
+}
+
+#ventTextOrg p {
+	font-size: 12px;
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+}
+/*--Bot Enviar-*/
+#botEntrarVentP {
+	position: absolute;
+	width: 71px;
+	height: 34px;
+	background-color: rgb(58, 167, 201);
+	top: 190px;
+	left: 115px;
+}
+
+#botEntrarVentP:hover {
+	cursor: pointer;
+	background-color: rgb(59, 183, 33);
+}
+
+#botEntrarVentP p {
+	margin-top: 9px;
+	margin-left: 19px;
+	color: white;
+}
+
+#textSolicitudEnviar {
+	margin-top: 10px;
+	width: 276px;
+	height: 74px;
+	resize: none;
+}
+
+#textUsosP p {
+	margin-bottom: 5px;
+	margin-right: 10px;
+	float: left;
+}
+
+#textCambiosP p {
+	float: left;
+	margin-right: 10px;
+}
+/*---------------------------------Mostrador--------------------------------*/
+#logoFrontal {
+	position: absolute;
+	left: 410px;
+}
+
+#mostradorAdmin {
+	position: absolute;
+	z-index: 0;
+	top: 34px;
+	left: 0px;
+	height: 570px;
+	width: 100%;
+	background-color: white;
+}
+/*---Mostrador Crear Programador---*/
+#progPMos img {
+	float: left;
+}
+
+#progPMos {
+	width: 80%;
+	height: 60px;
+	margin-top: 20px;
+	margin-left: 260px;
+	margin-bottom: 15px;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: rgba(42, 147, 183, 0.4);
+}
+
+#progPMos h3 {
+	float: left;
+	font-size: 22px;
+	font-family: Myriad Pro;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(42, 147, 183);
+}
+
+#progPMos p {
+	margin-left: 0px;
+	margin-top: -4px;
+	font-size: 12px;
+	font-style: none;
+	font-family: Arial;
+	font-style: italic;
+	color: rgb(91, 91, 91);
+}
+
+#progMosInfo {
+	position: absolute;
+	top: 100px;
+	width: 70%;
+	height: 450px;
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+.progInfoM {
+	margin-top: 25px;
+	margin-left: 65px;
+}
+
+.progInfoM p {
+	color: rgb(91, 91, 91);
+}
+
+#botCrearProgMostrador {
+	position: absolute;
+	top: 398px;
+	left: 652px;
+	width: 100px;
+	height: 37px;
+	border-radius: 3px;
+	background-color: rgb(59, 183, 33);
+}
+
+#botCrearProgMostrador p {
+	font-style: normal;
+	font-size: 14px;
+	margin: 10px 32px;
+	color: white;
+}
+
+#botCrearProgMostrador:hover {
+	background-color: rgb(59, 200, 33);
+	cursor: pointer;
+}
+/*-----Mostrador VerPruebas------*/
+#verPruebasPMos img {
+	float: left;
+}
+
+#verPruebasPMos {
+	width: 80%;
+	height: 60px;
+	margin-top: 20px;
+	margin-left: 260px;
+	margin-bottom: 15px;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: rgba(42, 147, 183, 0.4);
+}
+
+#verPruebasPMos h3 {
+	float: left;
+	font-size: 22px;
+	font-family: Myriad Pro;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(42, 147, 183);
+}
+
+#verPruebasPMos p {
+	margin-left: 0px;
+	margin-top: -4px;
+	font-size: 12px;
+	font-style: none;
+	font-family: Arial;
+	font-style: italic;
+	color: rgb(91, 91, 91);
+}
+
+#verPruebasMosInfo {
+	position: absolute;
+	top: 100px;
+	width: 70%;
+	height: 450px;
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+.verPruebasInfoM {
+	margin-top: 25px;
+	margin-left: 65px;
+}
+
+.verPruebasInfoM p {
+	color: rgb(91, 91, 91);
+}
+/*-----Mostrador Editar Pruebas------*/
+#editarPruebasPMos img {
+	float: left;
+}
+
+#editarPruebasPMos {
+	width: 80%;
+	/*height:60px;*/
+	margin-top: 20px;
+	margin-left: 15px;
+	margin-bottom: 0x;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: rgba(42, 147, 183, 0.4);
+}
+
+#editarPruebasPMos h3 {
+	float: left;
+	font-size: 22px;
+	font-family: Myriad Pro;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(42, 147, 183);
+}
+
+#editarPruebasPMos p {
+	margin-left: 0px;
+	margin-top: -4px;
+	font-size: 12px;
+	font-style: none;
+	font-family: Arial;
+	font-style: italic;
+	color: rgb(91, 91, 91);
+}
+
+#editarPruebasMosInfo1 {
+	position: absolute;
+	top: 30px;
+	width: 97%;
+	height: 525px;
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+#editarPruebasMosInfo2 {
+	float: right;
+	top: 30px;
+	width: 120px;
+	height: 400px;
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+#editarPruebasMosInfo3 {
+	float: left;
+	top: 30px;
+	width: 120px;
+	height: 400px;
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+.editarPruebasInfoM {
+	margin-top: 25px;
+	margin-left: 65px;
+}
+
+.editarPruebasInfoM p {
+	color: rgb(91, 91, 91);
+}
+/*---------Mostrador Crear---------*/
+#crearPMos img {
+	float: left;
+}
+
+#crearPMos {
+	width: 80%;
+	height: 60px;
+	margin-top: 20px;
+	margin-left: 260px;
+	margin-bottom: 15px;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: rgba(42, 147, 183, 0.4);
+}
+
+#crearPMos h3 {
+	float: left;
+	font-size: 22px;
+	font-family: Myriad Pro;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(42, 147, 183);
+}
+
+#crearPMos p {
+	margin-left: 0px;
+	margin-top: -4px;
+	font-size: 12px;
+	font-style: none;
+	font-family: Arial;
+	font-style: italic;
+	color: rgb(91, 91, 91);
+}
+
+#crearMosInfo {
+	position: absolute;
+	top: 100px;
+	width: 70%;
+	height: 450px;
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+.crearInfoM {
+	margin-top: 25px;
+	margin-left: 65px;
+}
+
+.crearInfoM p {
+	color: rgb(91, 91, 91);
+}
+
+#listContactosMC p {
+	float: left;
+}
+
+.crearPMos:nth-child (1n){
+	margin-top: 0px;
+}
+
+#botCrearPruebaMostrador {
+	position: absolute;
+	top: 398px;
+	left: 652px;
+	width: 100px;
+	height: 37px;
+	border-radius: 3px;
+	background-color: rgb(59, 183, 33);
+}
+
+#botCrearPruebaMostrador p {
+	font-style: normal;
+	font-size: 14px;
+	margin: 10px 32px;
+	color: white;
+}
+
+#botCrearPruebaMostrador:hover {
+	background-color: rgb(59, 200, 33);
+	cursor: pointer;
+}
+
+#personasCM {
+	margin-bottom: 0px;
+}
+/*--------------------Vent Lista de contactos-------------------*/
+#procesoCM p { /*float:left;*/
+	
+}
+
+#panelContactos {
+	position: absolute;
+	left: 720px;
+	top: 80px;
+	width: 250px;
+	height: 320px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#panelContactos p {
+	font-family: Arial;
+	font-size: 12px;
+	color: rgb(91, 91, 91);
+}
+
+#listContactosMC p {
+	margin-top: 3px;
+	color: rgb(58, 167, 225);
+	/*margin-left:100px;*/
+}
+
+#barraCont {
+	height: 37px;
+	background-color: rgb(58, 167, 201);
+}
+
+#tituloContacto h2 {
+	font-family: Arial;
+	font-weight:;
+	font-size: 16px;
+	color: white;
+	margin-left: 85px;
+	padding-top: 8px;
+}
+
+#tituloContacto p {
+	font-family: Arial;
+	font-size: 12px;
+	margin-top: 38px;
+	margin-left: 15px;
+	font-weight: bold;
+	color: rgb(58, 167, 201);
+}
+
+#botCerrarContactos {
+	font-family: Arial;
+	font-style: italic;
+	font-weight: normal;
+	font-size: 14px;
+	position: absolute;
+	left: 230px;
+	top: 10px;
+	color: white;
+}
+
+#botCerrarContactos:hover {
+	cursor: pointer;
+}
+
+#miLista {
+	position: absolute;
+	top: 90px;
+	left: 10px;
+}
+
+.userPA input {
+	float: left;
+	margin-left: 6px;
+}
+
+.userPDinamic {
+	float: left;
+	margin-left: 10px;
+}
+
+#userAgregar {
+	margin-left: 5px;
+	margin-top: 150px;
+}
+
+#userAgregar img {
+	float: left;
+	margin-right: 5px;
+}
+
+#userAgregar p {
+	padding-top: 3px;
+	font-style: italic;
+}
+
+#userAgregar p:hover {
+	color: rgb(58, 167, 225);
+}
+/*---------------------------Vent Lista Pruebas---------------------------*/
+#panelPruebas {
+	position: absolute;
+	left: 720px;
+	top: 80px;
+	width: 250px;
+	height: 320px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#panelPruebas p {
+	font-family: Arial;
+	font-size: 12px;
+	color: rgb(91, 91, 91);
+}
+
+#listPruebasMC p {
+	margin-top: 3px;
+	color: rgb(58, 167, 225);
+	/*margin-left:100px;*/
+}
+
+#barraPrueba {
+	height: 37px;
+	background-color: rgb(58, 167, 201);
+}
+
+#tituloPruebas h2 {
+	font-family: Arial;
+	font-weight:;
+	font-size: 16px;
+	color: white;
+	margin-left: 85px;
+	padding-top: 8px;
+}
+
+#tituloPruebas p {
+	font-family: Arial;
+	font-size: 12px;
+	margin-top: 38px;
+	margin-left: 15px;
+	font-weight: bold;
+	color: rgb(58, 167, 201);
+}
+
+#botCerrarPruebas {
+	font-family: Arial;
+	font-style: italic;
+	font-weight: normal;
+	font-size: 14px;
+	position: absolute;
+	left: 230px;
+	top: 10px;
+	color: white;
+}
+
+#botCerrarPruebas:hover {
+	cursor: pointer;
+}
+
+#miListaP {
+	position: absolute;
+	top: 90px;
+	left: 10px;
+}
+
+.pruebaPA input {
+	float: left;
+	margin-left: 6px;
+}
+
+.pruebaPDinamic {
+	float: left;
+	margin-left: 10px;
+}
+
+#pruebaAgregar {
+	margin-left: 5px;
+	margin-top: 150px;
+}
+
+#pruebaAgregar img {
+	float: left;
+	margin-right: 5px;
+}
+
+#pruebaAgregar p {
+	padding-top: 3px;
+	font-style: italic;
+	width: 120px;
+}
+
+#pruebaAgregar p:hover {
+	color: rgb(58, 167, 225);
+}
+
+#pruebaAgregar:hover {
+	cursor: pointer;
+	color: rgb(58, 167, 225);
+}
+
+#botAgregarPruebas {
+	position: absolute;
+	top: 270px;
+	left: 75px;
+	width: 100px;
+	height: 37px;
+	border-radius: 3px;
+	background-color: rgb(58, 167, 201);
+}
+
+#botAgregarPruebas p {
+	font-style: normal;
+	font-size: 14px;
+	margin: 10px 25px;
+	color: white;
+}
+
+#botAgregarPruebas:hover {
+	background-color: rgb(200, 200, 200);
+	cursor: pointer;
+	color: black;
+}
+/*---------------------------------------------------------------------*/
+#listContactosMC p {
+	cursor: pointer;
+}
+/*Lista de Purebas*/
+#listPruebasMC p {
+	color: rgb(58, 167, 225);
+	margin-top: 3px;
+}
+
+#listPruebasMC p {
+	cursor: pointer;
+}
+/*Varaible Tiempo*/
+#variableCM p {
+	margin-top: 3px;
+	color: rgb(58, 167, 225);
+}
+
+#userAgregar:hover {
+	cursor: pointer;
+	color: rgb(58, 167, 225);
+}
+
+#botAgregarContactos {
+	position: absolute;
+	top: 270px;
+	left: 75px;
+	width: 100px;
+	height: 37px;
+	border-radius: 3px;
+	background-color: rgb(58, 167, 201);
+}
+
+#botAgregarContactos p {
+	font-style: normal;
+	font-size: 14px;
+	margin: 10px 25px;
+	color: white;
+}
+
+#botAgregarContactos:hover {
+	background-color: rgb(200, 200, 200);
+	cursor: pointer;
+	color: black;
+}
+
+#ventanaAgregarContacto {
+	width: 298px;
+	height: 117px;
+	position: absolute;
+	left: 980px;
+	top: 200px;
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#ventanaAgregarContacto p {
+	font-family: Arial;
+	font-weight: bold;
+	font-size: 14px;
+	color: white;
+	margin-left: 95px;
+	padding-top: 10px;
+}
+
+#agregarCerrar p {
+	font-family: Arial;
+	font-style: italic;
+	font-weight: normal;
+	font-size: 16px;
+	color: white;
+	position: absolute;
+	left: 180px;
+	top: -1px;
+}
+
+#agregarCerrar p:hover {
+	cursor: pointer;
+}
+
+#escribirAgregar {
+	width: 172px;
+	height: 21px;
+	margin-left: 30px;
+	margin-top: 30px;
+	top: 35px;
+	resize: none;
+}
+
+#botEscribirAgregar {
+	position: absolute;
+	top: 67px;
+	left: 204px;
+	width: 62px;
+	height: 23px;
+	background-color: rgb(58, 167, 201);
+}
+
+#botEscribirAgregar p {
+	color: white;
+	margin-top: -6px;
+	margin-left: 7px;
+	font-family: Arial;
+	font-size: 12px;
+}
+
+#botEscribirAgregar:hover {
+	cursor: pointer;
+	background-color: rgb(200, 200, 201);
+}
+/*---Mostrador Ver---*/
+#verPMos img {
+	float: left;
+}
+
+#verPMos {
+	width: 80%;
+	height: 60px;
+	margin-top: 20px;
+	margin-left: 260px;
+	margin-bottom: 15px;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: rgba(42, 147, 183, 0.4);
+}
+
+#verPMos h3 {
+	float: left;
+	font-size: 22px;
+	font-family: Myriad Pro;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(42, 147, 183);
+}
+
+#verPMos p {
+	margin-left: 0px;
+	margin-top: -4px;
+	font-size: 12px;
+	font-style: none;
+	font-family: Arial;
+	font-style: italic;
+	color: rgb(91, 91, 91);
+}
+
+.infoPru {
+	padding-bottom: 5px;
+}
+/*--------VER PRUEBAS--------*/
+#panelVerPruebas {
+	position: absolute;
+	top: 100px;
+	width: 70%;
+	height: 450px;
+	box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+#panelInfoPruebas {
+	position: absolute;
+	width: 240px;
+	top: 50px;
+	left: 15px;
+}
+
+#panelInfoPruebas p:first-child {
+	float: left;
+}
+/*-------FECHA-------*/
+#fechaVer p {
+	float: left;
+	margin-bottom: 10px;
+}
+
+#fechaVerD p {
+	color: rgb(58, 167, 201);
+	margin-left: 5px;
+}
+/*-------PROCESO-------*/
+#procesoVer p {
+	margin-bottom: 5px;
+	top: 19px;
+	position: absolute;
+}
+
+#procesoVerD p {
+	color: rgb(58, 167, 201);
+	margin-left: 5px;
+	top: 19px;
+	left: 45px;
+}
+/*-------ESTADO VER-------*/
+#estadoVer p {
+	float: left;
+	margin-top: 5px;
+	margin-bottom: 10px;
+}
+
+#estadoVerD p {
+	color: rgb(58, 167, 201);
+	margin-left: 5px;
+}
+/*-------Personas VER-------*/
+#personasVer p {
+	float: left;
+	margin-bottom: 10px;
+}
+
+#personasVerD p {
+	color: rgb(58, 167, 201);
+	margin-left: 5px;
+}
+/*-------PERSONAS EN PRUEBAS-------*/
+#doneVer p {
+	float: left;
+	margin-bottom: 10px;
+}
+
+#doneVerD p {
+	color: rgb(58, 167, 201);
+	margin-left: 5px;
+}
+/*----TIEMPO TOTAL--*/
+#tiempoVer p {
+	float: left;
+}
+
+#tiempoVerD p {
+	color: rgb(58, 167, 201);
+	margin-left: 5px;
+}
+
+#botonesVer {
+	position: absolute;
+	top: 130px;
+	left: 30px;
+}
+
+.botVer {
+	float: left;
+	margin-right: 15px;
+}
+
+#botVerConfigurar {
+	width: 90px;
+	height: 25px;
+	border-radius: 2px;
+	background-color: rgb(91, 91, 91);
+}
+
+#botVerConfigurar p {
+	margin-top: 5px;
+	margin-left: 15px;
+	color: white;
+	float: left;
+}
+
+#botVerConfigurar:hover {
+	cursor: pointer;
+	background-color: rgb(150, 150, 150);
+}
+
+#botVerIniciar {
+	position: absolute;
+	left: 100px;
+	border-radius: 2px;
+	width: 90px;
+	height: 25px;
+	background-color: rgb(58, 167, 201);
+}
+
+#botVerIniciar p {
+	margin-top: 5px;
+	margin-left: 6px;
+	color: white;
+}
+
+#botVerIniciar:hover {
+	cursor: pointer;
+	background-color: rgb(59, 183, 39);
+}
+
+#barraVerP {
+	height: 37px;
+	background-color: rgb(58, 167, 201);
+}
+
+#barraVerP p {
+	font-family: Arial;
+	font-style: italic;
+	font-weight: normal;
+	font-weight: bold;
+	color: white;
+	font-size: 16px;
+	position: absolute;
+	left: 85px;
+	top: 13px;
+}
+
+#verPruebasCerrar p {
+	font-family: Arial;
+	font-style: italic;
+	font-weight: normal;
+	font-size: 16px;
+	color: white;
+	left: 240px;
+	top: 5px;
+}
+/*------------------VENTANA RESULTADOS-----------------------*/
+#fondoBlancoResultados {
+	position: absolute;
+	width: 100%;
+	height: 550px;
+	background-color: rgba(255, 255, 255, 0.7);
+	z-index: 1;
+}
+
+#ventanaResultados {
+	width: 800px;
+	height: 250px;
+	position: absolute;
+	left: 400px;
+	top: 10px;
+	background-color: rgba(255, 255, 255, 0.9);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+	z-index: 20px;
+}
+
+#ventanaResultados p {
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+	z-index: 20px;
+}
+
+#paqueteTitulo {
+	position: absolute;
+	top: 45px;
+	left: 220px;
+	width: 350px;
+	height: 50px;
+	z-index: 100;
+}
+
+#tituloDeResultados {
+	font-size: 26px;
+	margin-left: 15px;
+	z-index: 100;
+}
+
+#tituloDeResultados p {
+	color: rgb(58, 167, 201);
+	z-index: 100;
+}
+
+#subTituloDeResultados p {
+	font-size: 12px;
+	font-style: italic;
+	color: rgb(58, 167, 201);
+	margin-left: 85px;
+	z-index: 100;
+}
+
+#ventanaDeCarpetasDeProcesos {
+	width: 100%;
+	height: 175px;
+	position: absolute;
+	top: 70px;
+	background-color: white;
+	z-index: 20;
+	border-bottom-color: rgb(58, 167, 201);
+	border-bottom-style: solid;
+	border-bottom-width: 5px;
+}
+
+.resultadosUsuarios {
+	margin-top: 50px;
+	margin-left: 13px;
+	float: left;
+}
+
+.resultadosUsuarios:hover {
+	cursor: pointer;
+}
+
+.archivoUsuario {
+	cursor: pointer;
+}
+
+.resultadosUsuarios {
+	width: 100px;
+}
+
+.nomProceso {
+	position: relative;
+	width: 100px;
+	height: 16px;
+}
+
+.nomProceso p {
+	font-size: 14px;
+	text-align: center;
+	padding: 0px auto;
+}
+
+.resultadosUsuarios img {
+	margin-left: 18px;
+	margin-right: 20px;
+	box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+.archivoUsuario {
+	margin-left: 20px;
+	margin-right: 20px;
+	margin-top: 10px;
+	float: left;
+	height: 35px;
+	width: 100px;
+}
+
+.archivoUsuario img {
+	height: 25px;
+	width: 21px;
+	float: left;
+	margin-right: 10px;
+	box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.3);
+}
+
+.archivoUsuario p {
+	font-size: 12px;
+	padding-top: 6px;
+	padding-left: 10px;
+	width: 150px;
+	height: 30px;
+}
+
+#subVentanaDeResultados {
+	width: 100%;
+	height: 300px;
+	position: absolute;
+	top: 250px;
+	z-index: 2;
+	box-shadow: 1px 5px 5px rgba(0, 0, 0, 0.3);
+	background-color: rgba(255, 255, 255, 0.8);
+	border-bottom-color: rgb(58, 167, 201);
+	border-bottom-style: solid;
+	border-bottom-width: 5px;
+}
+
+#archivosTitulos {
+	margin-left: 20px;
+	margin-top: 15px;
+	margin-bottom: 12px;
+}
+
+#archivosTitulos p {
+	font-size: 14px;
+	color: rgb(58, 167, 201);
+}
+
+#cerrarResultados {
+	position: absolute;
+	left: 770px;
+	top: 13px;
+	z-index: 100;
+}
+
+#cerrarResultados p {
+	font-size: 18px;
+	font-style: italic;
+	font-family: Arial;
+	color: rgb(91, 91, 91);
+}
+
+#cerrarResultados:hover {
+	cursor: pointer;
+}
+/*---------CERRAR MOSTRADOR-----------*/
+.cerrarMos {
+	position: absolute;
+	top: 35px;
+	left: 95%;
+	float: right;
+}
+
+.cerrarMos p {
+	font-size: 21px;
+	color: rgb(42, 147, 183);
+}
+
+.cerrarMos:hover {
+	cursor: pointer;
+}
+/*---Footer2---*/
+#footer2 {
+	position: absolute;
+	top: 630px;
+	left: 47%;
+}
+
+#footer2 p {
+	font-family: Arial;
+	font-size: 12px;
+	color: white;
+}
+/*---------------------------PANEL MASTER-----------------------------*/
+/*---Mostrador Crear CLIENTE---*/
+#clientePMos img {
+	float: left;
+}
+
+#clientePMos {
+	width: 80%;
+	height: 60px;
+	margin-top: 20px;
+	margin-left: 260px;
+	margin-bottom: 15px;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: rgba(42, 147, 183, 0.4);
+}
+
+#clientePMos h3 {
+	float: left;
+	font-size: 22px;
+	font-family: Myriad Pro;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(42, 147, 183);
+}
+
+#clientePMos p {
+	margin-left: 0px;
+	margin-top: -4px;
+	font-size: 12px;
+	font-style: none;
+	font-family: Arial;
+	font-style: italic;
+	color: rgb(91, 91, 91);
+}
+
+#clienteMosInfo {
+	position: absolute;
+	top: 99px;
+	width: 752px;
+	height: 435px;
+	/*background-color:grey;*/
+}
+
+.clienteInfoM {
+	margin-top: 15px;
+	margin-left: 65px;
+}
+
+.clienteInfoM p {
+	color: rgb(91, 91, 91);
+}
+
+.plan {
+	position: relative;
+	width: 18px;
+	height: 18px;
+	margin-top: 10px;
+	margin-right: 15px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: grey;
+	float: left;
+}
+
+.plan p {
+	position: absolute;
+	top: 6px;
+	left: 4px;
+}
+
+.plan:hover {
+	cursor: pointer;
+	background-color: rgb(221, 221, 221);
+}
+
+.plan:active {
+	border-top-color: rgb(91, 91, 91);
+	border-left-color: rgb(91, 91, 91);
+	border-right-color: rgb(200, 200, 200);
+	border-bottom-color: rgb(200, 200, 200);
+}
+
+#usosCM {
+	padding-top: 10px;
+	clear: both;
+}
+
+#modificarPruebasCM {
+	padding-top: 10px;
+	clear: both;
+}
+
+#usosDisp {
+	margin-top: 10px;
+	width: 16px;
+	height: 16px;
+}
+
+.disponible {
+	position: relative;
+	width: 18px;
+	height: 18px;
+	margin-top: 10px;
+	margin-right: 15px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: grey;
+	float: left;
+}
+
+.disponible p {
+	position: absolute;
+	top: 6px;
+	left: 4px;
+}
+
+.disponible:hover {
+	cursor: pointer;
+	background-color: rgb(221, 221, 221);
+}
+
+.disponible:active {
+	border-top-color: rgb(91, 91, 91);
+	border-left-color: rgb(91, 91, 91);
+	border-right-color: rgb(200, 200, 200);
+	border-bottom-color: rgb(200, 200, 200);
+}
+
+#botCrearClienteMostrador {
+	position: absolute;
+	top: 398px;
+	left: 652px;
+	width: 100px;
+	height: 37px;
+	border-radius: 3px;
+	background-color: rgb(59, 183, 33);
+}
+
+#botCrearClienteMostrador p {
+	font-style: normal;
+	font-size: 14px;
+	margin: 10px 32px;
+	color: white;
+}
+
+#botCrearClienteMostrador:hover {
+	background-color: rgb(59, 200, 33);
+	cursor: pointer;
+}
+
+#yaTieneCuenta p {
+	color: rgb(17, 170, 209);
+	float: left;
+}
+
+#preguntas p {
+	color: rgb(17, 170, 209);
+	float: left;
+}
+/*---Mostrador Mostrar CLIENTES---*/
+#clienteVerPMos img {
+	float: left;
+}
+
+#clienteVerPMos {
+	width: 80%;
+	height: 60px;
+	margin-top: 20px;
+	margin-left: 260px;
+	margin-bottom: 15px;
+	border-bottom-style: solid;
+	border-width: 1px;
+	border-color: rgba(42, 147, 183, 0.4);
+}
+
+#clienteVerPMos h3 {
+	float: left;
+	font-size: 22px;
+	font-family: Myriad Pro;
+	font-weight: normal;
+	font-style: italic;
+	margin-top: 7px;
+	margin-left: 10px;
+	color: rgb(42, 147, 183);
+}
+
+#clienteVerPMos p {
+	margin-left: 0px;
+	margin-top: -4px;
+	font-size: 12px;
+	font-style: none;
+	font-family: Arial;
+	font-style: italic;
+	color: rgb(91, 91, 91);
+}
+
+#tablaClientes {
+	clear: both;
+	margin-left: 35px;
+	padding-top: 50px;
+	width: 720px;
+	height: 300px;
+}
+
+
+
+#images-view .x-panel-body {  
+    background: white;  
+    font: 11px Arial, Helvetica, sans-serif;  
+}  
+  
+#images-view .thumb {  
+    background: #dddddd;  
+    padding: 3px;  
+}  
+  
+#images-view .thumb img {  
+    height: 80px;  
+    width: 120px;  
+}  
+  
+#images-view .thumb-wrap {  
+    float: left;  
+    margin: 4px;  
+    margin-right: 0;  
+    padding: 5px;  
+}  
+  
+#images-view .thumb-wrap span {  
+    display: block;  
+    overflow: hidden;  
+    text-align: center;  
+}  
+  
+#images-view .x-view-over {  
+    border: 1px solid #dddddd;  
+    background: #efefef url( js/ext/resources/images/default/grid/row-over.gif )  
+                repeat-x left top;  
+    padding: 4px;  
+}  
+  
+#images-view .x-view-selected {  
+    background: #eff5fb url( img/view/selected.gif ) no-repeat right bottom;  
+    border: 1px solid #99bbe8;  
+    padding: 4px;  
+}  
+  
+#images-view .x-view-selected .thumb {  
+    background: transparent;  
+}  
+  
+#images-view .loading-indicator {  
+    font-size: 11px;  
+    background-image: url( 'js/ext/resources/images/default/grid/loading.gif' );  
+    background-repeat: no-repeat;  
+    background-position: left;  
+    padding-left: 20px;  
+    margin: 10px;  
+}  
