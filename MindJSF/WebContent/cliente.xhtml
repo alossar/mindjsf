@@ -150,17 +150,17 @@ body {
 									<h:form styleClass="form-inline pull-right" target="_blank">
 										<h:outputText value="Fecha Inicial: "></h:outputText>
 										<h:inputText styleClass="datepicker" title="Fecha Inicial"
-											style="width: 180px;"
+											style="width: 180px;" maxlength="0"
 											value="#{clienteEspecificoController.parametroFechaInicial}"
 											valueChangeListener="#{clienteEspecificoController.formatoFechaInicial }"></h:inputText>
 										<h:outputText value="Fecha Final: "></h:outputText>
 										<h:inputText styleClass="datepicker" title="Fecha Final"
-											style="width: 180px;"
+											style="width: 180px;" maxlength="0"
 											value="#{clienteEspecificoController.parametroFechaFinal}"
 											valueChangeListener="#{clienteEspecificoController.formatoFechaFinal }"></h:inputText>
 										<h:commandLink styleClass="btn btn-primary btn-small  "
 											title="Generar Reporte de Usos" style="height: 20px;"
-											action="#{clienteEspecificoController.generarReporteUsos }">
+											actionListener="#{clienteEspecificoController.generarReporteUsos }">
 											<i class="icon-file icon-white" style="margin-top: 3px;"></i>
 										</h:commandLink>
 										<a class="btn btn-primary btn-small" data-toggle="modal"
@@ -173,6 +173,7 @@ body {
 							<legend>Historial de Usos</legend>
 
 							<h:form rendered="#{not empty clienteEspecificoController.usos }"
+								id="formUsosCliente"
 								binding="#{clienteEspecificoController.tableFormUsos}">
 								<h:dataTable
 									styleClass="table table-hover table-condensed table-striped"
@@ -240,11 +241,11 @@ body {
 								<h:inputText required="true" id="inputCrearPrueba"
 									value="#{clienteEspecificoController.cantidadUsos }"></h:inputText>
 							</div>
-							<h:commandLink styleClass="btn btn-primary"
-								style="margin-left:70px; width:70px; 
-							height:30px; padding-top:13px; margin-top:25px;"
-								action="#{clienteEspecificoController.agregarUsos }"
-								value="Crear"></h:commandLink>
+							<p:commandLink styleClass="btn btn-primary"
+								update=":formUsosCliente :growl" onclick="closeDialog ();"
+								style="margin-left:70px; width:70px; height:30px; padding-top:13px; margin-top:25px;"
+								actionListener="#{clienteEspecificoController.agregarUsos }"
+								value="Crear"></p:commandLink>
 						</div>
 					</h:form>
 				</div>
@@ -269,6 +270,11 @@ body {
 		$(document).ready(function() {
 			$('.datepicker').datepicker();
 		});
+	</script>
+	<script>
+		function closeDialog() {
+			$('#myModalCrearUso').modal('hide');
+		};
 	</script>
 </body>
 </html>

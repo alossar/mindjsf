@@ -7,17 +7,15 @@ header,section,footer {
 	display: block;
 }
 
-html,body {
-	/*background-image:url(pattern.png);*/
-	background-color:white; 
-	background-repeat:repeat;
+html,body { /*background-image:url(pattern.png);*/
+	background-color: white;
+	background-repeat: repeat;
 	margin: auto auto;
 	-webkit-user-select: none;
 	/*overflow-x: hidden;
 	overflow-y: hidden;*/
 	height: 100%;
 	width: 100%;
-	
 }
 
 .container {
@@ -52,74 +50,87 @@ html,body {
 }
 
 /*-----------------Contenedor Laminas Evaluacion----------------------*/
-.contenedorEvaLaminas{
-	margin:45px auto;	
-	outline: 1px solid rgba(0,0,0,0.1);
-	width:900px;
-	height:600px;
-	position:relative;
+#demoEva {
+	background-color: rgb(45, 55, 60);
 }
 
-#panelEvaLamina{
-	width:900px;
-	height:150px;
-	position:absolute;
-	top:470px;
-	background-color:rgb(234,234,234);  
-	outline: 1px solid rgb(224,224,224);
+.contenedorEvaLaminas {
+	margin: auto;
+	/*outline: 1px solid rgba(0,0,0,0.1);*/
+	width: 900px;
+	height: 600px;
+	position: relative;
 }
-#panelEvaLamina p{
+
+#panelEvaLamina {
+	width: 900px;
+	height: 150px;
+	position: absolute;
+	top: 450px;
+	/*background-color:rgb(234,234,234);*/
+	/*outline: 1px solid rgb(224,224,224);*/
+}
+
+#panelEvaLamina p {
 	font-size: 10pt;
 	font-style: italic;
 }
 
-#espacioPreguntaEva{
-	width:383px;
-	height:88px;
-	float:left;
-	margin-left:25px;
-	margin-top:21px;
-}
-#espacioTextoPreguntaEva{
-	width:700px;
-	height:75px;
-	margin-top:-10px;
-	resize:none;
+#espacioPreguntaEva {
+	width: 383px;
+	height: 88px;
+	float: left;
+	margin-left: 25px;
+	margin-top: 13px;
 }
 
-#botSiguienteLaminaEva{
-	width:75px;
-	height:88px;
-	float:left;
-	margin-left:250px;
-	margin-top:21px;
+#espacioTextoPreguntaEva {
+	width: 700px;
+	height: 75px;
+	margin-top: -10px;
+	resize: none;
 }
-#botSiguienteLaminaEva button{
-	height:46px;
-	margin-top:33px;
+
+#botSiguienteLaminaEva {
+	width: 75px;
+	height: 88px;
+	float: left;
+	margin-left: 250px;
+	margin-top: 21px;
 }
-#espacioPregunta{
-	width:250px;
-	height:170px;
-	background-color:rgba(250,0,0,0.3);
-	position:absolute;
-	top:30px;
-	left:30px;
+
+#botSiguienteLaminaEva p {
+	margin-top: 10px;
 }
-#timerEva{
-	width:65px;
-	height:65px;
-	background-color:rgba(250,0,0,0.6);
-	position:absolute;
-	top:30px;
-	left:427px;
+
+#botSiguienteLaminaEva button {
+	height: 46px;
+	margin-top: 33px;
+}
+
+#espacioPregunta {
+	width: 250px;
+	height: 170px;
+	background-color: rgba(250, 0, 0, 0.3);
+	position: absolute;
+	top: 30px;
+	left: 30px;
+}
+
+#timerEva {
+	width: 65px;
+	height: 65px;
+	background-color: rgba(250, 0, 0, 0.6);
+	position: absolute;
+	top: 30px;
+	left: 427px;
 	text-align: center;
 }
-#timerEva p{
 
-	color:white;
-	font-size:11pt;
-	padding-top:23px;
+#timerEva p {
+	color: white;
+	font-size: 12pt;
+	padding-top: 23px;
 }
 
 /*---------------------------------------------------*/
@@ -150,37 +161,36 @@ html,body {
 	margin-left: 65px;
 }
 
-@media ( min-width: 1024px) {
+@media ( min-width : 1024px) {
 	.homeShow {
-	margin-top: 100px;
-	margin-left: 0px;
-	margin-right: 112px;
-	float: left;
-	width: 245px;
-	height: 345px;
-	
+		margin-top: 100px;
+		margin-left: 0px;
+		margin-right: 112px;
+		float: left;
+		width: 245px;
+		height: 345px;
 	}
 }
-@media ( max-width: 1270px) {
+
+@media ( max-width : 1270px) {
 	.homeShow {
-	margin-top: 100px;
-	margin-left: 50px;
-	margin-right: 0px;
-	float: left;
-	width: 245px;
-	height: 345px;
-	
+		margin-top: 100px;
+		margin-left: 50px;
+		margin-right: 0px;
+		float: left;
+		width: 245px;
+		height: 345px;
 	}
 }
-@media ( max-width: 1024px) {
+
+@media ( max-width : 1024px) {
 	.homeShow {
-	margin-top: 100px;
-	margin-left: 50px;
-	margin-right: 0px;
-	float: left;
-	width: 245px;
-	height: 345px;
-	
+		margin-top: 100px;
+		margin-left: 50px;
+		margin-right: 0px;
+		float: left;
+		width: 245px;
+		height: 345px;
 	}
 }
 
@@ -290,14 +300,13 @@ html,body {
 }
 
 #panelEditarGaleria {
-	width:200px;
+	width: 200px;
 	height: 450px;
 	margin-top: 40px;
 	margin-left: 40px;
-	
 	background-color: rgba(245, 245, 245, 0.8);
 	overflow-y: scroll;
-	overflow-x: none;	
+	overflow-x: none;
 }
 
 #panelEditarGaleria img {
@@ -309,11 +318,12 @@ html,body {
 	outline: 2px solid rgb(60, 192, 240);
 }
 
-#contenedorLaminas img{
-	margin-right:5px;
-	margin-bottom:8px;
+#contenedorLaminas img {
+	margin-right: 5px;
+	margin-bottom: 8px;
 }
-#contenedorLaminas img:hover{	
+
+#contenedorLaminas img:hover {
 	outline: 2px solid rgb(60, 192, 240);
 }
 
@@ -426,36 +436,36 @@ html,body {
 		height: 480px;
 		margin-left: 20px;
 		float: left;
-		background-color:rgb(246,246,246);
+		background-color: rgb(246, 246, 246);
 	}
-	#myModalCrearPregunta{
-		left:38%;		
+	#myModalCrearPregunta {
+		left: 38%;
 	}
-	#myModalCambiarImagen{
-		left:38%;		
+	#myModalCambiarImagen {
+		left: 38%;
 	}
 }
 
 @media screen and (max-width: 1024px) {
-	#myModalCrearPregunta{
-		left:35%;
-		
+	#myModalCrearPregunta {
+		left: 35%;
 	}
 	#contenedorLaminas {
 		width: 660px;
 		height: 480px;
 		margin-left: 20px;
 		float: left;
-		background-color:rgb(246,246,246);
+		background-color: rgb(246, 246, 246);
 	}
 }
+
 @media screen and (min-width: 1800px) {
-	#myModalCrearPregunta{
-		left:42%;		
+	#myModalCrearPregunta {
+		left: 42%;
 	}
-	#myModalCambiarImagen{
-		left:42%;		
-	}	
+	#myModalCambiarImagen {
+		left: 42%;
+	}
 }
 
 #modulus {
@@ -472,7 +482,7 @@ html,body {
 	/*outline: 1px solid rgba(0, 0, 0, 0.2);*/
 	float: right;
 	margin-right: 20px;
-	background-color:rgb(246,246,246);
+	background-color: rgb(246, 246, 246);
 }
 
 #panelInfoLaminas textarea {
@@ -496,7 +506,7 @@ html,body {
 	height: 100px;
 	outline: 1px solid rgba(0, 0, 0, 0.2);
 	margin: 0px auto;
-	background-color:white;
+	background-color: white;
 }
 
 #centrarInfo h6 {
@@ -544,7 +554,7 @@ html,body {
 
 #botCrearPregunta {
 	font-size: 56px;
-	margin-right:15px;
+	margin-right: 15px;
 }
 /*Cierro Mostrador Ver Laminas*/
 
@@ -572,9 +582,11 @@ html,body {
 	height: 140px;
 	margin-left: 20px;
 }
-#BotCrearPrueba{
-	margin-left:200px;
+
+#BotCrearPrueba {
+	margin-left: 200px;
 }
+
 #botonesProcesoAgregarPrueba {
 	width: 140px;
 	height: 140px;
@@ -618,8 +630,6 @@ html,body {
 	margin-right: 35px;
 	font-weight: bold;
 }
-
-
 
 #inputCrearPrueba {
 	margin-left: 25px;
@@ -693,8 +703,8 @@ html,body {
 	}
 }
 
-.legendTitles{
-	font-weight:bold; 
-	font-family:myriad pro;
-	font-size:24pt;
+.legendTitles {
+	font-weight: bold;
+	font-family: myriad pro;
+	font-size: 24pt;
 }

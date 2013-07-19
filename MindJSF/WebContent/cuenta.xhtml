@@ -111,7 +111,7 @@ body {
 								<div id="tituloProceso"
 									style="text-align: center; margin-left: 13px; margin-bottom: 30px; width: 185px;">
 									<h4>
-										
+
 										<h:outputText style="font-style:italic;"
 											value="Información de la Cuenta de Usario"></h:outputText>
 									</h4>
@@ -119,15 +119,14 @@ body {
 								<div id="infoGeneral" style="width: 185px; margin-left: 13px;">
 									<p>Nombre</p>
 									<h:inputText styleClass="textoProceso" style="width: 170px;"
-										value="#{cuentaController.usuario.nombres }"></h:inputText>
+										value="#{cuentaController.usuario.nombres }" maxlength="30"></h:inputText>
 									<p>Apellidos</p>
 									<h:inputText styleClass="textoProceso" style="width: 170px;"
-										value="#{cuentaController.usuario.apellidos}"></h:inputText>
+										value="#{cuentaController.usuario.apellidos}" maxlength="30"></h:inputText>
 									<p>Cédula</p>
 									<h:inputText styleClass="textoProceso" style="width: 170px;"
 										value="#{cuentaController.usuario.cedula}" readonly="true"
-										disabled="true">
-										<f:validateLength maximum="10"></f:validateLength>
+										disabled="true" maxlength="10">
 										<f:convertNumber integerOnly="true" />
 									</h:inputText>
 									<p>Mail</p>
@@ -148,14 +147,16 @@ body {
 									<h:commandButton styleClass="btn btn-primary"
 										action="#{cuentaController.guardarCuenta}"
 										style="float: right; margin-right: 20px; margin-bottom: 15px;"
-										value="Guardar"></h:commandButton>
+										value="Guardar Cambios"></h:commandButton>
 								</div>
 							</h:form>
 						</div>
 
 						<div class="span9" id="parrillaInfoProceso">
 							<h:panelGroup rendered="#{autorizacionController.maestro}">
-								<legend><img src="img/icocuenta.png"></img>Procesos para Revisar</legend>
+								<legend>
+									<img src="img/icocuenta.png"></img>Procesos para Revisar
+								</legend>
 
 								<h:form
 									rendered="#{not empty cuentaController.procesosRevisar }"
@@ -332,7 +333,9 @@ body {
 
 							</h:panelGroup>
 							<h:form styleClass="form-horizontal">
-								<legend><img src="img/icocambioContrasena.png"></img>Cambiar Contraseña</legend>
+								<legend>
+									<img src="img/icocambioContrasena.png"></img>Cambiar Contraseña
+								</legend>
 
 								<p:accordionPanel activeIndex="-1">
 									<p:tab title="Mostrar">

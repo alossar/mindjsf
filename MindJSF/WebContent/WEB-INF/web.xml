@@ -8,15 +8,6 @@
 		<welcome-file>/login.do</welcome-file>
 	</welcome-file-list>
 	<servlet>
-		<servlet-name>Faces Servlet</servlet-name>
-		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>Faces Servlet</servlet-name>
-		<url-pattern>*.do</url-pattern>
-	</servlet-mapping>
-	<servlet>
 		<servlet-name>PDFReportServlet</servlet-name>
 		<servlet-class>co.mind.management.shared.recursos.PDFReportServlet</servlet-class>
 	</servlet>
@@ -49,7 +40,6 @@
 		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
 		<param-value>client</param-value>
 	</context-param>
-
 	<error-page>
 		<error-code>404</error-code>
 		<location>/notfound.do</location>
@@ -90,7 +80,21 @@
 		<param-name>org.apache.myfaces.AUTO_SCROLL</param-name>
 		<param-value>true</param-value>
 	</context-param>
-	<!-- <listener> -->
-	<!-- <listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class> -->
-	<!-- </listener> -->
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	<filter>
+		<filter-name>noCacheFilter</filter-name>
+		<filter-class>co.mind.web.NoCacheFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>noCacheFilter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+	</filter-mapping>
 </web-app>

@@ -98,18 +98,21 @@ body {
 					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
 						value="#{programadoresController.parametroBusqueda }" />
-					<h:commandLink styleClass="btn btn-info " id="searchid"
-						action="#{programadoresController.buscarProgramadores }">
+					<p:commandLink styleClass="btn btn-info " id="searchid"
+						update=":formPanelTablaProgramadores"
+						actionListener="#{programadoresController.buscarProgramadores }">
 						<i class="icon-search icon-white"></i>
-					</h:commandLink>
-					<a data-toggle="modal" class="btn btn-info "
+					</p:commandLink>
+					<a data-toggle="modal" class="btn btn-primary "
 						href="#myModalCrearProgramador"> <i
 						class="icon-plus icon-white"></i>
 					</a>
 				</h:form>
 			</div>
 
-			<legend class="legendTitles"><img src="img/icoprogramadores.png"></img>Programadores</legend>
+			<legend class="legendTitles">
+				<img src="img/icoprogramadores.png"></img>Programadores
+			</legend>
 			<h:form id="formPanelTablaProgramadores">
 				<h:dataTable id="panelTablaProgramadores"
 					rendered="#{not empty programadoresController.programadores }"
@@ -121,7 +124,7 @@ body {
 							<f:facet name="header">
 								<h:outputText value="Cédula"></h:outputText>
 							</f:facet>
-							<i class="icon-user" style="margin-right:5px;"></i>
+							<i class="icon-user" style="margin-right: 5px;"></i>
 							<h:outputText value="#{programador.cedula}">
 							</h:outputText>
 
@@ -164,20 +167,21 @@ body {
 							<h:panelGroup styleClass="label label-warning"
 								rendered="#{not (programador.estado_Cuenta == 'cuenta_activa') }">INACTIVA</h:panelGroup>
 
-						</h:column>
-						<h:column>
-							<h:commandLink styleClass="btn btn-warning btn-small "
-								action="#{programadoresController.desactivarProgramador }"
+						</h:column> <h:column>
+							<p:commandLink styleClass="btn btn-warning btn-small "
+								update="@form :growl"
+								actionListener="#{programadoresController.desactivarProgramador }"
 								rendered="#{not programador.editar and programador.estado_Cuenta == 'cuenta_activa' }"
 								style="padding: 5;">
 								<i class="icon-ban-circle icon-white"></i>
-							</h:commandLink>
-							<h:commandLink styleClass="btn btn-info btn-small "
-								action="#{programadoresController.activarProgramador }"
+							</p:commandLink>
+							<p:commandLink styleClass="btn btn-info btn-small "
+								update="@form :growl"
+								actionListener="#{programadoresController.activarProgramador }"
 								rendered="#{not programador.editar and not (programador.estado_Cuenta == 'cuenta_activa')}"
 								style="padding: 5;">
 								<i class="icon-ok-circle icon-white"></i>
-							</h:commandLink>
+							</p:commandLink>
 							&nbsp;
 							<h:commandLink styleClass="btn btn-danger btn-small "
 								onclick="$('#myModal').modal('show');"
@@ -212,46 +216,46 @@ body {
 					<div id="contenedorBotonesCrearPrueba" style="margin-left: 110px;">
 						<div>
 							<p>Nombre</p>
-							<h:inputText id="inputCrearEvaluado0" required="true"
-								value="#{programadoresController.nombreProgramadorCrear}">
-								<f:validateLength maximum="30"></f:validateLength>
-							</h:inputText>
+							<p:inputText id="inputCrearEvaluado0" required="true"
+								value="#{programadoresController.nombreProgramadorCrear}"
+								maxlength="30">
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Apellido</p>
-							<h:inputText required="true" id="inputCrearEvaluado"
-								value="#{programadoresController.apellidosProgramadorCrear}">
-								<f:validateLength maximum="30"></f:validateLength>
-							</h:inputText>
+							<p:inputText required="true" id="inputCrearEvaluado"
+								value="#{programadoresController.apellidosProgramadorCrear}"
+								maxlength="20">
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Cédula</p>
-							<h:inputText id="inputCrearEvaluado3"
+							<p:inputText id="inputCrearEvaluado3" maxlength="10"
 								value="#{programadoresController.idProgramadorCrear}">
-								<f:validateLength maximum="10"></f:validateLength>
 								<f:convertNumber integerOnly="true" />
-							</h:inputText>
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Correo</p>
-							<h:inputText id="inputCrearEvaluado2"
+							<p:inputText id="inputCrearEvaluado2"
 								value="#{programadoresController.correoProgramadorCrear}">
 								<f:validateRegex
 									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-							</h:inputText>
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Teléfono</p>
-							<h:inputText id="inputCrearEvaluado4"
+							<p:inputText id="inputCrearEvaluado4" maxlength="10"
 								value="#{programadoresController.telefonoProgramadorCrear}">
-								<f:validateLength maximum="10"></f:validateLength>
 								<f:convertNumber integerOnly="true" />
-							</h:inputText>
+							</p:inputText>
 						</div>
-						<h:commandButton styleClass="btn btn-primary"
+						<p:commandButton styleClass="btn btn-primary"
+							onclick="closeDialog ();"
+							update="@form :formPanelTablaProgramadores :growl"
 							style="margin-left:66px;  padding-top:8px; height:45px; width:100px; margin-top:5px;"
-							action="#{programadoresController.crearProgramador}"
-							id="botCrearEvaluado" value="Crear"></h:commandButton>
+							actionListener="#{programadoresController.crearProgramador}"
+							id="botCrearEvaluado" value="Crear"></p:commandButton>
 					</div>
 				</div>
 			</h:form>
@@ -269,13 +273,12 @@ body {
 					<div class="modal-footer">
 						<button class="btn btn-danger" data-dismiss="modal"
 							aria-hidden="true">No</button>
-						<h:commandLink styleClass="btn btn-primary show-notification"
+						<p:commandLink styleClass="btn btn-primary show-notification"
+							update="@form :formPanelTablaProgramadores :growl"
 							actionListener="#{programadoresController.eliminarProgramador }"
 							onclick="closeDialog ();" rendered="#{not programador.editar }"
 							style="padding: 5;" value="SI">
-							<f:ajax
-								render=":formPanelTablaProgramadores:panelTablaProgramadores" />
-						</h:commandLink>
+						</p:commandLink>
 					</div>
 
 				</div>
@@ -291,23 +294,10 @@ body {
 	</f:view>
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="js/bootstrap.js"></script>
-	<script src="js/bootstrap-transition.js"></script>
-	<script src="js/bootstrap-alert.js"></script>
-	<script src="js/bootstrap-notify.js"></script>
-	<script>
-		$('.show-notification').click(function(e) {
-			$('.top-left').notify({
-				message : {
-					text : 'Aw yeah, It works!'
-				}
-			}).show();
-		});
-	</script>
 	<script>
 		function closeDialog() {
-			$('#myModalCrearProceso').modal('hide');
+			$('#myModalCrearProgramador').modal('hide');
 			$('#myModal').modal('hide');
-			$('#myModalDuplicarProceso').modal('hide');
 		};
 	</script>
 </body>

@@ -102,18 +102,21 @@ body {
 					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
 						value="#{pruebasController.parametroBusqueda }" />
-					<h:commandLink styleClass="btn btn-info " id="searchid"
-						action="#{pruebasController.buscarPruebas }">
+					<p:commandLink styleClass="btn btn-info " id="searchid"
+						actionListener="#{pruebasController.buscarPruebas }"
+						update=":formPanelTablaPruebas">
 						<i class="icon-search icon-white"></i>
-					</h:commandLink>
-					<a data-toggle="modal" class="btn btn-info "
+					</p:commandLink>
+					<a data-toggle="modal" class="btn btn-primary "
 						title="Crear una prueba." href="#myModalCrearPrueba"> <i
 						class="icon-plus icon-white"></i>
 					</a>
 				</h:form>
 			</div>
 
-			<legend class="legendTitles"><img src="img/icopruebas.png"></img>Pruebas</legend>
+			<legend class="legendTitles">
+				<img src="img/icopruebas.png"></img>Pruebas
+			</legend>
 			<h:form id="formPanelTablaPruebas">
 				<h:dataTable rendered="#{not empty pruebasController.pruebas }"
 					id="panelTablaPruebas"
@@ -124,14 +127,16 @@ body {
 							<f:facet name="header">
 								<h:outputText value="Nombre de la Prueba"></h:outputText>
 							</f:facet>
-							<img style="margin-top:-4px; margin-right:5px;" src="img/icofolder.png"></img>
+							<img style="margin-top: -4px; margin-right: 5px;"
+								src="img/icofolder.png"></img>
 							<h:commandLink value="#{prueba.nombre }" style="color:black; "
 								title="#{prueba.descripcion }"
 								action="#{pruebasController.irAPruebaEspecifica }"
 								rendered="#{not prueba.editar }"></h:commandLink>
-							<h:inputText styleClass="input-small" id="editarNombrePrueba"
+							<p:inputText styleClass="input-small" id="editarNombrePrueba"
 								value="#{prueba.nombre }" rendered="#{prueba.editar }"
-								required="true" requiredMessage="El nombre es necesario."></h:inputText>
+								required="true" requiredMessage="El nombre es necesario."
+								maxlength="20"></p:inputText>
 
 							<h:message for="editarNombrePrueba"
 								styleClass="alert alert-error" />
@@ -157,18 +162,18 @@ body {
 								</h:outputText>
 							</center>
 						</h:column> <h:column>
-							<h:commandLink styleClass="btn btn-info btn-small"
-								action="#{pruebasController.editarPrueba }"
+							<p:commandLink styleClass="btn btn-info btn-small"
+								actionListener="#{pruebasController.editarPrueba }"
 								title="Editar prueba." rendered="#{not prueba.editar }"
-								style="padding: 5;">
+								style="padding: 5;" update="@form :growl">
 								<i class="icon-pencil icon-white"></i>
-							</h:commandLink>
-							<h:commandLink styleClass="btn btn-success btn-small"
-								action="#{pruebasController.guardarEditarPrueba }"
+							</p:commandLink>
+							<p:commandLink styleClass="btn btn-success btn-small"
+								actionListener="#{pruebasController.guardarEditarPrueba }"
 								title="Guardar cambios." rendered="#{prueba.editar }"
-								style="padding: 5;">
+								style="padding: 5;" update="@form :growl">
 								<i class="icon-ok icon-white"></i>
-							</h:commandLink>&nbsp;
+							</p:commandLink>&nbsp;
 							<h:commandLink styleClass="btn btn-danger btn-small "
 								onclick="$('#myModal').modal('show');" title="Eliminar prueba."
 								rendered="#{not prueba.editar }">
@@ -176,12 +181,12 @@ body {
 									listener="#{pruebasController.seleccionarPruebaEliminar }"></f:ajax>
 								<i class="icon-trash icon-white"></i>
 							</h:commandLink>
-							<h:commandLink styleClass="btn btn-danger btn-small"
-								action="#{pruebasController.cancelarEditarPrueba }"
+							<p:commandLink styleClass="btn btn-danger btn-small"
+								actionListener="#{pruebasController.cancelarEditarPrueba }"
 								title="Cancelar." rendered="#{prueba.editar }"
-								style="padding: 5;">
+								style="padding: 5;" update="@form :growl">
 								<i class="icon-remove icon-white"></i>
-							</h:commandLink>
+							</p:commandLink>
 
 						</h:column>
 					</small>
@@ -207,11 +212,12 @@ body {
 					<div class="modal-footer">
 						<button class="btn btn-danger" data-dismiss="modal"
 							aria-hidden="true">No</button>
-						<h:commandLink styleClass="btn btn-primary show-notification"
+						<p:commandLink styleClass="btn btn-primary show-notification"
 							actionListener="#{pruebasController.eliminarPrueba }"
 							onclick="closeDialog ();" rendered="#{not prueba.editar }"
-							style="padding: 5;" value="SI">
-						</h:commandLink>
+							style="padding: 5;" value="SI"
+							update=":formPanelTablaPruebas :growl">
+						</p:commandLink>
 					</div>
 
 				</div>
@@ -231,19 +237,21 @@ body {
 					<div id="contenedorBotonesCrearPrueba" style="margin-left: 115px;">
 						<div>
 							<p>Nombre</p>
-							<h:inputText required="true" id="inputCrearPrueba"
-								value="#{pruebasController.nombrePruebaCrear }"></h:inputText>
+							<p:inputText required="true" id="inputCrearPrueba"
+								value="#{pruebasController.nombrePruebaCrear }" maxlength="20"></p:inputText>
 						</div>
 						<div style="margin-top: 5px;">
 							<p>Descripción</p>
-							<h:inputTextarea required="true" style="height: 100px; resize:none;"
-								value="#{pruebasController.descripcionPruebaCrear }"></h:inputTextarea>
+							<p:inputTextarea required="true"
+								style="height: 100px; resize:none;" maxlength="100"
+								value="#{pruebasController.descripcionPruebaCrear }"></p:inputTextarea>
 						</div>
 
-						<h:commandButton styleClass="btn btn-primary" id="botCrearPrueba"
+						<p:commandButton styleClass="btn btn-primary" id="botCrearPrueba"
 							actionListener="#{pruebasController.crearPrueba }" value="Crear"
 							style="margin-left:65px;margin-top:5px;"
-							onclick="closeDialog ();"></h:commandButton>
+							update=":formPanelTablaPruebas :growl @form"
+							onclick="closeDialog ();"></p:commandButton>
 					</div>
 				</h:form>
 			</div>
@@ -272,9 +280,8 @@ body {
 	</script>
 	<script>
 		function closeDialog() {
-			$('#myModalCrearProceso').modal('hide');
+			$('#myModalCrearPrueba').modal('hide');
 			$('#myModal').modal('hide');
-			$('#myModalDuplicarProceso').modal('hide');
 		};
 	</script>
 </body>

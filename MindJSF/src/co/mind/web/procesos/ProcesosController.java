@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIForm;
@@ -20,9 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import co.mind.management.shared.dto.ParticipacionEnProcesoBO;
 import co.mind.management.shared.dto.ProcesoUsuarioBO;
-import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.persistencia.GestionProcesos;
 import co.mind.management.shared.recursos.Convencion;
@@ -127,6 +124,8 @@ public class ProcesosController implements Serializable {
 					FacesMessage.SEVERITY_WARN, "El proceso no se pudo crear.",
 					""));
 		}
+		setNombreProcesoCrear("");
+		setDescripcionProcesoCrear("");
 	}
 
 	public void duplicarProceso(ActionEvent event) {
@@ -160,20 +159,20 @@ public class ProcesosController implements Serializable {
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("procesoDuplicar");
+		setNombreProcesoDuplicar("");
+		setDescripcionProcesoDuplicar("");
 	}
 
-	public String editarProceso() {
+	public void editarProceso() {
 		proceso = (ProcesoUsuarioBO) dataTable.getRowData();
 		proceso.setEditar(true);
-		return nombreUsuario;
 	}
 
-	public String cancelarEditarProceso() {
+	public void cancelarEditarProceso() {
 		proceso.setEditar(false);
-		return null;
 	}
 
-	public String guardarEditarProceso() {
+	public void guardarEditarProceso() {
 		proceso = (ProcesoUsuarioBO) dataTable.getRowData();
 		proceso.setEditar(true);
 		GestionProcesos gProcesos = new GestionProcesos();
@@ -194,10 +193,9 @@ public class ProcesosController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El proceso no se pudo editar.", ""));
 		}
-		return null;
 	}
 
-	public void eliminarProceso(ActionEvent event) {
+	public void eliminarProceso() {
 
 		HttpServletRequest request = MindHelper.obtenerRequest();
 		GestionProcesos gProcesos = new GestionProcesos();
@@ -235,7 +233,7 @@ public class ProcesosController implements Serializable {
 		session.setAttribute("proceso", proceso);
 	}
 
-	public String buscarProcesos() {
+	public void buscarProcesos() {
 		procesos = procesosTemp;
 		if (getParametroBusqueda() != null) {
 			if (getParametroBusqueda() != "") {
@@ -251,7 +249,6 @@ public class ProcesosController implements Serializable {
 				procesos = resultadoBusqueda;
 			}
 		}
-		return null;
 	}
 
 	public void seleccionarProcesoEliminar(AjaxBehaviorEvent event) {

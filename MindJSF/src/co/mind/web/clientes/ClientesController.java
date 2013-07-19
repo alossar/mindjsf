@@ -134,7 +134,7 @@ public class ClientesController implements Serializable {
 		}
 	}
 
-	public String crearCliente() {
+	public void crearCliente() {
 		UsuarioAdministradorBO cli = new UsuarioAdministradorBO();
 		cli.setCedula(idClienteCrear);
 		cli.setNombres(nombreClienteCrear);
@@ -163,22 +163,26 @@ public class ClientesController implements Serializable {
 					FacesMessage.SEVERITY_WARN, "El cliente no se pudo crear.",
 					""));
 		}
-		return null;
+		setIdClienteCrear(0);
+		setNombreClienteCrear("");
+		setApellidosClienteCrear("");
+		setCargoClienteCrear("");
+		setCorreoClienteCrear("");
+		setEmpresaClienteCrear("");
+		setTelefonoClienteCrear("");
 	}
 
-	public String editarCliente() {
+	public void editarCliente() {
 		cliente = (UsuarioAdministradorBO) dataTable.getRowData();
 		cliente.setEditar(true);
-		return nombreUsuario;
 	}
 
-	public String cancelarEditarCliente() {
+	public void cancelarEditarCliente() {
 		cliente = (UsuarioAdministradorBO) dataTable.getRowData();
 		cliente.setEditar(true);
-		return null;
 	}
 
-	public String guardarEditarCliente() {
+	public void guardarEditarCliente() {
 		cliente = (UsuarioAdministradorBO) dataTable.getRowData();
 		cliente.setEditar(true);
 		GestionClientes gCLientes = new GestionClientes();
@@ -197,10 +201,9 @@ public class ClientesController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El cliente no se pudo editar.", ""));
 		}
-		return null;
 	}
 
-	public String desactivarCliente() {
+	public void desactivarCliente() {
 		cliente = (UsuarioAdministradorBO) dataTable.getRowData();
 
 		GestionClientes gClientes = new GestionClientes();
@@ -222,10 +225,9 @@ public class ClientesController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El cliente no se pudo desactivar.", ""));
 		}
-		return null;
 	}
 
-	public String activarCliente() {
+	public void activarCliente() {
 		cliente = (UsuarioAdministradorBO) dataTable.getRowData();
 
 		GestionClientes gClientes = new GestionClientes();
@@ -247,7 +249,6 @@ public class ClientesController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El cliente no se pudo activar.", ""));
 		}
-		return null;
 	}
 
 	public void eliminarCliente(ActionEvent event) {
@@ -293,7 +294,7 @@ public class ClientesController implements Serializable {
 		session.setAttribute("cliente", proceso);
 	}
 
-	public String buscarClientes() {
+	public void buscarClientes() {
 		clientes = clientesTemp;
 		if (getParametroBusqueda() != null) {
 			if (getParametroBusqueda() != "") {
@@ -340,7 +341,6 @@ public class ClientesController implements Serializable {
 				clientes = resultadoBusqueda;
 			}
 		}
-		return null;
 	}
 
 	public void seleccionarClienteAgregarPruebas(AjaxBehaviorEvent event) {
@@ -350,7 +350,7 @@ public class ClientesController implements Serializable {
 				(UsuarioAdministradorBO) dataTable.getRowData());
 	}
 
-	public String agregarPruebasACliente() {
+	public void agregarPruebasACliente() {
 		GestionPruebas gPruebas = new GestionPruebas();
 		HttpServletRequest request = MindHelper.obtenerRequest();
 		for (Integer id : selectItemsPruebas) {
@@ -367,7 +367,6 @@ public class ClientesController implements Serializable {
 					FacesMessage.SEVERITY_INFO, "Pruebas agregadas.", ""));
 
 		}
-		return null;
 	}
 
 	private PruebaUsuarioBO[] listaPruebasAArreglo(

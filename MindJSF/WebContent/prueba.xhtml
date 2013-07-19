@@ -125,7 +125,7 @@ body {
 									value="#{pruebaEspecificaController.nombrePrueba }"></h:outputText></li>
 						</ul>
 					</h:form>
-					<h:form>
+					<h:form id="formContenedorLaminas">
 
 						<div id="contenedorLaminas">
 							<h:panelGroup rendered="#{autorizacionController.cliente}">
@@ -135,7 +135,7 @@ body {
 							</h:panelGroup>
 							<ui:repeat value="#{pruebaEspecificaController.preguntas}"
 								var="preg">
-								<h:commandLink
+								<p:commandLink update=":formContenedorPanelInfo"
 									actionListener="#{pruebaEspecificaController.mostrarInformacionPregunta }">
 
 									<h:graphicImage title="#{preg.pregunta}" width="150"
@@ -143,8 +143,7 @@ body {
 										value="images/Thumbnails/#{preg.imagenesUsuario.imagen.imagenURI }">
 									</h:graphicImage>
 									<f:attribute name="pregunta" value="#{preg }" />
-									<f:ajax render=":formContenedorPanelInfo"></f:ajax>
-								</h:commandLink>
+								</p:commandLink>
 							</ui:repeat>
 
 						</div>
@@ -169,36 +168,48 @@ body {
 												value="images/Thumbnails/#{pruebaEspecificaController.pregunta.imagenesUsuario.imagen.imagenURI }"></h:graphicImage>
 										</h:commandLink>
 									</div>
-									<h6>Pregunta</h6>
-									<h:inputTextarea id="infoLaminaEscogida"
+									<h6>
+										Pregunta
+										<p:commandLink styleClass="btn btn-danger pull-right"
+											title="Eliminar la pregunta."
+											rendered="#{not empty pruebaEspecificaController.pregunta}"
+											update="@form :formContenedorLaminas :growl"
+											actionListener="#{pruebaEspecificaController.eliminarPregunta }">
+											<i class="icon-trash icon-white"></i>
+										</p:commandLink>
+									</h6>
+									<p:inputTextarea id="infoLaminaEscogida" maxlength="2000"
 										style="height:120px; font-size:8pt;line-height:100%; resize:none;"
-										value="#{pruebaEspecificaController.pregunta.pregunta }"></h:inputTextarea>
+										value="#{pruebaEspecificaController.pregunta.pregunta }"></p:inputTextarea>
 
 									<div id="tiempoLamina">
 										<p>Tiempo (Segundos)</p>
 
 										<h:inputText title="Tiempo máximo en segundos."
-											styleClass="input-small"
+											styleClass="input-small" maxlength="4"
 											value="#{pruebaEspecificaController.pregunta.tiempoMaximo }"></h:inputText>
 
 									</div>
 									<div id="cantidadCaracteresLamina">
 										<p>Cantidad de Caracteres</p>
 										<h:inputText title="Máxima cantidad de caracteres."
-											styleClass="input-small"
+											styleClass="input-small" maxlength="4"
 											value="#{pruebaEspecificaController.pregunta.caracteresMaximo }"></h:inputText>
 									</div>
-									<h:panelGroup layout="block"
-										rendered="#{autorizacionController.cliente}" id="panelBotones">
-										<h:commandLink styleClass="btn btn-info show-notification"
-											value="Guardar" style="margin-right:5px; margin-left:15px;"
-											rendered="#{not empty pruebaEspecificaController.pregunta}"
-											actionListener="#{pruebaEspecificaController.editarPregunta }"></h:commandLink>
-										<h:commandLink styleClass="btn btn-danger" value="Eliminar"
-											rendered="#{not empty pruebaEspecificaController.pregunta}"
-											actionListener="#{pruebaEspecificaController.eliminarPregunta }"></h:commandLink>
-										<!--Modal de seguridad-->
-									</h:panelGroup>
+									<center>
+										<h:panelGroup layout="block"
+											rendered="#{autorizacionController.cliente}"
+											id="panelBotones">
+											<p:commandLink styleClass="btn btn-primary show-notification"
+												value="Guardar Cambios"
+												style="margin-right:5px; margin-left:15px;"
+												rendered="#{not empty pruebaEspecificaController.pregunta}"
+												update="@form :growl :formContenedorLaminas"
+												actionListener="#{pruebaEspecificaController.editarPregunta }"></p:commandLink>
+
+											<!--Modal de seguridad-->
+										</h:panelGroup>
+									</center>
 								</div>
 							</div>
 						</h:panelGroup>
@@ -216,9 +227,8 @@ body {
 							<img src="img/logoEditar.png" />Editar Láminas
 						</h3>
 					</div>
-					<h:form id="formContenedorEditarLaminas">
-						<div class="contenedorEditarLaminas" style="height: 530px;">
-
+					<div class="contenedorEditarLaminas" style="height: 530px;">
+						<h:form id="formContenedorEditarLaminas">
 							<h:panelGroup id="contenedorPanelEditarLamina">
 								<div id="panelEditarLaminas">
 									<div id="verLaminaEditar">
@@ -234,65 +244,70 @@ body {
 										<div id="panelEdicionLamina">
 											<div id="espacioPreguntaEditar">
 												<p>Pregunta</p>
-												<h:inputTextarea id="espacioTextoPregunta" required="true"
+												<p:inputTextarea id="espacioTextoPregunta" required="true"
+													requiredMessage="Debe especificar la pregunta."
 													style="width:370px; margin-top:-10px; height: 60px; resize:none;"
-													value="#{pruebaEspecificaController.preguntaCrear}">
-													<f:validateLength maximum="2000"></f:validateLength>
-												</h:inputTextarea>
+													value="#{pruebaEspecificaController.preguntaCrear}"
+													maxlength="2000">
+												</p:inputTextarea>
 											</div>
 											<div id="espacioTiempoYCantidad">
 												<div id="editarTiempo">
 													<p>Tiempo (Seg)</p>
-													<h:inputText styleClass="inputTiempoCaracteres"
-														required="true"
+													<p:inputText styleClass="inputTiempoCaracteres"
+														required="true" maxlength="4"
+														requiredMessage="Debe especificar el tiempo de la pregunta"
 														value="#{pruebaEspecificaController.tiempoCrear}">
 														<f:convertNumber integerOnly="true">
 														</f:convertNumber>
-													</h:inputText>
+													</p:inputText>
 												</div>
 												<div id="editarCaracteres">
 													<p>Caracteres</p>
-													<h:inputText styleClass="inputTiempoCaracteres"
-														required="true"
+													<p:inputText styleClass="inputTiempoCaracteres"
+														required="true" maxlength="4"
+														requiredMessage="Debe especificar la cantidad máxima de caracteres de la respuesta"
 														value="#{pruebaEspecificaController.caracteresCrear}">
 														<f:convertNumber integerOnly="true">
 														</f:convertNumber>
-													</h:inputText>
+													</p:inputText>
 												</div>
 											</div>
 											<div id="botCrearLamina">
-												<h:commandButton styleClass="btn btn-inverse" value="Crear"
+												<p:commandButton styleClass="btn btn-inverse" value="Crear"
 													style="margin:20px -20px; width:75px; height:75px;"
-													actionListener="#{pruebaEspecificaController.crearPregunta}"></h:commandButton>
+													update="@form :formContenedorLaminas :growl"
+													onclick="closeDialog ();"
+													actionListener="#{pruebaEspecificaController.crearPregunta}"></p:commandButton>
 											</div>
 										</div>
 									</div>
 								</div>
 							</h:panelGroup>
+						</h:form>
+						<h:form>
 							<div id="panelEditarGaleria">
-
 								<div id="contenedorDeLaminasGaleria">
 									<h5>Galeria de Imágenes</h5>
 									<ui:repeat value="#{pruebaEspecificaController.imagenes}"
 										var="image">
-										<h:commandLink>
+										<p:commandLink update=":formContenedorEditarLaminas"
+											actionListener="#{pruebaEspecificaController.actualizarImagenModal }">
 											<h:graphicImage width="150" height="100"
 												styleClass="img-polaroid"
 												value="images/Thumbnails/#{image.imagen.imagenURI }">
 											</h:graphicImage>
-											<f:ajax
-												render=":formContenedorEditarLaminas:contenedorPanelEditarLamina"
-												listener="#{pruebaEspecificaController.actualizarImagenModal }" />
 
 											<f:attribute name="imagen" value="#{image }" />
 
-										</h:commandLink>
+										</p:commandLink>
 
 									</ui:repeat>
 								</div>
 							</div>
-						</div>
-					</h:form>
+						</h:form>
+					</div>
+
 				</div>
 				<!-- cierro MOdal -->
 
@@ -312,7 +327,7 @@ body {
 
 							<h:panelGroup id="contenedorPanelCambiarImagen">
 								<div id="panelEditarLaminas">
-									<div id="verLaminaEditar">										
+									<div id="verLaminaEditar">
 										<div id="mostradorEditarLaminas">
 											<h:graphicImage width="600" height="400"
 												value="images/#{pruebaEspecificaController.pregunta.imagenesUsuario.imagen.imagenURI }">
@@ -320,10 +335,11 @@ body {
 										</div>
 										<div id="panelCambiarLamina">
 											<div id="botCrearLamina">
-												<h:commandButton styleClass="btn btn-inverse"
-													value="Cambiar"
+												<p:commandButton styleClass="btn btn-inverse"
+													onclick="closeDialog ();" value="Cambiar"
+													update="@form :formContenedorLaminas :growl"
 													style="margin-top:10px; margin-left:210px; width:155px; height:75px;"
-													actionListener="#{pruebaEspecificaController.editarPregunta}"></h:commandButton>
+													actionListener="#{pruebaEspecificaController.editarPregunta}"></p:commandButton>
 											</div>
 										</div>
 									</div>
@@ -355,14 +371,14 @@ body {
 					</h:form>
 				</div>
 				<!-- cierro MOdal -->
-				
+
 
 
 				<!-- Modal -->
 				<hr></hr>
-			<footer>
+				<footer>
 				<p>&copy; Mind Management 2013</p>
-			</footer>
+				</footer>
 
 			</div>
 		</div>
@@ -386,7 +402,12 @@ body {
 			}).show();
 		});
 	</script>
-
+	<script>
+		function closeDialog() {
+			$('#myModalCrearPregunta').modal('hide');
+			$('#myModalCambiarImagen').modal('hide');
+		};
+	</script>
 
 </body>
 </html>

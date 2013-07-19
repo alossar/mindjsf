@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import co.mind.management.shared.dto.EvaluadoBO;
 import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.dto.UsuarioProgramadorBO;
 import co.mind.management.shared.persistencia.GestionUsuariosProgramadores;
@@ -40,8 +39,6 @@ public class ProgramadoresController implements Serializable {
 	private List<UsuarioProgramadorBO> programadoresTemp;
 	private UsuarioProgramadorBO programador;
 	private String parametroBusqueda;
-	private boolean mostrarMensajeFeedBack;
-	private String mensajeFeedBack;
 
 	private boolean continuar = true;
 
@@ -123,7 +120,7 @@ public class ProgramadoresController implements Serializable {
 		}
 	}
 
-	public String crearProgramador() {
+	public void crearProgramador() {
 		UsuarioProgramadorBO programador = new UsuarioProgramadorBO();
 		programador.setCedula(idProgramadorCrear);
 		programador.setNombres(nombreProgramadorCrear);
@@ -148,22 +145,24 @@ public class ProgramadoresController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El programador no se pudo crear.", ""));
 		}
-		return null;
+		setNombreProgramadorCrear("");
+		setApellidosProgramadorCrear("");
+		setCorreoProgramadorCrear("");
+		setIdProgramadorCrear(0);
+		setTelefonoProgramadorCrear("");
 	}
 
-	public String editarProgramador() {
+	public void editarProgramador() {
 		programador = (UsuarioProgramadorBO) dataTable.getRowData();
 		programador.setEditar(true);
-		return nombreUsuario;
 	}
 
-	public String cancelarEditarProgramador() {
+	public void cancelarEditarProgramador() {
 		programador = (UsuarioProgramadorBO) dataTable.getRowData();
 		programador.setEditar(true);
-		return null;
 	}
 
-	public String guardarEditarProgramador() {
+	public void guardarEditarProgramador() {
 		programador = (UsuarioProgramadorBO) dataTable.getRowData();
 		programador.setEditar(true);
 		GestionUsuariosProgramadores gProgramadores = new GestionUsuariosProgramadores();
@@ -183,7 +182,6 @@ public class ProgramadoresController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El programador no se pudo editar.", ""));
 		}
-		return null;
 	}
 
 	public void eliminarProgramador(ActionEvent event) {
@@ -219,7 +217,7 @@ public class ProgramadoresController implements Serializable {
 				(UsuarioProgramadorBO) dataTable.getRowData());
 	}
 
-	public String activarProgramador() {
+	public void activarProgramador() {
 		programador = (UsuarioProgramadorBO) dataTable.getRowData();
 
 		GestionUsuariosProgramadores gProgramadores = new GestionUsuariosProgramadores();
@@ -241,10 +239,9 @@ public class ProgramadoresController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El programador no se pudo activar.", ""));
 		}
-		return null;
 	}
 
-	public String desactivarProgramador() {
+	public void desactivarProgramador() {
 		programador = (UsuarioProgramadorBO) dataTable.getRowData();
 
 		GestionUsuariosProgramadores gProgramadores = new GestionUsuariosProgramadores();
@@ -266,7 +263,6 @@ public class ProgramadoresController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El programador no se pudo desactivar.", ""));
 		}
-		return null;
 	}
 
 	public String irAProgramadorEspecifico() {
@@ -280,7 +276,7 @@ public class ProgramadoresController implements Serializable {
 		session.setAttribute("programador", proceso);
 	}
 
-	public String buscarProgramadores() {
+	public void buscarProgramadores() {
 		programadores = programadoresTemp;
 		if (getParametroBusqueda() != null) {
 			if (getParametroBusqueda() != "") {
@@ -321,7 +317,6 @@ public class ProgramadoresController implements Serializable {
 				programadores = resultadoBusqueda;
 			}
 		}
-		return null;
 	}
 
 	public String getNombreUsuario() {

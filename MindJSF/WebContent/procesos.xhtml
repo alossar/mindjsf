@@ -104,10 +104,11 @@ body {
 					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
 						value="#{procesosController.parametroBusqueda }" />
-					<h:commandLink styleClass="btn btn-info" id="searchid"
-						action="#{procesosController.buscarProcesos }">
+					<p:commandLink styleClass="btn btn-info" id="searchid"
+						update=":formPanelTablaProcesos"
+						actionListener="#{procesosController.buscarProcesos }">
 						<i class="icon-search icon-white"></i>
-					</h:commandLink>
+					</p:commandLink>
 					<a data-toggle="modal" class="btn btn-primary"
 						title="Crear un proceso." href="#myModalCrearProceso"> <i
 						class="icon-plus icon-white"></i>
@@ -135,10 +136,10 @@ body {
 									title="#{proceso.descripcion }"
 									action="#{procesosController.irAProcesoEspecifico }"
 									rendered="#{not proceso.editar }"></h:commandLink>
-								<h:inputText styleClass="input-small" id="editarNombreProceso"
+								<p:inputText styleClass="input-small" id="editarNombreProceso"
 									value="#{proceso.nombre }" required="true"
-									requiredMessage="El nombre es necesario."
-									rendered="#{proceso.editar }"></h:inputText>
+									requiredMessage="El nombre es necesario." maxlength="20"
+									rendered="#{proceso.editar }"></p:inputText>
 
 								<h:message for="editarNombreProceso"
 									styleClass="alert alert-error" />
@@ -202,18 +203,18 @@ body {
 										rendered="#{proceso.estadoValoracion == 'no_realizada' or (empty proceso.estadoValoracion) }">NO REALIZADA</h:panelGroup>
 								</center>
 							</h:column> <h:column>
-								<h:commandLink styleClass="btn btn-info btn-small "
-									action="#{procesosController.editarProceso }"
-									title="Editar proceso." rendered="#{not proceso.editar }"
-									style="padding: 5;">
+								<p:commandLink styleClass="btn btn-info btn-small "
+									actionListener="#{procesosController.editarProceso }"
+									update="@form :growl" title="Editar proceso."
+									rendered="#{not proceso.editar }" style="padding: 5;">
 									<i class="icon-pencil icon-white"></i>
-								</h:commandLink>
-								<h:commandLink styleClass="btn btn-success btn-small "
-									title="Guardar cambios."
-									action="#{procesosController.guardarEditarProceso }"
+								</p:commandLink>
+								<p:commandLink styleClass="btn btn-success btn-small "
+									title="Guardar cambios." update="@form :growl"
+									actionListener="#{procesosController.guardarEditarProceso }"
 									rendered="#{proceso.editar }" style="padding: 5;">
 									<i class="icon-ok icon-white"></i>
-								</h:commandLink>
+								</p:commandLink>
 								&nbsp;
 								<h:commandLink styleClass="btn btn-primary btn-small "
 									onclick="$('#myModalDuplicarProceso').modal('show');"
@@ -222,12 +223,12 @@ body {
 									<f:ajax
 										listener="#{procesosController.seleccionarProcesoDuplicar }"></f:ajax>
 								</h:commandLink>
-								<h:commandLink styleClass="btn btn-danger btn-small "
-									title="Cancelar."
-									action="#{procesosController.cancelarEditarProceso }"
+								<p:commandLink styleClass="btn btn-danger btn-small "
+									title="Cancelar." update="@form"
+									actionListener="#{procesosController.cancelarEditarProceso }"
 									rendered="#{proceso.editar }" style="padding: 5;">
 									<i class="icon-remove icon-white"></i>
-								</h:commandLink>
+								</p:commandLink>
 								&nbsp;				
 								<h:commandLink styleClass="btn btn-danger btn-small "
 									onclick="$('#myModal').modal('show');"
@@ -263,11 +264,12 @@ body {
 					<div class="modal-footer">
 						<button class="btn btn-danger" data-dismiss="modal"
 							aria-hidden="true">No</button>
-						<h:commandLink styleClass="btn btn-primary"
+						<p:commandLink styleClass="btn btn-primary"
+							update=":growl :formPanelTablaProcesos"
 							actionListener="#{procesosController.eliminarProceso }"
 							onclick="closeDialog ();" rendered="#{not proceso.editar }"
 							style="padding: 5;" value="SI">
-						</h:commandLink>
+						</p:commandLink>
 					</div>
 
 				</div>
@@ -290,11 +292,11 @@ body {
 							<div class="control-group">
 								<label class="control-label" for="inputCrearPrueba">Nombre</label>
 								<div class="controls">
-									<h:inputText id="inputCrearPrueba"
+									<p:inputText id="inputCrearPrueba"
 										value="#{procesosController.nombreProcesoCrear }"
-										required="true" requiredMessage="Campo necesario.">
-										<f:validateLength maximum="20"></f:validateLength>
-									</h:inputText>
+										required="true" requiredMessage="Campo necesario."
+										maxlength="20">
+									</p:inputText>
 									<p>
 										<h:message for="inputCrearPrueba"
 											styleClass="alert alert-error" />
@@ -305,12 +307,11 @@ body {
 							<div class="control-group">
 								<label class="control-label">Descripción</label>
 								<div class="controls">
-									<h:inputTextarea style="height: 100px; resize:none;"
-										required="true" id="descripcionProcesoTA"
-										requiredMessage="Campo necesario."
-										value="#{procesosController.descripcionProcesoCrear }">
-										<f:validateLength maximum="100"></f:validateLength>
-									</h:inputTextarea>
+									<p:inputTextarea style="height: 100px;" required="true"
+										id="descripcionProcesoTA" requiredMessage="Campo necesario."
+										value="#{procesosController.descripcionProcesoCrear }"
+										maxlength="100">
+									</p:inputTextarea>
 									<p>
 										<h:message for="descripcionProcesoTA"
 											styleClass="alert alert-error" />
@@ -320,11 +321,12 @@ body {
 
 							<div class="control-group">
 								<div class="controls">
-									<h:commandButton styleClass="btn btn-primary " value="Crear"
+									<p:commandButton styleClass="btn btn-primary " value="Agregar"
 										style=" margin-left:65px; width:100px; height:45px;"
 										id="botCrearPrueba" onclick="closeDialog ();"
+										update=":growl :formPanelTablaProcesos @form"
 										actionListener="#{procesosController.crearProceso}">
-									</h:commandButton>
+									</p:commandButton>
 								</div>
 							</div>
 						</div>
@@ -351,11 +353,10 @@ body {
 							<div class="control-group">
 								<label class="control-label" for="inputDuplicarPrueba">Nombre</label>
 								<div class="controls">
-									<h:inputText id="inputDuplicarPrueba"
+									<p:inputText id="inputDuplicarPrueba" maxlength="20"
 										value="#{procesosController.nombreProcesoDuplicar }"
 										required="true" requiredMessage="Campo necesario.">
-										<f:validateLength maximum="20"></f:validateLength>
-									</h:inputText>
+									</p:inputText>
 									<p>
 										<h:message for="inputDuplicarPrueba"
 											styleClass="alert alert-error" />
@@ -366,12 +367,11 @@ body {
 							<div class="control-group">
 								<label class="control-label">Descripción</label>
 								<div class="controls">
-									<h:inputTextarea style="height: 100px; resize:none;"
+									<p:inputTextarea style="height: 100px; resize:none;"
 										required="true" id="descripcionProcesoTAD"
-										requiredMessage="Campo necesario."
+										requiredMessage="Campo necesario." maxlength="100"
 										value="#{procesosController.descripcionProcesoDuplicar }">
-										<f:validateLength maximum="100"></f:validateLength>
-									</h:inputTextarea>
+									</p:inputTextarea>
 									<p>
 										<h:message for="descripcionProcesoTAD"
 											styleClass="alert alert-error" />
@@ -381,11 +381,12 @@ body {
 
 							<div class="control-group">
 								<div class="controls">
-									<h:commandButton styleClass="btn btn-primary" value="Duplicar"
+									<p:commandButton styleClass="btn btn-primary" value="Duplicar"
 										style=" margin-left:65px; width:100px; height:45px;"
 										id="botDuplicarPrueba" onclick="closeDialog ();"
+										update=":growl :formPanelTablaProcesos @form"
 										actionListener="#{procesosController.duplicarProceso}">
-									</h:commandButton>
+									</p:commandButton>
 								</div>
 							</div>
 						</div>

@@ -70,7 +70,7 @@ body {
 						<h:message for="cedula" styleClass="alert alert-error" />
 					</p>
 					<h:outputText value="Correo Electrónico:"></h:outputText>
-					<h:inputText id="correo" required="true"
+					<h:inputText id="correoEva" required="true"
 						styleClass="input-block-level"
 						requiredMessage="Ingrese su correo electrónico."
 						validatorMessage="El correo electrónico no es válido."
@@ -79,15 +79,15 @@ body {
 							pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 					</h:inputText>
 					<p>
-						<h:message for="correo" styleClass="alert alert-error" />
+						<h:message for="correoEva" styleClass="alert alert-error" />
 					</p>
 					<h:outputText value="Código de Acceso:"></h:outputText>
-					<h:inputSecret id="pass" required="true"
+					<h:inputSecret id="passEva" required="true"
 						requiredMessage="Ingrese su código de acceso."
 						styleClass="input-block-level"
 						value="#{loginEvaluacionController.codigoAcceso }"></h:inputSecret>
 					<p>
-						<h:message for="pass" styleClass="alert alert-error" />
+						<h:message for="passEva" styleClass="alert alert-error" />
 					</p>
 					<center>
 						<h:commandButton id="ingresar" value="Ingresar"

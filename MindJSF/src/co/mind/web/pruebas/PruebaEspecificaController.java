@@ -153,7 +153,8 @@ public class PruebaEspecificaController implements Serializable {
 
 	}
 
-	public void actualizarImagenModal(AjaxBehaviorEvent event) {
+	public void actualizarImagenModal(ActionEvent event) {
+		System.out.println("Me jode");
 		setImagen((ImagenUsuarioBO) event.getComponent().getAttributes()
 				.get("imagen"));
 	}
@@ -201,6 +202,10 @@ public class PruebaEspecificaController implements Serializable {
 					"La pregunta no se pudo crear.",
 					"El tiempo o la cantidad de caracteres no pueden ser 0."));
 		}
+		setPreguntaCrear("");
+		setTiempoCrear(0);
+		setCaracteresCrear(0);
+		setImagen(null);
 	}
 
 	public void eliminarPregunta(ActionEvent event) {

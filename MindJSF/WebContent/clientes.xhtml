@@ -98,11 +98,12 @@ body {
 					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
 						value="#{clientesController.parametroBusqueda }" />
-					<h:commandLink styleClass="btn btn-info " id="searchid"
-						action="#{clientesController.buscarClientes }">
+					<p:commandLink styleClass="btn btn-info " id="searchid"
+						actionListener="#{clientesController.buscarClientes }"
+						update=":formPanelTablaClientes">
 						<i class="icon-search icon-white"></i>
-					</h:commandLink>
-					<a data-toggle="modal" class="btn btn-info "
+					</p:commandLink>
+					<a data-toggle="modal" class="btn btn-primary "
 						title="Crear una cuenta cliente." href="#myModalCrearCliente">
 						<i class="icon-plus icon-white"></i>
 					</a>
@@ -166,20 +167,20 @@ body {
 								</h:outputText>
 							</center>
 						</h:column> <h:column>
-							<h:commandLink styleClass="btn btn-warning btn-small "
-								action="#{clientesController.desactivarCliente }"
-								title="Desactivar la cuenta del cliente."
+							<p:commandLink styleClass="btn btn-warning btn-small "
+								actionListener="#{clientesController.desactivarCliente }"
+								title="Desactivar la cuenta del cliente." update="@form :growl"
 								rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }"
 								style="padding: 5;">
 								<i class="icon-ban-circle icon-white"></i>
-							</h:commandLink>
-							<h:commandLink styleClass="btn btn-info btn-small "
-								action="#{clientesController.activarCliente }"
-								title="Activar la cuenta del cliente."
+							</p:commandLink>
+							<p:commandLink styleClass="btn btn-info btn-small "
+								actionListener="#{clientesController.activarCliente }"
+								title="Activar la cuenta del cliente." update="@form :growl"
 								rendered="#{not cliente.editar and not (cliente.estado_Cuenta == 'cuenta_activa')}"
 								style="padding: 5;">
 								<i class="icon-ok-circle icon-white"></i>
-							</h:commandLink>
+							</p:commandLink>
 								&nbsp;
 							<h:commandLink styleClass="btn btn-danger btn-small "
 								onclick="$('#myModal').modal('show');" title="Eliminar cliente."
@@ -188,15 +189,13 @@ body {
 									listener="#{clientesController.seleccionarClienteEliminar }"></f:ajax>
 								<i class="icon-trash icon-white"></i>
 							</h:commandLink>
-
-						</h:column> <h:column>
+								&nbsp;
 							<h:commandLink styleClass="btn btn-info btn-small "
 								onclick="$('#myModalAgregarPrueba').modal('show');"
-								title="Agregar pruebas a la cuenta del cliente."
+								title="Agregar pruebas a la cuenta del cliente." value="Agregar Pruebas"
 								rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }">
 								<f:ajax
-									listener="#{clientesController.seleccionarClienteAgregarPruebas }"></f:ajax>
-								<i class="icon-file icon-white"></i>
+									listener="#{clientesController.seleccionarClienteAgregarPruebas }"></f:ajax>								
 							</h:commandLink>
 						</h:column>
 					</small>
@@ -224,70 +223,68 @@ body {
 						style="margin-left: 115px; margin-top: 15px;">
 						<div style="margin-top: 4px; margin-left: -8px;">
 							<p style="margin-bottom: -2px;">Cedula</p>
-							<h:inputText id="inputCrearEvaluado3"
+							<p:inputText id="inputCrearEvaluado3" maxlength="10"
+								requiredMessage="Debe especificar la cédula del cliente."
 								value="#{clientesController.idClienteCrear}" required="true">
-								<f:validateLength maximum="10"></f:validateLength>
 								<f:convertNumber integerOnly="true" />
-							</h:inputText>
+							</p:inputText>
 						</div>
 						<div style="margin-left: -8px;">
 							<p style="margin-bottom: -2px;">Nombre</p>
-							<h:inputText id="inputCrearEvaluado0" required="true"
+							<p:inputText id="inputCrearEvaluado0" required="true"
+								requiredMessage="Debe especificar el nombre del cliente."
 								value="#{clientesController.nombreClienteCrear}"
-								style="margin-left:-1px;">
-								<f:validateLength maximum="30"></f:validateLength>
-							</h:inputText>
+								style="margin-left:-1px;" maxlength="30">
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px; margin-left: -8px;">
 							<p style="margin-bottom: -2px;">Apellido</p>
-							<h:inputText required="true" id="inputCrearEvaluado"
+							<p:inputText required="true" id="inputCrearEvaluado"
+								requiredMessage="Debe especificar el apellido del cliente."
 								value="#{clientesController.apellidosClienteCrear}"
-								style="margin-left:-1px;">
-								<f:validateLength maximum="30"></f:validateLength>
-							</h:inputText>
+								style="margin-left:-1px;" maxlength="30">
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px; margin-left: -8px;">
 							<p style="margin-bottom: -1px;">Correo</p>
-							<h:inputText id="inputCrearEvaluado2"
+							<p:inputText id="inputCrearEvaluado2" required="true"
+								requiredMessage="Debe especificar el correo del cliente."
 								value="#{clientesController.correoClienteCrear}">
 								<f:validateRegex
 									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-							</h:inputText>
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px; margin-left: -8px;">
 							<p style="margin-bottom: -1px;">Empresa</p>
-							<h:inputText id="inputCrearEvaluado5"
-								value="#{clientesController.empresaClienteCrear}">
-								<f:validateLength maximum="20"></f:validateLength>
-							</h:inputText>
+							<p:inputText id="inputCrearEvaluado5"
+								value="#{clientesController.empresaClienteCrear}" maxlength="20">
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px; margin-left: -8px;">
 							<p style="margin-bottom: -1px;">Cargo</p>
-							<h:inputText id="inputCrearEvaluado6"
+							<p:inputText id="inputCrearEvaluado6" maxlength="45"
 								value="#{clientesController.cargoClienteCrear}">
-								<f:validateLength maximum="45"></f:validateLength>
-							</h:inputText>
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px; margin-left: -8px;">
 							<p style="margin-bottom: -1px;">Telefono</p>
-							<h:inputText id="inputCrearEvaluado7"
+							<p:inputText id="inputCrearEvaluado7" maxlength="10"
 								value="#{clientesController.telefonoClienteCrear}">
-								<f:validateLength maximum="10"></f:validateLength>
-							</h:inputText>
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px; margin-left: -8px;">
 							<p style="margin-bottom: -1px;">Usos</p>
-							<h:inputText id="inputCrearEvaluado8"
+							<p:inputText id="inputCrearEvaluado8" maxlength="10"
+								requiredMessage="Debe especificar la cantidad de usos del cliente."
 								value="#{clientesController.usosClienteCrear}" required="true">
-								<f:validateLength maximum="10"></f:validateLength>
 								<f:convertNumber integerOnly="true" />
-							</h:inputText>
+							</p:inputText>
 						</div>
-						<h:commandButton styleClass="btn btn-primary"
-							style="margin-left:65px; width:100px; 
-						height:45px; padding-top:5px; margin-top:5px;"
-							action="#{clientesController.crearCliente}" id="botCrearEvaluado"
-							value="Crear"></h:commandButton>
+						<p:commandButton styleClass="btn btn-primary"
+							style="margin-left:65px; width:100px; height:45px; padding-top:5px; margin-top:5px;"
+							actionListener="#{clientesController.crearCliente}"
+							update="@form :formPanelTablaClientes :growl"
+							onclick="closeDialog ();" id="botCrearEvaluado" value="Crear"></p:commandButton>
 
 					</div>
 				</h:form>
@@ -313,9 +310,11 @@ body {
 								itemLabel="#{p.nombre }" itemValue="#{p.identificador}" />
 						</h:selectManyListbox>
 
-						<h:commandLink styleClass="btn btn-primary" value="Agregar"
-							action="#{clientesController.agregarPruebasACliente}">
-						</h:commandLink>
+						<p:commandLink styleClass="btn btn-primary" value="Agregar"
+							update="@form :formPanelTablaClientes :growl"
+							onclick="closeDialog ();"
+							actionListener="#{clientesController.agregarPruebasACliente}">
+						</p:commandLink>
 					</h:form>
 				</div>
 			</div>
@@ -333,11 +332,12 @@ body {
 					<div class="modal-footer">
 						<button class="btn btn-danger" data-dismiss="modal"
 							aria-hidden="true">No</button>
-						<h:commandLink styleClass="btn btn-primary show-notification"
+						<p:commandLink styleClass="btn btn-primary show-notification"
 							actionListener="#{clientesController.eliminarCliente }"
 							onclick="closeDialog ();" rendered="#{not cliente.editar }"
-							style="padding: 5;" value="SI">
-						</h:commandLink>
+							update=":formPanelTablaClientes :growl" style="padding: 5;"
+							value="SI">
+						</p:commandLink>
 					</div>
 
 				</div>
@@ -353,22 +353,11 @@ body {
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/bootstrap-transition.js"></script>
-	<script src="js/bootstrap-alert.js"></script>
-	<script src="js/bootstrap-notify.js"></script>
-	<script>
-		$('.show-notification').click(function(e) {
-			$('.top-left').notify({
-				message : {
-					text : 'Aw yeah, It works!'
-				}
-			}).show();
-		});
-	</script>
 	<script>
 		function closeDialog() {
-			$('#myModalCrearProceso').modal('hide');
+			$('#myModalCrearCliente').modal('hide');
 			$('#myModal').modal('hide');
-			$('#myModalDuplicarProceso').modal('hide');
+			$('#myModalAgregarPrueba').modal('hide');
 		};
 	</script>
 </body>

@@ -19,9 +19,9 @@
   <link rel="stylesheet" href="css/2mstyleIE8.css"/>
 <![endif]-->
 </h:head>
-<body>	
-	<div id="wrap">
-		<div class="container" style="width: 900px;">
+<body style="background-color: rgb(45, 55, 60);">
+	<div id="wrap demoEva" style="background-color: rgb(45, 55, 60);">
+		<div class="container" style="width: 900px; background-color: white;">
 			<div class="contenedorEvaLaminas">
 
 				<h:form id="formEvaluacion">
@@ -31,6 +31,7 @@
 					<h:graphicImage rendered="#{not demoController.enPregunta}"
 						value="images/img/#{demoController.imagenInstruccion}" />
 					<div id="panelEvaLamina">
+
 						<div id="espacioPreguntaEva">
 							<h:outputText value="Su respuesta"
 								rendered="#{demoController.enPregunta}" />
@@ -46,19 +47,21 @@
 						</div>
 						<div id="espacioTiempoYCantidad"></div>
 						<div id="botSiguienteLaminaEva">
+
 							<p:commandLink styleClass="btn btn-inverse"
 								update="formEvaluacion" rendered="#{demoController.enPregunta}"
 								style="height:46px;	margin-top:33px; vertical-align:middle"
-								actionListener="#{demoController.guardarResultado}"
-								value="Siguiente">
+								actionListener="#{demoController.guardarResultado}">
+								<p>Siguiente</p>
 							</p:commandLink>
 							<p:commandLink styleClass="btn btn-inverse"
 								rendered="#{not demoController.enPregunta}"
 								update="formEvaluacion"
 								style="height:46px;	margin-top:33px; vertical-align:middle"
-								actionListener="#{demoController.cerrarInstruccion}"
-								value="Continuar">
+								actionListener="#{demoController.cerrarInstruccion}">
+								<p>Continuar</p>
 							</p:commandLink>
+
 						</div>
 
 					</div>

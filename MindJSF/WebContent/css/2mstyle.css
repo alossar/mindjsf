@@ -53,8 +53,8 @@ html,body {
 
 /*-----------------Contenedor Laminas Evaluacion----------------------*/
 .contenedorEvaLaminas{
-	margin:45px auto;	
-	outline: 1px solid rgba(0,0,0,0.1);
+	margin:auto;	
+	/*outline: 1px solid rgba(0,0,0,0.1);*/
 	width:900px;
 	height:600px;
 	position:relative;
@@ -62,11 +62,11 @@ html,body {
 
 #panelEvaLamina{
 	width:900px;
-	height:130px;
+	height:150px;
 	position:absolute;
-	top:470px;
-	background-color:rgb(234,234,234);  
-	outline: 1px solid rgb(224,224,224);
+	top:450px;
+	/*background-color:rgb(234,234,234);*/  
+	/*outline: 1px solid rgb(224,224,224);*/
 }
 #panelEvaLamina p{
 	font-size: 10pt;
@@ -78,7 +78,7 @@ html,body {
 	height:88px;
 	float:left;
 	margin-left:25px;
-	margin-top:21px;
+	margin-top:13px;
 }
 #espacioTextoPreguntaEva{
 	width:700px;
@@ -118,7 +118,7 @@ html,body {
 #timerEva p{
 
 	color:white;
-	font-size:11pt;
+	font-size:12pt;
 	padding-top:23px;
 }
 

@@ -127,33 +127,45 @@ public class ClienteEspecificoController implements Serializable {
 
 	}
 
-	public String agregarUsos() {
-		UsoBO uso = new UsoBO();
-		uso.setFechaAsignacion(new Date());
-		uso.setUsosAsignados(cantidadUsos);
-		uso.setUsosRedimidos(0);
-		GestionUsos gUsos = new GestionUsos();
-		int result = gUsos.agregarUso(cliente.getIdentificador(), uso);
-		if (result == Convencion.CORRECTO) {
-			setUsos(gUsos.listarUsos(cliente.getIdentificador()));
-			// Mensaje para el feedback
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(null, new FacesMessage(
-					FacesMessage.SEVERITY_INFO, "Usos asignados.", ""));
+	public void agregarUsos() {
+		if (cantidadUsos > 0) {
+			UsoBO uso = new UsoBO();
+			uso.setFechaAsignacion(new Date());
+			uso.setUsosAsignados(cantidadUsos);
+			uso.setUsosRedimidos(0);
+			GestionUsos gUsos = new GestionUsos();
+			int result = gUsos.agregarUso(cliente.getIdentificador(), uso);
+			if (result == Convencion.CORRECTO) {
+				setUsos(gUsos.listarUsos(cliente.getIdentificador()));
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_INFO, "Usos asignados.", ""));
+			} else {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_WARN,
+						"Los usos no se pudieron asignar.", ""));
+			}
 		} else {
 			// Mensaje para el feedback
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage(
 					FacesMessage.SEVERITY_WARN,
-					"Los usos no se pudieron asignar.", ""));
+					"Los usos no se pudieron asignar.",
+					"La cantidad de usos no puede ser 0."));
 		}
-		return null;
+		setCantidadUsos(0);
 	}
 
-	public String generarReporteUsos() {
+	public void generarReporteUsos() {
 
 		if (fechaFinal == null || fechaInicial == null) {
-			return null;
+			FacesContext context = FacesContext.getCurrentInstance();
+			context.addMessage(null, new FacesMessage(
+					FacesMessage.SEVERITY_WARN,
+					"Debe especificar las fechas del reporte", ""));
 		} else {
 			String url = "UsosReportServlet";
 			FacesContext context = FacesContext.getCurrentInstance();
@@ -171,7 +183,6 @@ public class ClienteEspecificoController implements Serializable {
 				context.responseComplete();
 			}
 		}
-		return null;
 	}
 
 	public void formatoFechaInicial(javax.faces.event.ValueChangeEvent e) {

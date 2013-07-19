@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import co.mind.management.shared.dto.EvaluadoBO;
-import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.persistencia.GestionEvaluados;
 import co.mind.management.shared.recursos.Convencion;
@@ -39,8 +38,6 @@ public class EvaluadosController implements Serializable {
 	private List<EvaluadoBO> evaluadosTemp;
 	private EvaluadoBO evaluado;
 	private String parametroBusqueda;
-	private boolean mostrarMensajeFeedBack;
-	private String mensajeFeedBack;
 
 	// JavaServerFaces related variables
 	private transient UIForm tableForm;
@@ -99,7 +96,7 @@ public class EvaluadosController implements Serializable {
 		}
 	}
 
-	public String crearEvaluado() {
+	public void crearEvaluado() {
 		EvaluadoBO eva = new EvaluadoBO();
 		eva.setApellidos(apellidoEvaluadoCrear);
 		eva.setCedula(cedulaEvaluadoCrear);
@@ -124,25 +121,26 @@ public class EvaluadosController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El evaluado no se pudo crear.", ""));
 		}
-		return null;
+		setNombreEvaluadoCrear("");
+		setCedulaEvaluadoCrear(0);
+		setCorreoEvaluadoCrear("");
+		setApellidoEvaluadoCrear("");
 	}
 
-	public String editarEvaluado() {
+	public void editarEvaluado() {
 		evaluado = (EvaluadoBO) dataTable.getRowData();
 		evaluado.setEditar(true);
-		return nombreUsuario;
 	}
 
-	public String cancelarEditarEvaluado() {
+	public void cancelarEditarEvaluado() {
 		evaluado.setEditar(false);
 		GestionEvaluados gEvaluados = new GestionEvaluados();
 		setEvaluados(gEvaluados.listarUsuariosBasicos(usuario
 				.getIdentificador()));
 		evaluadosTemp = evaluados;
-		return null;
 	}
 
-	public String guardarEditarEvaluado() {
+	public void guardarEditarEvaluado() {
 		evaluado = (EvaluadoBO) dataTable.getRowData();
 		evaluado.setEditar(false);
 		GestionEvaluados gEvaluados = new GestionEvaluados();
@@ -163,7 +161,6 @@ public class EvaluadosController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El evaluado no se pudo editar.", ""));
 		}
-		return null;
 	}
 
 	public void seleccionarEvaluadoEliminar(AjaxBehaviorEvent event) {
@@ -211,7 +208,7 @@ public class EvaluadosController implements Serializable {
 		session.setAttribute("evaluado", proceso);
 	}
 
-	public String buscarEvaluados() {
+	public void buscarEvaluados() {
 		evaluados = evaluadosTemp;
 		if (getParametroBusqueda() != null) {
 			if (getParametroBusqueda() != "") {
@@ -252,7 +249,6 @@ public class EvaluadosController implements Serializable {
 				evaluados = resultadoBusqueda;
 			}
 		}
-		return null;
 	}
 
 	public String getNombreUsuario() {

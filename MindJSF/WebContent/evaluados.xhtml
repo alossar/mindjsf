@@ -97,11 +97,12 @@ body {
 					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
 						value="#{evaluadosController.parametroBusqueda }" />
-					<h:commandLink styleClass="btn btn-info " id="searchid"
-						action="#{evaluadosController.buscarEvaluados }">
+					<p:commandLink styleClass="btn btn-info " id="searchid"
+						update=":formPanelTablaEvaluados"
+						actionListener="#{evaluadosController.buscarEvaluados }">
 						<i class="icon-search icon-white"></i>
-					</h:commandLink>
-					<a data-toggle="modal" class="btn btn-info "
+					</p:commandLink>
+					<a data-toggle="modal" class="btn btn-primary "
 						title="Crear un evaluado." href="#myModalCrearEvaluado"> <i
 						class="icon-plus icon-white"></i>
 					</a>
@@ -109,7 +110,9 @@ body {
 			</div>
 
 
-			<legend class="legendTitles"><img src="img/icoevaluados.png"></img>Evaluados</legend>
+			<legend class="legendTitles">
+				<img src="img/icoevaluados.png"></img>Evaluados
+			</legend>
 			<h:form id="formPanelTablaEvaluados">
 				<h:dataTable id="panelTablaEvaluados"
 					rendered="#{not empty evaluadosController.evaluados }"
@@ -121,10 +124,10 @@ body {
 							<f:facet name="header">
 								<h:outputText value="Cédula"></h:outputText>
 							</f:facet>
-							<i class="icon-user" style="margin-right:5px;"></i>
+							<i class="icon-user" style="margin-right: 5px;"></i>
 							<h:outputText value="#{evaluado.cedula }">
 							</h:outputText>
-					
+
 						</h:column> <h:column>
 							<f:facet name="header">
 								<h:outputText value="Nombre del Evaluado"></h:outputText>
@@ -134,12 +137,14 @@ body {
 								style="color:black; "
 								action="#{evaluadosController.irAEvaluadoEspecifico }"
 								rendered="#{not evaluado.editar }"></h:commandLink>
-							<h:inputText styleClass="input-small"
+							<p:inputText styleClass="input-small"
 								value="#{evaluado.nombres }" rendered="#{evaluado.editar }"
-								required="true" requiredMessage="El nombre es necesario."></h:inputText>
-							<h:inputText styleClass="input-small"
+								required="true" requiredMessage="El nombre es necesario."
+								maxlength="20"></p:inputText>
+							<p:inputText styleClass="input-small"
 								value="#{evaluado.apellidos }" rendered="#{evaluado.editar }"
-								required="true" requiredMessage="Los apellidos es necesario."></h:inputText>
+								required="true" requiredMessage="Los apellidos es necesario."
+								maxlength="20"></p:inputText>
 						</h:column> <h:column>
 
 							<f:facet name="header">
@@ -156,25 +161,25 @@ body {
 									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 							</h:inputText>
 						</h:column> <h:column>
-							<h:commandLink styleClass="btn btn-info btn-small "
-								action="#{evaluadosController.editarEvaluado }"
+							<p:commandLink styleClass="btn btn-info btn-small "
+								actionListener="#{evaluadosController.editarEvaluado }"
 								title="Editar evaluado." rendered="#{not evaluado.editar }"
-								style="padding: 5;">
+								style="padding: 5;" update="@form">
 								<i class="icon-pencil icon-white"></i>
-							</h:commandLink>
-							<h:commandLink styleClass="btn btn-success btn-small "
-								action="#{evaluadosController.guardarEditarEvaluado }"
+							</p:commandLink>
+							<p:commandLink styleClass="btn btn-success btn-small "
+								actionListener="#{evaluadosController.guardarEditarEvaluado }"
 								title="Guardar cambios." rendered="#{evaluado.editar }"
-								style="padding: 5;">
+								style="padding: 5;" update="@form :growl">
 								<i class="icon-ok icon-white"></i>
-							</h:commandLink>
+							</p:commandLink>
 								&nbsp;						
-								<h:commandLink styleClass="btn btn-danger btn-small "
-								action="#{evaluadosController.cancelarEditarEvaluado }"
+								<p:commandLink styleClass="btn btn-danger btn-small "
+								actionListener="#{evaluadosController.cancelarEditarEvaluado }"
 								title="Cancelar." rendered="#{evaluado.editar }"
-								style="padding: 5;">
+								style="padding: 5;" update="@form :growl">
 								<i class="icon-remove icon-white"></i>
-							</h:commandLink>
+							</p:commandLink>
 							<h:commandLink styleClass="btn btn-danger btn-small "
 								onclick="$('#myModal').modal('show');"
 								title="Eliminar evaluado."
@@ -208,39 +213,45 @@ body {
 					<div id="contenedorBotonesCrearPrueba" style="margin-left: 115px;">
 						<div>
 							<p>Nombre</p>
-							<h:inputText id="inputCrearEvaluado0" required="true"
-								style="margin-left:-8px;"
+							<p:inputText id="inputCrearEvaluado0" required="true"
+								style="margin-left:-8px;" maxlength="20"
+								requiredMessage="Debe especificar el nombre del evaluado."
 								value="#{evaluadosController.nombreEvaluadoCrear }">
-								<f:validateLength maximum="20"></f:validateLength>
-							</h:inputText>
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Apellido</p>
-							<h:inputText required="true" id="inputCrearEvaluado"
-								style="margin-left:-8px;"
+							<p:inputText required="true" id="inputCrearEvaluado"
+								style="margin-left:-8px;" maxlength="20"
+								requiredMessage="Debe especificar el apellido del evaluado."
 								value="#{evaluadosController.apellidoEvaluadoCrear }">
-								<f:validateLength maximum="20"></f:validateLength>
-							</h:inputText>
+							</p:inputText>
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Correo</p>
 							<h:inputText id="inputCrearEvaluado2" style="margin-left:-8px;"
-								value="#{evaluadosController.correoEvaluadoCrear }">
+								value="#{evaluadosController.correoEvaluadoCrear }"
+								required="true"
+								requiredMessage="Debe especificar el correo del evaluado.">
 								<f:validateRegex
 									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
 							</h:inputText>
 						</div>
 						<div style="margin-top: 4px;">
 							<p>Cedula</p>
-							<h:inputText id="inputCrearEvaluado3" style="margin-left:-8px;"
-								value="#{evaluadosController.cedulaEvaluadoCrear }">
-								<f:validateLength maximum="10"></f:validateLength>
+							<p:inputText id="inputCrearEvaluado3" style="margin-left:-8px;"
+								required="true"
+								value="#{evaluadosController.cedulaEvaluadoCrear }"
+								requiredMessage="Debe especificar la cédula del evaluado."
+								maxlength="10">
 								<f:convertNumber integerOnly="true" />
-							</h:inputText>
+							</p:inputText>
 						</div>
-						<h:commandButton styleClass="btn btn-primary"
-							id="botCrearEvaluado" value="Crear" style="margin-left:66px;"
-							action="#{evaluadosController.crearEvaluado }"></h:commandButton>
+						<p:commandButton styleClass="btn btn-primary"
+							update="@form :formPanelTablaEvaluados :growl"
+							onclick="closeDialog ();" id="botCrearEvaluado" value="Crear"
+							style="margin-left:66px;"
+							actionListener="#{evaluadosController.crearEvaluado }"></p:commandButton>
 					</div>
 				</h:form>
 			</div>
@@ -258,12 +269,12 @@ body {
 					<div class="modal-footer">
 						<button class="btn btn-danger" data-dismiss="modal"
 							aria-hidden="true">No</button>
-						<h:commandLink styleClass="btn btn-primary show-notification"
+						<p:commandLink styleClass="btn btn-primary show-notification"
 							actionListener="#{evaluadosController.eliminarEvaluado }"
 							onclick="closeDialog ();" rendered="#{not evaluado.editar }"
-							style="padding: 5;" value="SI">
-							<f:ajax render=":formPanelTablaEvaluados:panelTablaEvaluados" />
-						</h:commandLink>
+							style="padding: 5;" value="SI"
+							update=":formPanelTablaEvaluados :growl">
+						</p:commandLink>
 					</div>
 
 				</div>
@@ -280,22 +291,10 @@ body {
 	<script src="http://code.jquery.com/jquery.js"></script>
 	<script src="js/bootstrap.js"></script>
 	<script src="js/bootstrap-transition.js"></script>
-	<script src="js/bootstrap-alert.js"></script>
-	<script src="js/bootstrap-notify.js"></script>
-	<script>
-		$('.show-notification').click(function(e) {
-			$('.top-left').notify({
-				message : {
-					text : 'Aw yeah, It works!'
-				}
-			}).show();
-		});
-	</script>
 	<script>
 		function closeDialog() {
-			$('#myModalCrearProceso').modal('hide');
+			$('#myModalCrearEvaluado').modal('hide');
 			$('#myModal').modal('hide');
-			$('#myModalDuplicarProceso').modal('hide');
 		};
 	</script>
 </body>

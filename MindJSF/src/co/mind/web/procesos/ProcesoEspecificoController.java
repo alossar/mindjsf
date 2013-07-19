@@ -189,6 +189,7 @@ public class ProcesoEspecificoController implements Serializable {
 				}
 				fechaFinal = proceso.getFechaFinalizacion();
 				fechaInicial = proceso.getFechaInicio();
+				resultadosReporte.clear();
 			}
 		}
 	}
@@ -233,25 +234,22 @@ public class ProcesoEspecificoController implements Serializable {
 		}
 	}
 
-	public String verParticipaciones() {
+	public void verParticipaciones() {
 		setEnEvaluados(true);
 		setEnPruebas(false);
 		setEnResultados(false);
-		return null;
 	}
 
-	public String verPruebas() {
+	public void verPruebas() {
 		setEnEvaluados(false);
 		setEnPruebas(true);
 		setEnResultados(false);
-		return null;
 	}
 
-	public String verResultados() {
+	public void verResultados() {
 		setEnEvaluados(false);
 		setEnPruebas(false);
 		setEnResultados(true);
-		return null;
 	}
 
 	public String irAPrueba() {
@@ -355,7 +353,7 @@ public class ProcesoEspecificoController implements Serializable {
 		session.removeAttribute("participacionEliminar");
 	}
 
-	public String guardarEditarProceso() {
+	public void guardarEditarProceso() {
 		GestionProcesos gProcesos = new GestionProcesos();
 		if (fechaFinal != null) {
 			if (fechaInicial != null) {
@@ -386,10 +384,10 @@ public class ProcesoEspecificoController implements Serializable {
 					"El proceso no se pudo editar.", ""));
 		}
 		setEditar(false);
-		return null;
 	}
 
-	public String irAReportePDF() {
+	public void irAReportePDF() {
+		System.out.println("Generando Reporte");
 		ParticipacionEnProcesoBO par = (ParticipacionEnProcesoBO) dataTableResultados
 				.getRowData();
 		String url = "PDFReportServlet";
@@ -406,10 +404,9 @@ public class ProcesoEspecificoController implements Serializable {
 		} finally {
 			context.responseComplete();
 		}
-		return null;
 	}
 
-	public String enviarNotificacion() {
+	public void enviarNotificacion() {
 		ParticipacionEnProcesoBO par = (ParticipacionEnProcesoBO) dataTableEvaluados
 				.getRowData();
 		int result = SMTPSender.enviarCorreoParticipacionAProceso(par,
@@ -433,7 +430,6 @@ public class ProcesoEspecificoController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"La notificación no se pudo enviar.", ""));
 		}
-		return null;
 	}
 
 	public void mostrarAgregarPrueba(AjaxBehaviorEvent event) {
@@ -467,7 +463,7 @@ public class ProcesoEspecificoController implements Serializable {
 		setCrearEvaluado(true);
 	}
 
-	public String crearEvaluadoEnProceso() {
+	public void crearEvaluadoEnProceso() {
 		System.out.println("Creando evaluado...");
 		EvaluadoBO eva = new EvaluadoBO();
 		eva.setApellidos(apellidoEvaluadoCrear);
@@ -517,10 +513,13 @@ public class ProcesoEspecificoController implements Serializable {
 					"El evaluado no se pudo crear.",
 					"No dispone de los usos suficientes."));
 		}
-		return null;
+		setApellidoEvaluadoCrear("");
+		setCedulaEvaluadoCrear(0);
+		setNombreEvaluadoCrear("");
+		setCorreoEvaluadoCrear("");
 	}
 
-	public String crearPruebaEnProceso() {
+	public void crearPruebaEnProceso() {
 		System.out.println("Creando prueba...");
 		PruebaUsuarioBO prueba = new PruebaUsuarioBO();
 		prueba.setNombre(nombrePruebaCrear);
@@ -554,10 +553,11 @@ public class ProcesoEspecificoController implements Serializable {
 					FacesMessage.SEVERITY_WARN, "La prueba no se pudo crear.",
 					""));
 		}
-		return null;
+		setNombrePruebaCrear("");
+		setDescripcionPruebaCrear("");
 	}
 
-	public String agregarEvaluadosAProceso() {
+	public void agregarEvaluadosAProceso() {
 		GestionUsos gUsos = new GestionUsos();
 		if (gUsos.consultarCapacidadUsos(idUsuario,
 				selectItemsEvaluadosRestantes.length)) {
@@ -595,10 +595,9 @@ public class ProcesoEspecificoController implements Serializable {
 					"El evaluado no se pudo agregar.",
 					"No dispone de los usos suficientes."));
 		}
-		return null;
 	}
 
-	public String agregarPruebasAProceso() {
+	public void agregarPruebasAProceso() {
 		GestionPruebas gPruebas = new GestionPruebas();
 
 		for (Integer id : selectItemsPruebasRestantes) {
@@ -623,7 +622,6 @@ public class ProcesoEspecificoController implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 				"Prueba agregada.", ""));
-		return null;
 	}
 
 	private List<PruebaUsuarioBO> obtenerPruebasNoEnProceso(
@@ -729,7 +727,7 @@ public class ProcesoEspecificoController implements Serializable {
 		}
 	}
 
-	public String solicitarRevision() {
+	public void solicitarRevision() {
 		proceso.setEstadoValoracion(Convencion.ESTADO_SOLICITUD_PENDIENTE);
 		GestionProcesos gProcesos = new GestionProcesos();
 		gProcesos.editarProcesoUsuarioAdministrador(usuario.getIdentificador(),
@@ -748,7 +746,6 @@ public class ProcesoEspecificoController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"La solicitud de revisión no pudo ser enviada.", ""));
 		}
-		return null;
 	}
 
 	public void reporteExcel(ActionEvent event) {
@@ -757,24 +754,38 @@ public class ProcesoEspecificoController implements Serializable {
 				List<Integer> participaciones = new ArrayList<Integer>();
 
 				for (ParticipacionEnProcesoBO item : resultadosProcesoEspecifico) {
-					if (resultadosReporte.get(item.getIdentificador())) {
-						participaciones.add(item.getIdentificador());
+					if (resultadosReporte.get(item.getIdentificador()) != null) {
+
+						if (resultadosReporte.get(item.getIdentificador())) {
+							participaciones.add(item.getIdentificador());
+						}
 					}
 				}
 
 				resultadosReporte.clear(); // If necessary.
 
-				String url = "ExcelReportServlet";
-				FacesContext context = FacesContext.getCurrentInstance();
-				ExternalContext ctx = context.getExternalContext();
-				HttpSession sess = (HttpSession) ctx.getSession(true);
-				sess.setAttribute("participaciones", participaciones);
-				try {
-					context.getExternalContext().dispatch(url);
-				} catch (Exception e) {
-					e.printStackTrace();
-				} finally {
-					context.responseComplete();
+				if (participaciones.isEmpty()) {
+					FacesContext context = FacesContext.getCurrentInstance();
+					context.addMessage(
+							null,
+							new FacesMessage(
+									FacesMessage.SEVERITY_WARN,
+									"Debe seleccionar los resultados para exportar",
+									""));
+				} else {
+
+					String url = "ExcelReportServlet";
+					FacesContext context = FacesContext.getCurrentInstance();
+					ExternalContext ctx = context.getExternalContext();
+					HttpSession sess = (HttpSession) ctx.getSession(true);
+					sess.setAttribute("participaciones", participaciones);
+					try {
+						context.getExternalContext().dispatch(url);
+					} catch (Exception e) {
+						e.printStackTrace();
+					} finally {
+						context.responseComplete();
+					}
 				}
 
 			} else {

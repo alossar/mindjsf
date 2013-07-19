@@ -142,24 +142,24 @@ public class PruebasController implements Serializable {
 					FacesMessage.SEVERITY_WARN, "La prueba no se pudo crear.",
 					""));
 		}
+		setNombrePruebaCrear("");
+		setDescripcionPruebaCrear("");
 	}
 
-	public String editarPrueba() {
+	public void editarPrueba() {
 		prueba = (PruebaUsuarioBO) dataTable.getRowData();
 		prueba.setEditar(true);
-		return nombreUsuario;
 	}
 
-	public String cancelarEditarPrueba() {
+	public void cancelarEditarPrueba() {
 		prueba = (PruebaUsuarioBO) dataTable.getRowData();
 		prueba.setEditar(false);
 		GestionPruebas gPruebas = new GestionPruebas();
 		setPruebas(gPruebas.listarPruebasUsuarioAdministrador(usuario
 				.getIdentificador()));
-		return null;
 	}
 
-	public String guardarEditarPrueba() {
+	public void guardarEditarPrueba() {
 		prueba = (PruebaUsuarioBO) dataTable.getRowData();
 		prueba.setEditar(false);
 		GestionPruebas gPruebas = new GestionPruebas();
@@ -180,7 +180,6 @@ public class PruebasController implements Serializable {
 					FacesMessage.SEVERITY_WARN, "La prueba no se pudo crear.",
 					""));
 		}
-		return null;
 	}
 
 	public void seleccionarPruebaEliminar(AjaxBehaviorEvent event) {
@@ -221,7 +220,7 @@ public class PruebasController implements Serializable {
 		session.setAttribute("prueba", proceso);
 	}
 
-	public String buscarPruebas() {
+	public void buscarPruebas() {
 		pruebas = pruebasTemp;
 		if (getParametroBusqueda() != null) {
 			if (getParametroBusqueda() != "") {
@@ -237,7 +236,6 @@ public class PruebasController implements Serializable {
 				pruebas = resultadoBusqueda;
 			}
 		}
-		return null;
 	}
 
 	public String irAPruebaEspecifica() {

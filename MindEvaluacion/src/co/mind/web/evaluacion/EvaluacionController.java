@@ -3,6 +3,7 @@ package co.mind.web.evaluacion;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -224,6 +225,7 @@ public class EvaluacionController implements Serializable {
 			GestionEvaluacion gEvaluacion = new GestionEvaluacion();
 			participacionEnProceso
 					.setEstado(Convencion.ESTADO_PARTICIPACION_EN_PROCESO_INACTIVA);
+			participacionEnProceso.setFechaRealizacion(new Date());
 			EvaluadoBO usuarioBasico = participacionEnProceso
 					.getUsuarioBasico();
 			int result = gEvaluacion.editarParticipacionEnProceso(
