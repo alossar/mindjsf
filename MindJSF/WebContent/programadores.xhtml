@@ -51,7 +51,7 @@ body {
 									<li><h:commandLink
 											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
-								<h:panelGroup rendered="#{autorizacionController.cliente }">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
 											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
@@ -113,12 +113,13 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icoprogramadores.png"></img>Programadores
 			</legend>
-			<h:form id="formPanelTablaProgramadores">
+			<h:form id="formPanelTablaProgramadores"
+				rendered="#{not empty programadoresController.programadoresAMostrar }">
 				<h:dataTable id="panelTablaProgramadores"
-					rendered="#{not empty programadoresController.programadores }"
 					styleClass="table table-hover table-condensed table-striped"
 					binding="#{programadoresController.dataTable }"
-					value="#{programadoresController.programadores }" var="programador">
+					value="#{programadoresController.programadoresAMostrar }"
+					var="programador">
 					<small> <h:column>
 
 							<f:facet name="header">
@@ -193,13 +194,28 @@ body {
 						</h:column>
 					</small>
 				</h:dataTable>
-				<h:panelGroup styleClass="alert"
-					rendered="#{empty programadoresController.programadores }">
-					<h:outputText value="No se encontraron programadores."></h:outputText>
-					<a data-toggle="modal" href="#myModalCrearProgramador">Crea un
-						programador. </a>
-				</h:panelGroup>
+				<ul class="pager">
+					<li
+						class="previous #{programadoresController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaProgramadores"
+							disabled="#{programadoresController.primeraPagina}"
+							actionListener="#{programadoresController.programadoresAnteriores}">&larr; Anterior
+							</p:commandLink></li>
+					<li
+						class="next #{programadoresController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaProgramadores"
+							disabled="#{programadoresController.ultimaPagina}"
+							actionListener="#{programadoresController.programadoresSiguientes}">Siguiente &rarr;
+							</p:commandLink></li>
+				</ul>
+
 			</h:form>
+			<h:panelGroup styleClass="alert"
+				rendered="#{empty programadoresController.programadoresAMostrar }">
+				<h:outputText value="No se encontraron programadores."></h:outputText>
+				<a data-toggle="modal" href="#myModalCrearProgramador">Crea un
+					programador. </a>
+			</h:panelGroup>
 
 			<h:form>
 				<div id="myModalCrearProgramador" class="modal hide fade"

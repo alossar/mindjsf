@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsuarioBO;
 import co.mind.management.shared.dto.UsuarioProgramadorBO;
 import co.mind.management.shared.persistencia.GestionUsuariosProgramadores;
@@ -51,6 +52,12 @@ public class ProgramadoresController implements Serializable {
 	private int idProgramadorCrear;
 	private String telefonoProgramadorCrear;
 
+	private int cantidadPogramadoresAMostrar = 10;
+	private List<UsuarioProgramadorBO> programadoresAMostrar = new ArrayList<UsuarioProgramadorBO>();
+	private boolean primeraPagina = true;
+	private boolean ultimaPagina = false;
+	private int paginaActual;
+
 	@PostConstruct
 	public void init() {
 		verificarLogin();
@@ -61,6 +68,8 @@ public class ProgramadoresController implements Serializable {
 			setProgramadores(gProgramadores.listarUsuariosProgramadores(usuario
 					.getIdentificador()));
 			programadoresTemp = programadores;
+			paginaActual = 0;
+			actualizarProgramadores();
 		}
 	}
 
@@ -150,6 +159,7 @@ public class ProgramadoresController implements Serializable {
 		setCorreoProgramadorCrear("");
 		setIdProgramadorCrear(0);
 		setTelefonoProgramadorCrear("");
+		actualizarProgramadores();
 	}
 
 	public void editarProgramador() {
@@ -208,6 +218,7 @@ public class ProgramadoresController implements Serializable {
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("programadorEliminar");
+		actualizarProgramadores();
 	}
 
 	public void seleccionarProgramadorEliminar(AjaxBehaviorEvent event) {
@@ -317,6 +328,52 @@ public class ProgramadoresController implements Serializable {
 				programadores = resultadoBusqueda;
 			}
 		}
+		actualizarProgramadores();
+	}
+
+	public void programadoresSiguientes() {
+		if (!ultimaPagina) {
+			paginaActual++;
+			actualizarProgramadores();
+		}
+	}
+
+	public void programadoresAnteriores() {
+		if (!primeraPagina) {
+			paginaActual--;
+			actualizarProgramadores();
+		}
+	}
+
+	private void actualizarProgramadores() {
+		programadoresAMostrar.clear();
+		for (int i = 0; i < cantidadPogramadoresAMostrar; i++) {
+			try {
+				programadoresAMostrar.add(getProgramadores().get(
+						paginaActual * cantidadPogramadoresAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPagina = true;
+				primeraPagina = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActual <= 0) {
+			ultimaPagina = false;
+			if (programadoresAMostrar.size() < cantidadPogramadoresAMostrar) {
+				ultimaPagina = true;
+			}
+			primeraPagina = true;
+		} else if (paginaActual >= programadores.size()
+				/ cantidadPogramadoresAMostrar) {
+			ultimaPagina = true;
+			primeraPagina = false;
+		} else {
+			ultimaPagina = false;
+			primeraPagina = false;
+		}
 	}
 
 	public String getNombreUsuario() {
@@ -397,5 +454,38 @@ public class ProgramadoresController implements Serializable {
 
 	public void setTelefonoProgramadorCrear(String telefonoProgramadorCrear) {
 		this.telefonoProgramadorCrear = telefonoProgramadorCrear;
+	}
+
+	public int getCantidadPogramadoresAMostrar() {
+		return cantidadPogramadoresAMostrar;
+	}
+
+	public void setCantidadPogramadoresAMostrar(int cantidadPogramadoresAMostrar) {
+		this.cantidadPogramadoresAMostrar = cantidadPogramadoresAMostrar;
+	}
+
+	public List<UsuarioProgramadorBO> getProgramadoresAMostrar() {
+		return programadoresAMostrar;
+	}
+
+	public void setProgramadoresAMostrar(
+			List<UsuarioProgramadorBO> programadoresAMostrar) {
+		this.programadoresAMostrar = programadoresAMostrar;
+	}
+
+	public boolean isPrimeraPagina() {
+		return primeraPagina;
+	}
+
+	public void setPrimeraPagina(boolean primeraPagina) {
+		this.primeraPagina = primeraPagina;
+	}
+
+	public boolean isUltimaPagina() {
+		return ultimaPagina;
+	}
+
+	public void setUltimaPagina(boolean ultimaPagina) {
+		this.ultimaPagina = ultimaPagina;
 	}
 }

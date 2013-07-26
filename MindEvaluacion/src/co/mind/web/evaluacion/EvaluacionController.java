@@ -44,7 +44,7 @@ public class EvaluacionController implements Serializable {
 	private int caracteresMaximo;
 	private int tiempoMaximo;
 	private int tiempoActual;
-	private int tiempoRepresentado;
+	private String tiempoRepresentado;
 	private String unidadRepresentada;
 	private String imagenInstruccion;
 
@@ -145,7 +145,7 @@ public class EvaluacionController implements Serializable {
 			obtenerListaPreguntasPorCategoria(preguntas);
 			mostrarInstruccion();
 		} else {
-			terminarPrueba();
+			terminarPrueba(false);
 		}
 
 	}
@@ -160,17 +160,18 @@ public class EvaluacionController implements Serializable {
 			setTiempoActual(preguntaActual.getTiempoMaximo());
 			if (tiempoActual / 60 > 0) {
 				// Representar Minutos
-				setTiempoRepresentado(tiempoActual / 60);
+				setTiempoRepresentado(tiempoActual / 60 + ":" + tiempoActual
+						% 60);
 				setUnidadRepresentada("min");
 			} else {
 				// Representar Segundos
-				setTiempoRepresentado(tiempoActual);
+				setTiempoRepresentado(tiempoActual + "");
 				setUnidadRepresentada("seg");
 			}
 			setRespuesta("");
 			setEnPregunta(true);
 		} catch (IndexOutOfBoundsException e) {
-			terminarPrueba();
+			terminarPrueba(true);
 		}
 	}
 
@@ -201,11 +202,11 @@ public class EvaluacionController implements Serializable {
 		tiempoActual--;
 		if (tiempoActual / 60 > 0) {
 			// Representar Minutos
-			setTiempoRepresentado(tiempoActual / 60);
+			setTiempoRepresentado(tiempoActual / 60 + ":" + tiempoActual % 60);
 			setUnidadRepresentada("min");
 		} else {
 			// Representar Segundos
-			setTiempoRepresentado(tiempoActual);
+			setTiempoRepresentado(tiempoActual + "");
 			setUnidadRepresentada("seg");
 		}
 	}
@@ -215,24 +216,25 @@ public class EvaluacionController implements Serializable {
 		mostrarPregunta();
 	}
 
-	private void terminarPrueba() {
+	private void terminarPrueba(boolean usosValidos) {
 		try {
 			categoriaActual = iterador.next();
 			mostrarInstruccion();
 
 		} catch (NoSuchElementException exc) {
-
-			GestionEvaluacion gEvaluacion = new GestionEvaluacion();
-			participacionEnProceso
-					.setEstado(Convencion.ESTADO_PARTICIPACION_EN_PROCESO_INACTIVA);
-			participacionEnProceso.setFechaRealizacion(new Date());
-			EvaluadoBO usuarioBasico = participacionEnProceso
-					.getUsuarioBasico();
-			int result = gEvaluacion.editarParticipacionEnProceso(
-					usuarioBasico.getIdentificadorUsuarioAdministrador(),
-					usuarioBasico.getIdentificador(),
-					participacionEnProceso.getProcesoID(),
-					participacionEnProceso);
+			if (usosValidos) {
+				GestionEvaluacion gEvaluacion = new GestionEvaluacion();
+				participacionEnProceso
+						.setEstado(Convencion.ESTADO_PARTICIPACION_EN_PROCESO_INACTIVA);
+				participacionEnProceso.setFechaRealizacion(new Date());
+				EvaluadoBO usuarioBasico = participacionEnProceso
+						.getUsuarioBasico();
+				int result = gEvaluacion.editarParticipacionEnProceso(
+						usuarioBasico.getIdentificadorUsuarioAdministrador(),
+						usuarioBasico.getIdentificador(),
+						participacionEnProceso.getProcesoID(),
+						participacionEnProceso);
+			}
 			cerrarSesion();
 		} catch (Exception ex) {
 			cerrarSesion();
@@ -337,11 +339,11 @@ public class EvaluacionController implements Serializable {
 		this.tiempoActual = tiempoActual;
 	}
 
-	public int getTiempoRepresentado() {
+	public String getTiempoRepresentado() {
 		return tiempoRepresentado;
 	}
 
-	public void setTiempoRepresentado(int tiempoRepresentado) {
+	public void setTiempoRepresentado(String tiempoRepresentado) {
 		this.tiempoRepresentado = tiempoRepresentado;
 	}
 

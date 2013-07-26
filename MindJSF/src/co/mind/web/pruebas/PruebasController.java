@@ -18,8 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import co.mind.management.shared.dto.ProcesoUsuarioBO;
 import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsuarioBO;
+import co.mind.management.shared.dto.UsuarioProgramadorBO;
 import co.mind.management.shared.persistencia.GestionPruebas;
 import co.mind.management.shared.recursos.Convencion;
 import co.mind.management.shared.recursos.MindHelper;
@@ -49,17 +51,33 @@ public class PruebasController implements Serializable {
 	private transient UIForm tableForm;
 	private transient HtmlDataTable dataTable;
 
+	private int cantidadPruebasAMostrar = 10;
+	private List<PruebaUsuarioBO> pruebasAMostrar = new ArrayList<PruebaUsuarioBO>();
+	private boolean primeraPagina = true;
+	private boolean ultimaPagina = false;
+	private int paginaActual;
+
 	@PostConstruct
 	public void init() {
 		verificarLogin();
 		if (continuar) {
 			GestionPruebas gPruebas = new GestionPruebas();
-			setPruebas(gPruebas.listarPruebasUsuarioAdministrador(usuario
-					.getIdentificador()));
+			String permiso = (String) MindHelper.obtenerSesion().getAttribute(
+					"permiso");
+			if (permiso.equalsIgnoreCase(Convencion.TIPO_USUARIO_PROGRAMADOR)) {
+				setPruebas(gPruebas
+						.listarPruebasUsuarioAdministrador(((UsuarioProgramadorBO) usuario)
+								.getUsuarioAdministradorID()));
+			} else {
+				setPruebas(gPruebas.listarPruebasUsuarioAdministrador(usuario
+						.getIdentificador()));
+			}
 			setNombreUsuario(usuario.getNombres() + " "
 					+ usuario.getApellidos());
 			pruebasTemp = pruebas;
 			setMensajeFeedBack("Proceso creado");
+			paginaActual = 0;
+			actualizarPruebas();
 		}
 	}
 
@@ -94,18 +112,7 @@ public class PruebasController implements Serializable {
 			} else {
 				String permiso = (String) MindHelper.obtenerSesion()
 						.getAttribute("permiso");
-				if (permiso != null) {
-					if (permiso
-							.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_PROGRAMADOR)) {
-						System.out.println("Redirigiendo a login...");
-						try {
-							continuar = false;
-							response.sendRedirect("login.do");
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-					}
-				} else {
+				if (permiso == null) {
 					System.out.println("Redirigiendo a login...");
 					try {
 						continuar = false;
@@ -144,6 +151,7 @@ public class PruebasController implements Serializable {
 		}
 		setNombrePruebaCrear("");
 		setDescripcionPruebaCrear("");
+		actualizarPruebas();
 	}
 
 	public void editarPrueba() {
@@ -213,6 +221,7 @@ public class PruebasController implements Serializable {
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("pruebaEliminar");
+		actualizarPruebas();
 	}
 
 	private void guardarPruebaEnSesion(PruebaUsuarioBO proceso) {
@@ -235,6 +244,51 @@ public class PruebasController implements Serializable {
 				pruebasTemp = pruebas;
 				pruebas = resultadoBusqueda;
 			}
+		}
+		actualizarPruebas();
+	}
+
+	public void pruebasSiguientes() {
+		if (!ultimaPagina) {
+			paginaActual++;
+			actualizarPruebas();
+		}
+	}
+
+	public void pruebasAnteriores() {
+		if (!primeraPagina) {
+			paginaActual--;
+			actualizarPruebas();
+		}
+	}
+
+	private void actualizarPruebas() {
+		pruebasAMostrar.clear();
+		for (int i = 0; i < cantidadPruebasAMostrar; i++) {
+			try {
+				pruebasAMostrar.add(getPruebas().get(
+						paginaActual * cantidadPruebasAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPagina = true;
+				primeraPagina = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActual <= 0) {
+			ultimaPagina = false;
+			if (pruebasAMostrar.size() < cantidadPruebasAMostrar) {
+				ultimaPagina = true;
+			}
+			primeraPagina = true;
+		} else if (paginaActual >= pruebas.size() / cantidadPruebasAMostrar) {
+			ultimaPagina = true;
+			primeraPagina = false;
+		} else {
+			ultimaPagina = false;
+			primeraPagina = false;
 		}
 	}
 
@@ -314,6 +368,38 @@ public class PruebasController implements Serializable {
 
 	public void setDescripcionPruebaCrear(String descripcionPruebaCrear) {
 		this.descripcionPruebaCrear = descripcionPruebaCrear;
+	}
+
+	public int getCantidadPruebasAMostrar() {
+		return cantidadPruebasAMostrar;
+	}
+
+	public void setCantidadPruebasAMostrar(int cantidadPruebasAMostrar) {
+		this.cantidadPruebasAMostrar = cantidadPruebasAMostrar;
+	}
+
+	public List<PruebaUsuarioBO> getPruebasAMostrar() {
+		return pruebasAMostrar;
+	}
+
+	public void setPruebasAMostrar(List<PruebaUsuarioBO> pruebasAMostrar) {
+		this.pruebasAMostrar = pruebasAMostrar;
+	}
+
+	public boolean isPrimeraPagina() {
+		return primeraPagina;
+	}
+
+	public void setPrimeraPagina(boolean primeraPagina) {
+		this.primeraPagina = primeraPagina;
+	}
+
+	public boolean isUltimaPagina() {
+		return ultimaPagina;
+	}
+
+	public void setUltimaPagina(boolean ultimaPagina) {
+		this.ultimaPagina = ultimaPagina;
 	}
 
 }

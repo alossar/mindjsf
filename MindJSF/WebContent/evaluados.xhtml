@@ -50,7 +50,7 @@ body {
 									<li><h:commandLink
 											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
-								<h:panelGroup rendered="#{autorizacionController.cliente }">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
 											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
@@ -113,12 +113,13 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icoevaluados.png"></img>Evaluados
 			</legend>
-			<h:form id="formPanelTablaEvaluados">
+			<h:form id="formPanelTablaEvaluados"
+				rendered="#{not empty evaluadosController.evaluadosAMostrar }">
 				<h:dataTable id="panelTablaEvaluados"
-					rendered="#{not empty evaluadosController.evaluados }"
 					styleClass="table table-hover table-condensed table-striped"
 					binding="#{evaluadosController.dataTable }"
-					value="#{evaluadosController.evaluados }" var="evaluado">
+					rows="#{evaluadosController.cantidadEvaluadosAMostrar}"
+					value="#{evaluadosController.evaluadosAMostrar }" var="evaluado">
 					<small> <h:column>
 
 							<f:facet name="header">
@@ -191,14 +192,29 @@ body {
 						</h:column>
 					</small>
 				</h:dataTable>
-				<h:panelGroup styleClass="alert"
-					rendered="#{empty evaluadosController.evaluados }">
-					<h:outputText value="No se encontraron evaluados en tu cuenta."></h:outputText>
-					<a data-toggle="modal" href="#myModalCrearEvaluado">Crea un
-						evaluado. </a>
-				</h:panelGroup>
-			</h:form>
 
+				<ul class="pager">
+					<li
+						class="previous #{evaluadosController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaEvaluados"
+							disabled="#{evaluadosController.primeraPagina}"
+							actionListener="#{evaluadosController.evaluadosAnteriores}">&larr; Anterior
+							</p:commandLink></li>
+					<li
+						class="next #{evaluadosController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaEvaluados"
+							disabled="#{evaluadosController.ultimaPagina}"
+							actionListener="#{evaluadosController.evaluadosSiguientes}">Siguiente &rarr;
+							</p:commandLink></li>
+				</ul>
+
+			</h:form>
+			<h:panelGroup styleClass="alert"
+				rendered="#{empty evaluadosController.evaluadosAMostrar }">
+				<h:outputText value="No se encontraron evaluados en tu cuenta."></h:outputText>
+				<a data-toggle="modal" href="#myModalCrearEvaluado">Crea un
+					evaluado. </a>
+			</h:panelGroup>
 			<div id="myModalCrearEvaluado" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
 				style="width: 450px; left: 30%; margin-left: auto; margin-right: auto; height: 470px;">

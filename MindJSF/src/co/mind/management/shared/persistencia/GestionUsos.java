@@ -129,6 +129,7 @@ public class GestionUsos implements IGestionUsos {
 			for (int i = 0; i < user.getUsosUsuarios().size(); i++) {
 				UsoBO resultado = new UsoBO();
 				UsoUsuario u = user.getUsosUsuarios().get(i);
+				entityManager.refresh(u);
 				resultado.setFechaAsignacion(u.getFechaAsignacion());
 				resultado.setFechaVencimiento(u.getFechaVencimiento());
 				resultado.setIdentificador(u.getIdentificador());
@@ -158,7 +159,7 @@ public class GestionUsos implements IGestionUsos {
 				UsoUsuario usoUsuario = usos.get(i);
 				int restantes = usoUsuario.getUsosAsignados()
 						- usoUsuario.getUsosRedimidos();
-				if (restantes != 0) {
+				if (restantes > 0) {
 					if (size <= restantes) {
 						return true;
 					} else {

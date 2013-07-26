@@ -51,7 +51,7 @@ body {
 									<li class="active"><h:commandLink
 											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
-								<h:panelGroup rendered="#{autorizacionController.cliente }">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
 											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
@@ -90,7 +90,15 @@ body {
 				</div>
 			</div>
 		</div>
+		<p:ajaxStatus style="width:16px;height:16px;" id="ajaxStatusPanel">
+			<f:facet name="start">
+				<h:graphicImage value="images/img/loading.gif" />
+			</f:facet>
 
+			<f:facet name="complete">
+				<h:outputText value="" />
+			</f:facet>
+		</p:ajaxStatus>
 		<div class="container-fluid">
 			<p:growl id="growl" showDetail="true" style="z-index:999;"
 				life="2500"></p:growl>
@@ -185,12 +193,27 @@ body {
 							<div id="tabsProceso">
 								<h:form>
 									<ul class="nav nav-tabs">
-										<li><p:commandLink update=":panelListasProceso"
-												actionListener="#{procesoEspecificoController.verPruebas }">Pruebas</p:commandLink></li>
-										<li><p:commandLink update=":panelListasProceso"
-												actionListener="#{procesoEspecificoController.verParticipaciones }">Evaluados</p:commandLink></li>
-										<li><p:commandLink update=":panelListasProceso"
-												actionListener="#{procesoEspecificoController.verResultados }">Resultados</p:commandLink></li>
+										<li
+											class="#{procesoEspecificoController.enPruebas ? 'active' : ''}">
+											<p:commandLink update=":panelListasProceso @form"
+												global="true"
+												actionListener="#{procesoEspecificoController.verPruebas }">Pruebas
+												</p:commandLink>
+										</li>
+										<li
+											class="#{procesoEspecificoController.enEvaluados ? 'active' : ''}">
+											<p:commandLink update=":panelListasProceso @form"
+												global="true"
+												actionListener="#{procesoEspecificoController.verParticipaciones }">Evaluados
+												</p:commandLink>
+										</li>
+										<li
+											class="#{procesoEspecificoController.enResultados ? 'active' : ''}">
+											<p:commandLink update=":panelListasProceso @form"
+												global="true"
+												actionListener="#{procesoEspecificoController.verResultados }">Resultados
+												</p:commandLink>
+										</li>
 									</ul>
 								</h:form>
 
@@ -242,12 +265,12 @@ body {
 								</h:panelGroup>
 
 								<h:form id="formTablaParticipacionesProceso"
-									rendered="#{procesoEspecificoController.enEvaluados and not empty procesoEspecificoController.participacionesProcesoEspecifico}"
+									rendered="#{procesoEspecificoController.enEvaluados and not empty procesoEspecificoController.evaluadosAMostrar}"
 									binding="#{procesoEspecificoController.tableFormEvaluados}">
 									<h:dataTable id="tablaParticipacionesProceso"
 										styleClass="table table-hover table-condensed table-striped"
 										binding="#{procesoEspecificoController.dataTableEvaluados }"
-										value="#{procesoEspecificoController.participacionesProcesoEspecifico }"
+										value="#{procesoEspecificoController.evaluadosAMostrar }"
 										var="participacion">
 										<small> <h:column>
 												<f:facet name="header">
@@ -308,15 +331,29 @@ body {
 											</h:column>
 										</small>
 									</h:dataTable>
+									<ul class="pager">
+										<li
+											class="previous #{procesoEspecificoController.primeraPaginaEvaluados ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{procesoEspecificoController.primeraPaginaEvaluados}"
+												actionListener="#{procesoEspecificoController.evaluadosAnteriores}">&larr; Anterior</p:commandLink>
+										</li>
+										<li
+											class="next #{procesoEspecificoController.ultimaPaginaEvaluados ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{procesoEspecificoController.ultimaPaginaEvaluados}"
+												actionListener="#{procesoEspecificoController.evaluadosSiguientes}">Siguiente &rarr;</p:commandLink>
+										</li>
+									</ul>
 								</h:form>
 
 								<h:form id="formTablaPruebasProceso"
-									rendered="#{procesoEspecificoController.enPruebas and not empty procesoEspecificoController.pruebasProcesoEspecifico}"
+									rendered="#{procesoEspecificoController.enPruebas and not empty procesoEspecificoController.pruebasAMostrar}"
 									binding="#{procesoEspecificoController.tableFormPruebas}">
 									<h:dataTable id="tablaPruebasProceso"
 										styleClass="table table-hover table-condensed table-striped"
 										binding="#{procesoEspecificoController.dataTablePruebas }"
-										value="#{procesoEspecificoController.pruebasProcesoEspecifico }"
+										value="#{procesoEspecificoController.pruebasAMostrar }"
 										var="prueba">
 										<small> <h:column>
 												<f:facet name="header">
@@ -348,10 +385,24 @@ body {
 											</h:column>
 										</small>
 									</h:dataTable>
+									<ul class="pager">
+										<li
+											class="previous #{procesoEspecificoController.primeraPaginaPruebas ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{procesoEspecificoController.primeraPaginaPruebas}"
+												actionListener="#{procesoEspecificoController.pruebasAnteriores}">&larr; Anterior</p:commandLink>
+										</li>
+										<li
+											class="next #{procesoEspecificoController.ultimaPaginaPruebas ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{procesoEspecificoController.ultimaPaginaPruebas}"
+												actionListener="#{procesoEspecificoController.pruebasSiguientes}">Siguiente &rarr;</p:commandLink>
+										</li>
+									</ul>
 								</h:form>
 
 								<h:form id="formTablaResultadosProceso"
-									rendered="#{procesoEspecificoController.enResultados and not empty procesoEspecificoController.resultadosProcesoEspecifico }"
+									rendered="#{procesoEspecificoController.enResultados and not empty procesoEspecificoController.resultadosAMostrar }"
 									binding="#{procesoEspecificoController.tableFormResultados}">
 									<div id="navProceso">
 										<div id="buscarProceso">
@@ -368,7 +419,7 @@ body {
 									<h:dataTable
 										styleClass="table table-hover table-condensed table-striped"
 										binding="#{procesoEspecificoController.dataTableResultados }"
-										value="#{procesoEspecificoController.resultadosProcesoEspecifico }"
+										value="#{procesoEspecificoController.resultadosAMostrar }"
 										var="resultado">
 										<small><h:column>
 												<h:selectBooleanCheckbox
@@ -414,6 +465,20 @@ body {
 
 											</h:column> </small>
 									</h:dataTable>
+									<ul class="pager">
+										<li
+											class="previous #{procesoEspecificoController.primeraPaginaResultados ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{procesoEspecificoController.primeraPaginaResultados}"
+												actionListener="#{procesoEspecificoController.resultadosAnteriores}">&larr; Anterior</p:commandLink>
+										</li>
+										<li
+											class="next #{procesoEspecificoController.ultimaPaginaResultados ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{procesoEspecificoController.ultimaPaginaResultados}"
+												actionListener="#{procesoEspecificoController.resultadosSiguientes}">Siguiente &rarr;</p:commandLink>
+										</li>
+									</ul>
 								</h:form>
 								<h:panelGroup styleClass="alert"
 									rendered="#{procesoEspecificoController.enEvaluados and empty procesoEspecificoController.participacionesProcesoEspecifico }">
@@ -446,7 +511,7 @@ body {
 
 			<div id="myModalAgregarPrueba" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-				style="width: 450px; left: 32%; margin-left: auto; margin-right: auto; height: 380px;">
+				style="width: 450px; left: 32%; margin-left: auto; margin-right: auto; height: 440px;">
 				<div class="modal-header" style="height: 50px;">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
@@ -456,7 +521,17 @@ body {
 				</div>
 				<div id="contenedorBotonesAgregarPrueba" style="margin-left: 120px;">
 					<p>Pruebas</p>
-					<h:form>
+					<h:form id="formsearchprueba" styleClass="form-search"
+						onkeypress="if (event.keyCode == 13) { document.getElementById('formsearchprueba:searchidprueba').click(); return false; }">
+						<h:inputText styleClass="input-medium search-query "
+							value="#{procesoEspecificoController.parametroBusquedaPrueba }" />
+						<p:commandLink styleClass="btn btn-info" id="searchidprueba"
+							update=":formModalAgregarPruebas"
+							actionListener="#{procesoEspecificoController.buscarPruebas }">
+							<i class="icon-search icon-white"></i>
+						</p:commandLink>
+					</h:form>
+					<h:form id="formModalAgregarPruebas">
 						<h:selectManyListbox converter="javax.faces.Integer"
 							value="#{procesoEspecificoController.selectItemsPruebasRestantes}"
 							styleClass="span1" style="width: 200px; height: 150px;">
@@ -501,7 +576,7 @@ body {
 
 						<p:commandLink styleClass="btn btn-primary" id="botCrearPrueba"
 							value="Crear" onclick="closeDialog ();"
-							update=":growl :panelListasProceso @form"
+							update=":growl :panelListasProceso @form :formModalAgregarPruebas"
 							style="margin-left:65px; margin-top:10px; height:30px; width:70px; padding-top:17px;"
 							actionListener="#{procesoEspecificoController.crearPruebaEnProceso}">
 						</p:commandLink>
@@ -512,7 +587,7 @@ body {
 			<div id="myModalAgregarEvaluado" class="modal hide fade"
 				tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
 				aria-hidden="true"
-				style="width: 450px; left: 35%; margin-left: auto; margin-right: auto; height: 380px;">
+				style="width: 450px; left: 35%; margin-left: auto; margin-right: auto; height: 440px;">
 				<div class="modal-header" style="height: 50px;">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
@@ -522,7 +597,17 @@ body {
 				</div>
 				<div id="contenedorBotonesAgregarPrueba" style="margin-left: 110px;">
 					<p>Evaluados</p>
-					<h:form>
+					<h:form id="formsearchevaluado" styleClass="form-search"
+						onkeypress="if (event.keyCode == 13) { document.getElementById('formsearchevaluado:searchidevaluado').click(); return false; }">
+						<h:inputText styleClass="input-medium search-query "
+							value="#{procesoEspecificoController.parametroBusquedaEvaluado }" />
+						<p:commandLink styleClass="btn btn-info" id="searchidevaluado"
+							update=":formModalAgregarEvaluados"
+							actionListener="#{procesoEspecificoController.buscarEvaluados }">
+							<i class="icon-search icon-white"></i>
+						</p:commandLink>
+					</h:form>
+					<h:form id="formModalAgregarEvaluados">
 						<h:selectManyListbox styleClass="span1"
 							style="width: 200px; height: 150px;"
 							converter="javax.faces.Integer"
@@ -549,7 +634,7 @@ body {
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">x</button>
 					<h3 id="myModalLabel" style="margin-top: 5px; text-align: center;">
-						<img src="img/logoPruebasCrear.png" />Crear Evluado
+						<img src="img/logoPruebasCrear.png" />Crear Evaluado
 					</h3>
 				</div>
 				<div id="contenedorBotonesCrearPrueba" style="margin-left: 117px;">
@@ -590,7 +675,7 @@ body {
 						</div>
 						<p:commandLink styleClass="btn btn-primary" id="botCrearEvaluado"
 							value="Crear" onclick="closeDialog ();"
-							update=":growl :panelListasProceso @form"
+							update=":growl :panelListasProceso @form :formModalAgregarEvaluados"
 							style="width:70px; height:30px;  margin-left:70px; padding-top:13px; margin-top:10px;"
 							actionListener="#{procesoEspecificoController.crearEvaluadoEnProceso}">
 						</p:commandLink>
@@ -616,7 +701,7 @@ body {
 							actionListener="#{procesoEspecificoController.eliminarPrueba }"
 							onclick="closeDialog ();" rendered="#{not proceso.editar }"
 							style="padding: 5;" value="SI"
-							update=":growl :panelListasProceso">
+							update=":growl :panelListasProceso :formModalAgregarPruebas">
 						</p:commandLink>
 					</div>
 
@@ -640,7 +725,7 @@ body {
 							actionListener="#{procesoEspecificoController.eliminarParticipacion }"
 							onclick="closeDialog ();" rendered="#{not proceso.editar }"
 							style="padding: 5;" value="SI"
-							update=":growl :panelListasProceso">
+							update=":growl :panelListasProceso :formModalAgregarEvaluados">
 						</p:commandLink>
 					</div>
 

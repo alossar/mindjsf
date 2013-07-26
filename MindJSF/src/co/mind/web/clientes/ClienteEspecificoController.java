@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -51,6 +52,12 @@ public class ClienteEspecificoController implements Serializable {
 	private String parametroFechaFinal;
 
 	private int cantidadUsos;
+
+	private int cantidadUsosAMostrar = 10;
+	private List<UsoBO> usosAMostrar = new ArrayList<UsoBO>();
+	private boolean primeraPaginaUsos = true;
+	private boolean ultimaPaginaUsos = false;
+	private int paginaActualUsos;
 
 	@PostConstruct
 	public void init() {
@@ -209,6 +216,50 @@ public class ClienteEspecificoController implements Serializable {
 		}
 	}
 
+	public void usosSiguientes() {
+		if (!ultimaPaginaUsos) {
+			paginaActualUsos++;
+			actualizarUsos();
+		}
+	}
+
+	public void usosAnteriores() {
+		if (!primeraPaginaUsos) {
+			paginaActualUsos--;
+			actualizarUsos();
+		}
+	}
+
+	private void actualizarUsos() {
+		usosAMostrar.clear();
+		for (int i = 0; i < cantidadUsosAMostrar; i++) {
+			try {
+				usosAMostrar.add(getUsos().get(
+						paginaActualUsos * cantidadUsosAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPaginaUsos = true;
+				primeraPaginaUsos = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActualUsos <= 0) {
+			ultimaPaginaUsos = false;
+			if (usosAMostrar.size() < cantidadUsosAMostrar) {
+				ultimaPaginaUsos = true;
+			}
+			primeraPaginaUsos = true;
+		} else if (paginaActualUsos >= usos.size() / cantidadUsosAMostrar) {
+			ultimaPaginaUsos = true;
+			primeraPaginaUsos = false;
+		} else {
+			ultimaPaginaUsos = false;
+			primeraPaginaUsos = false;
+		}
+	}
+
 	public String getNombreUsuario() {
 		return nombreUsuario;
 	}
@@ -279,6 +330,38 @@ public class ClienteEspecificoController implements Serializable {
 
 	public void setParametroFechaFinal(String parametroFechaFinal) {
 		this.parametroFechaFinal = parametroFechaFinal;
+	}
+
+	public int getCantidadUsosAMostrar() {
+		return cantidadUsosAMostrar;
+	}
+
+	public void setCantidadUsosAMostrar(int cantidadUsosAMostrar) {
+		this.cantidadUsosAMostrar = cantidadUsosAMostrar;
+	}
+
+	public List<UsoBO> getUsosAMostrar() {
+		return usosAMostrar;
+	}
+
+	public void setUsosAMostrar(List<UsoBO> usosAMostrar) {
+		this.usosAMostrar = usosAMostrar;
+	}
+
+	public boolean isPrimeraPaginaUsos() {
+		return primeraPaginaUsos;
+	}
+
+	public void setPrimeraPaginaUsos(boolean primeraPaginaUsos) {
+		this.primeraPaginaUsos = primeraPaginaUsos;
+	}
+
+	public boolean isUltimaPaginaUsos() {
+		return ultimaPaginaUsos;
+	}
+
+	public void setUltimaPaginaUsos(boolean ultimaPaginaUsos) {
+		this.ultimaPaginaUsos = ultimaPaginaUsos;
 	}
 
 }

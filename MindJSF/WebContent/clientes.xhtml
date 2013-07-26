@@ -51,7 +51,7 @@ body {
 									<li><h:commandLink
 											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
-								<h:panelGroup rendered="#{autorizacionController.cliente }">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
 											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
@@ -113,12 +113,12 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icoclientes.png"></img>Clientes
 			</legend>
-			<h:form id="formPanelTablaClientes">
+			<h:form id="formPanelTablaClientes"
+				rendered="#{not empty clientesController.clientesAMostrar }">
 				<h:dataTable id="panelTablaClientes"
-					rendered="#{not empty clientesController.clientes }"
 					styleClass="table table-hover table-condensed table-striped"
 					binding="#{clientesController.dataTable }"
-					value="#{clientesController.clientes }" var="cliente">
+					value="#{clientesController.clientesAMostrar }" var="cliente">
 					<small> <h:column>
 
 							<f:facet name="header">
@@ -192,21 +192,37 @@ body {
 								&nbsp;
 							<h:commandLink styleClass="btn btn-info btn-small "
 								onclick="$('#myModalAgregarPrueba').modal('show');"
-								title="Agregar pruebas a la cuenta del cliente." value="Agregar Pruebas"
+								title="Agregar pruebas a la cuenta del cliente."
+								value="Agregar Pruebas"
 								rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }">
 								<f:ajax
-									listener="#{clientesController.seleccionarClienteAgregarPruebas }"></f:ajax>								
+									listener="#{clientesController.seleccionarClienteAgregarPruebas }"></f:ajax>
 							</h:commandLink>
 						</h:column>
 					</small>
 				</h:dataTable>
-				<h:panelGroup styleClass="alert"
-					rendered="#{empty clientesController.clientes }">
-					<h:outputText value="No se encontraron clientes."></h:outputText>
-					<a data-toggle="modal" href="#myModalCrearCliente">Crea un
-						cliente. </a>
-				</h:panelGroup>
+				<ul class="pager">
+					<li
+						class="previous #{clientesController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaClientes"
+							disabled="#{clientesController.primeraPagina}"
+							actionListener="#{clientesController.clientesAnteriores}">&larr; Anterior
+							</p:commandLink></li>
+					<li
+						class="next #{clientesController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaClientes"
+							disabled="#{clientesController.ultimaPagina}"
+							actionListener="#{clientesController.clientesSiguientes}">Siguiente &rarr;
+							</p:commandLink></li>
+				</ul>
+
 			</h:form>
+			<h:panelGroup styleClass="alert"
+				rendered="#{empty clientesController.clientesAMostrar }">
+				<h:outputText value="No se encontraron clientes."></h:outputText>
+				<a data-toggle="modal" href="#myModalCrearCliente">Crea un
+					cliente. </a>
+			</h:panelGroup>
 
 			<div id="myModalCrearCliente" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"

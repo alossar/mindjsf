@@ -60,7 +60,7 @@ body {
 									<li><h:commandLink
 											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
-								<h:panelGroup rendered="#{autorizacionController.cliente }">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
 											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
@@ -159,12 +159,12 @@ body {
 								</legend>
 
 								<h:form
-									rendered="#{not empty cuentaController.procesosRevisar }"
+									rendered="#{not empty cuentaController.procesosAMostrar }"
 									binding="#{cuentaController.tableForm}">
 									<h:dataTable
 										styleClass="table table-hover table-condensed table-striped"
 										binding="#{cuentaController.dataTable }"
-										value="#{cuentaController.procesosRevisar }" var="proceso">
+										value="#{cuentaController.procesosAMostrar }" var="proceso">
 										<small> <h:column>
 												<f:facet name="header">
 													<h:outputText value="Nombre del Proceso"></h:outputText>
@@ -229,6 +229,20 @@ body {
 											</h:column>
 										</small>
 									</h:dataTable>
+									<ul class="pager">
+										<li
+											class="previous #{cuentaController.primeraPaginaProcesos ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{cuentaController.primeraPaginaProcesos}"
+												actionListener="#{cuentaController.procesosAnteriores}">&larr; Anterior</p:commandLink>
+										</li>
+										<li
+											class="next #{cuentaController.ultimaPaginaProcesos ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{cuentaController.ultimaPaginaProcesos}"
+												actionListener="#{cuentaController.procesosSiguientes}">Siguiente &rarr;</p:commandLink>
+										</li>
+									</ul>
 								</h:form>
 								<h:panelGroup styleClass="alert"
 									rendered="#{empty cuentaController.procesosRevisar }">
@@ -250,13 +264,13 @@ body {
 
 								</div>
 								<h:form
-									rendered="#{not empty cuentaController.usos and autorizacionController.onlyCliente }"
+									rendered="#{not empty cuentaController.usosAMostrar and (autorizacionController.onlyCliente or autorizacionController.onlyProgramador)}"
 									binding="#{cuentaController.tableFormUsos}">
 									<legend>Usos del Cliente</legend>
 									<h:dataTable
 										styleClass="table table-hover table-condensed table-striped"
 										binding="#{cuentaController.dataTableUsos }"
-										value="#{cuentaController.usos }" var="uso">
+										value="#{cuentaController.usosAMostrar }" var="uso">
 										<small> <h:column>
 												<f:facet name="header">
 													<h:outputText value="Usos Asignados"></h:outputText>
@@ -280,6 +294,20 @@ body {
 											</h:column>
 										</small>
 									</h:dataTable>
+									<ul class="pager">
+										<li
+											class="previous #{cuentaController.primeraPaginaUsos ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{cuentaController.primeraPaginaUsos}"
+												actionListener="#{cuentaController.usosAnteriores}">&larr; Anterior	</p:commandLink>
+										</li>
+										<li
+											class="next #{cuentaController.ultimaPaginaUsos ? 'disabled' : ''}"><p:commandLink
+												update="@form"
+												disabled="#{cuentaController.ultimaPaginaUsos}"
+												actionListener="#{cuentaController.usosSiguientes}">Siguiente &rarr;</p:commandLink>
+										</li>
+									</ul>
 								</h:form>
 
 								<h:form id="formMyModalEnviarCorreo">

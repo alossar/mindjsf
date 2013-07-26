@@ -53,6 +53,12 @@ public class ProcesosController implements Serializable {
 	private String nombreProcesoDuplicar;
 	private String descripcionProcesoDuplicar;
 
+	private int cantidadProcesosAMostrar = 10;
+	private List<ProcesoUsuarioBO> procesosAMostrar = new ArrayList<ProcesoUsuarioBO>();
+	private boolean primeraPagina = true;
+	private boolean ultimaPagina = false;
+	private int paginaActual;
+
 	@PostConstruct
 	public void init() {
 		verificarLogin();
@@ -63,6 +69,8 @@ public class ProcesosController implements Serializable {
 			setNombreUsuario(usuario.getNombres() + " "
 					+ usuario.getApellidos());
 			procesosTemp = procesos;
+			paginaActual = 0;
+			actualizarProcesos();
 		}
 	}
 
@@ -126,6 +134,7 @@ public class ProcesosController implements Serializable {
 		}
 		setNombreProcesoCrear("");
 		setDescripcionProcesoCrear("");
+		actualizarProcesos();
 	}
 
 	public void duplicarProceso(ActionEvent event) {
@@ -161,6 +170,7 @@ public class ProcesosController implements Serializable {
 		session.removeAttribute("procesoDuplicar");
 		setNombreProcesoDuplicar("");
 		setDescripcionProcesoDuplicar("");
+		actualizarProcesos();
 	}
 
 	public void editarProceso() {
@@ -220,6 +230,7 @@ public class ProcesosController implements Serializable {
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("procesoEliminar");
+		actualizarProcesos();
 	}
 
 	public String irAProcesoEspecifico() {
@@ -248,6 +259,52 @@ public class ProcesosController implements Serializable {
 				procesosTemp = procesos;
 				procesos = resultadoBusqueda;
 			}
+		}
+
+		actualizarProcesos();
+	}
+
+	public void procesosSiguientes() {
+		if (!ultimaPagina) {
+			paginaActual++;
+			actualizarProcesos();
+		}
+	}
+
+	public void procesosAnteriores() {
+		if (!primeraPagina) {
+			paginaActual--;
+			actualizarProcesos();
+		}
+	}
+
+	private void actualizarProcesos() {
+		procesosAMostrar.clear();
+		for (int i = 0; i < cantidadProcesosAMostrar; i++) {
+			try {
+				procesosAMostrar.add(getProcesos().get(
+						paginaActual * cantidadProcesosAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPagina = true;
+				primeraPagina = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActual <= 0) {
+			ultimaPagina = false;
+			if (procesosAMostrar.size() < cantidadProcesosAMostrar) {
+				ultimaPagina = true;
+			}
+			primeraPagina = true;
+		} else if (paginaActual >= procesos.size() / cantidadProcesosAMostrar) {
+			ultimaPagina = true;
+			primeraPagina = false;
+		} else {
+			ultimaPagina = false;
+			primeraPagina = false;
 		}
 	}
 
@@ -357,6 +414,38 @@ public class ProcesosController implements Serializable {
 
 	public void setNombreProcesoDuplicar(String nombreProcesoDuplicar) {
 		this.nombreProcesoDuplicar = nombreProcesoDuplicar;
+	}
+
+	public int getCantidadProcesosAMostrar() {
+		return cantidadProcesosAMostrar;
+	}
+
+	public void setCantidadProcesosAMostrar(int cantidadProcesosAMostrar) {
+		this.cantidadProcesosAMostrar = cantidadProcesosAMostrar;
+	}
+
+	public List<ProcesoUsuarioBO> getProcesosAMostrar() {
+		return procesosAMostrar;
+	}
+
+	public void setProcesosAMostrar(List<ProcesoUsuarioBO> procesosAMostrar) {
+		this.procesosAMostrar = procesosAMostrar;
+	}
+
+	public boolean isPrimeraPagina() {
+		return primeraPagina;
+	}
+
+	public void setPrimeraPagina(boolean primeraPagina) {
+		this.primeraPagina = primeraPagina;
+	}
+
+	public boolean isUltimaPagina() {
+		return ultimaPagina;
+	}
+
+	public void setUltimaPagina(boolean ultimaPagina) {
+		this.ultimaPagina = ultimaPagina;
 	}
 
 }

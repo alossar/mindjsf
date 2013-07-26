@@ -41,7 +41,7 @@
 	</style>
 	<parameter name="participaciones" class="java.util.List"/>
 	<queryString>
-		<![CDATA[select distinct CONCAT ('Prueba: ',pruebas_usuarios.nombre, ', Pregunta: No. ', preguntas_usuarios.orden, ' ', preguntas_usuarios.pregunta) as Pregunta, resultados.respuesta as Respuesta, evaluados.cedula as Nombre from evaluados, participacion_en_proceso, resultados, preguntas_usuarios, pruebas_usuarios, procesos_usuarios, procesos_usuarios_has_pruebas_usuarios where $X{IN,participacion_en_proceso.identificador,participaciones} and participacion_en_proceso.usuarios_basicos_identificador = evaluados.identificador and resultados.participacion_en_proceso_identificador = participacion_en_proceso.identificador and procesos_usuarios.identificador = participacion_en_proceso.procesos_usuarios_identificador and procesos_usuarios.identificador = procesos_usuarios_has_pruebas_usuarios.procesos_usuarios_identificador and pruebas_usuarios.identificador = procesos_usuarios_has_pruebas_usuarios.pruebas_usuarios_identificador and pruebas_usuarios.identificador = preguntas_usuarios.pruebas_usuarios_identificador and preguntas_usuarios.identificador = resultados.preguntas_identificador ORDER BY pruebas_usuarios.identificador ASC;]]>
+		<![CDATA[select distinct CONCAT ('Prueba: ',pruebas_usuarios.nombre, ', Pregunta: No. ', preguntas_usuarios.orden, ' ', preguntas_usuarios.pregunta) as Pregunta, resultados.respuesta as Respuesta, CONCAT ('Cédula: ',evaluados.cedula,' Nombre: ', evaluados.nombres,' ', evaluados.apellidos) as Nombre from evaluados, participacion_en_proceso, resultados, preguntas_usuarios, pruebas_usuarios, procesos_usuarios, procesos_usuarios_has_pruebas_usuarios where $X{IN,participacion_en_proceso.identificador,participaciones} and participacion_en_proceso.usuarios_basicos_identificador = evaluados.identificador and resultados.participacion_en_proceso_identificador = participacion_en_proceso.identificador and procesos_usuarios.identificador = participacion_en_proceso.procesos_usuarios_identificador and procesos_usuarios.identificador = procesos_usuarios_has_pruebas_usuarios.procesos_usuarios_identificador and pruebas_usuarios.identificador = procesos_usuarios_has_pruebas_usuarios.pruebas_usuarios_identificador and pruebas_usuarios.identificador = preguntas_usuarios.pruebas_usuarios_identificador and preguntas_usuarios.identificador = resultados.preguntas_identificador ORDER BY pruebas_usuarios.identificador ASC;]]>
 	</queryString>
 	<field name="Pregunta" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
@@ -59,8 +59,10 @@
 	<summary>
 		<band height="215" splitType="Stretch">
 			<crosstab ignoreWidth="true">
-				<reportElement uuid="c063e7e6-a7d2-42a7-aed8-76d9ab734bb0" x="-1" y="0" width="555" height="200">
+				<reportElement uuid="c063e7e6-a7d2-42a7-aed8-76d9ab734bb0" x="0" y="0" width="555" height="200">
 					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="local_mesure_unitx" value="pixel"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
 				</reportElement>
 				<rowGroup name="Nombre1" width="60">
 					<bucket class="java.lang.String">
@@ -70,7 +72,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField isBlankWhenNull="true">
 								<reportElement uuid="10946201-388b-4cc6-b5fd-4ed7e90871e2" x="0" y="0" width="60" height="20"/>
-								<textElement/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$V{Nombre1}]]></textFieldExpression>
 							</textField>
 						</cellContents>
@@ -87,7 +91,9 @@
 						<cellContents mode="Opaque" style="Crosstab_CH">
 							<textField isBlankWhenNull="true">
 								<reportElement uuid="fcbba194-f241-40c2-af0f-f581ba161eac" x="0" y="0" width="60" height="20"/>
-								<textElement/>
+								<textElement>
+									<font isBold="true"/>
+								</textElement>
 								<textFieldExpression><![CDATA[$V{Pregunta1}]]></textFieldExpression>
 							</textField>
 						</cellContents>

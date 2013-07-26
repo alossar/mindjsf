@@ -86,8 +86,11 @@ public class SMTPSender {
 		Session session = obtenerSesion();
 		try {
 			String tipoCuenta = "administración";
+			String mostrarUsos = "</p></div>	<div id='mail'>	<p>Cantidad de Usos: </p><p id='pass' style=' color:rgb(17,170,209); font-style:italic;'>"
+					+ usos;
 			if (!administrador) {
 				tipoCuenta = "de programador";
+				mostrarUsos = "";
 			}
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress(username, "Malak Studios"));
@@ -100,8 +103,7 @@ public class SMTPSender {
 					+ correo
 					+ "</p></div>	<div id='mail'>	<p>Contraseña: </p><p id='pass' style=' color:rgb(17,170,209); font-style:italic;'>"
 					+ contrasena
-					+ "</p></div>	<div id='mail'>	<p>Cantidad de Usos: </p><p id='pass' style=' color:rgb(17,170,209); font-style:italic;'>"
-					+ usos
+					+ mostrarUsos
 					+ "</p>	</div></div><a style='color:rgb(17,170,209);' href='"
 					+ urlMind
 					+ "'><div id='mailLink'><p style='font-family:Arial; font-size:14px; clear:both; text-align:center; color:rgb(17,170,209); cursor:pointer;'>Click Aqui para Ingresar</p></div></a><div id='mailFooter'><p style='height:37px; width:100%; margin-top:25px;  padding-top:15px; color:grey; text-align:center;  font-family:Arial; font-size:12px;'>www.mindmanagement.co</p></div></div></div><!--<div id='botonEntrarServicios'><p>Registrate</p></div>--></div><!-- Cierro Cont Total---></center></body></html> ";

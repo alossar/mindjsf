@@ -48,6 +48,12 @@ public class EvaluadosController implements Serializable {
 	private int cedulaEvaluadoCrear;
 	private String correoEvaluadoCrear;
 
+	private int cantidadEvaluadosAMostrar = 10;
+	private List<EvaluadoBO> evaluadosAMostrar = new ArrayList<EvaluadoBO>();
+	private boolean primeraPagina = true;
+	private boolean ultimaPagina = false;
+	private int paginaActual;
+
 	private boolean continuar = true;
 
 	@PostConstruct
@@ -60,6 +66,8 @@ public class EvaluadosController implements Serializable {
 			setEvaluados(gEvaluados.listarUsuariosBasicos(usuario
 					.getIdentificador()));
 			evaluadosTemp = evaluados;
+			paginaActual = 0;
+			actualizarEvaluados();
 		}
 	}
 
@@ -125,6 +133,7 @@ public class EvaluadosController implements Serializable {
 		setCedulaEvaluadoCrear(0);
 		setCorreoEvaluadoCrear("");
 		setApellidoEvaluadoCrear("");
+		actualizarEvaluados();
 	}
 
 	public void editarEvaluado() {
@@ -195,6 +204,7 @@ public class EvaluadosController implements Serializable {
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("evaluadoEliminar");
+		actualizarEvaluados();
 	}
 
 	public String irAEvaluadoEspecifico() {
@@ -248,6 +258,51 @@ public class EvaluadosController implements Serializable {
 				evaluadosTemp = evaluados;
 				evaluados = resultadoBusqueda;
 			}
+		}
+		actualizarEvaluados();
+	}
+
+	public void evaluadosSiguientes() {
+		if (!ultimaPagina) {
+			paginaActual++;
+			actualizarEvaluados();
+		}
+	}
+
+	public void evaluadosAnteriores() {
+		if (!primeraPagina) {
+			paginaActual--;
+			actualizarEvaluados();
+		}
+	}
+
+	private void actualizarEvaluados() {
+		evaluadosAMostrar.clear();
+		for (int i = 0; i < cantidadEvaluadosAMostrar; i++) {
+			try {
+				evaluadosAMostrar.add(getEvaluados().get(
+						paginaActual * cantidadEvaluadosAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPagina = true;
+				primeraPagina = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActual <= 0) {
+			ultimaPagina = false;
+			if (evaluadosAMostrar.size() < cantidadEvaluadosAMostrar) {
+				ultimaPagina = true;
+			}
+			primeraPagina = true;
+		} else if (paginaActual >= evaluados.size() / cantidadEvaluadosAMostrar) {
+			ultimaPagina = true;
+			primeraPagina = false;
+		} else {
+			ultimaPagina = false;
+			primeraPagina = false;
 		}
 	}
 
@@ -321,6 +376,38 @@ public class EvaluadosController implements Serializable {
 
 	public void setCorreoEvaluadoCrear(String correoEvaluadoCrear) {
 		this.correoEvaluadoCrear = correoEvaluadoCrear;
+	}
+
+	public List<EvaluadoBO> getEvaluadosAMostrar() {
+		return evaluadosAMostrar;
+	}
+
+	public void setEvaluadosAMostrar(List<EvaluadoBO> evaluadosAMostrar) {
+		this.evaluadosAMostrar = evaluadosAMostrar;
+	}
+
+	public boolean isPrimeraPagina() {
+		return primeraPagina;
+	}
+
+	public void setPrimeraPagina(boolean primeraPagina) {
+		this.primeraPagina = primeraPagina;
+	}
+
+	public boolean isUltimaPagina() {
+		return ultimaPagina;
+	}
+
+	public void setUltimaPagina(boolean ultimaPagina) {
+		this.ultimaPagina = ultimaPagina;
+	}
+
+	public int getCantidadEvaluadosAMostrar() {
+		return cantidadEvaluadosAMostrar;
+	}
+
+	public void setCantidadEvaluadosAMostrar(int cantidadEvaluadosAMostrar) {
+		this.cantidadEvaluadosAMostrar = cantidadEvaluadosAMostrar;
 	}
 
 }

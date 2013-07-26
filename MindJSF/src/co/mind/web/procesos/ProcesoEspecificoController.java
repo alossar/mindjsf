@@ -99,18 +99,35 @@ public class ProcesoEspecificoController implements Serializable {
 	private String parametroFechaFinal;
 	private int idUsuario;
 
+	private int cantidadPruebasAMostrar = 10;
+	private List<PruebaUsuarioBO> pruebasAMostrar = new ArrayList<PruebaUsuarioBO>();
+	private boolean primeraPaginaPruebas = true;
+	private boolean ultimaPaginaPruebas = false;
+	private int paginaActualPruebas;
+
+	private int cantidadEvaluadosAMostrar = 10;
+	private List<ParticipacionEnProcesoBO> evaluadosAMostrar = new ArrayList<ParticipacionEnProcesoBO>();
+	private boolean primeraPaginaEvaluados = true;
+	private boolean ultimaPaginaEvaluados = false;
+	private int paginaActualEvaluados;
+
+	private int cantidadResultadosAMostrar = 10;
+	private List<ParticipacionEnProcesoBO> resultadosAMostrar = new ArrayList<ParticipacionEnProcesoBO>();
+	private boolean primeraPaginaResultados = true;
+	private boolean ultimaPaginaResultados = false;
+	private int paginaActualResultados;
+
 	private Map<Integer, Boolean> resultadosReporte = new HashMap<Integer, Boolean>();
+
+	private String parametroBusquedaPrueba;
+	private String parametroBusquedaEvaluado;
+	private PruebaUsuarioBO[] pruebasTemp;
+	private EvaluadoBO[] evaluadosTemp;
 
 	@PostConstruct
 	public void init() {
 		verificarLogin();
 		if (continuar) {
-			setEnEvaluados(false);
-			setEnPruebas(true);
-			setEnResultados(false);
-
-			setNombreUsuario(usuario.getNombres() + " "
-					+ usuario.getApellidos());
 			proceso = obtenerProcesoDeSesion();
 			if (proceso == null) {
 				HttpServletResponse response = MindHelper.obtenerResponse();
@@ -121,6 +138,12 @@ public class ProcesoEspecificoController implements Serializable {
 					e.printStackTrace();
 				}
 			} else {
+				setEnEvaluados(false);
+				setEnPruebas(true);
+				setEnResultados(false);
+
+				setNombreUsuario(usuario.getNombres() + " "
+						+ usuario.getApellidos());
 				setNombreProceso(proceso.getNombre());
 				setDescripcionProceso(proceso.getDescripcion());
 				GestionProcesos gProcesos = new GestionProcesos();
@@ -141,12 +164,11 @@ public class ProcesoEspecificoController implements Serializable {
 				String permiso = (String) MindHelper.obtenerSesion()
 						.getAttribute("permiso");
 				idUsuario = usuario.getIdentificador();
-				if (permiso != null) {
-					if (permiso
-							.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_PROGRAMADOR)) {
-						idUsuario = ((UsuarioProgramadorBO) usuario)
-								.getUsuarioAdministradorID();
-					}
+
+				if (permiso
+						.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_PROGRAMADOR)) {
+					idUsuario = ((UsuarioProgramadorBO) usuario)
+							.getUsuarioAdministradorID();
 				}
 
 				setPruebasProcesoEspecifico(pruebas);
@@ -165,6 +187,8 @@ public class ProcesoEspecificoController implements Serializable {
 						gEvaluados.listarUsuariosBasicos(usuario
 								.getIdentificador()),
 						obtenerEvaluadosDeParticipacion(getParticipacionesProcesoEspecifico()))));
+				evaluadosTemp = getEvaluadosRestantes();
+				pruebasTemp = getPruebasRestantes();
 				setEditar(false);
 				setAgregarPrueba(false);
 				setCrearPrueba(false);
@@ -190,6 +214,12 @@ public class ProcesoEspecificoController implements Serializable {
 				fechaFinal = proceso.getFechaFinalizacion();
 				fechaInicial = proceso.getFechaInicio();
 				resultadosReporte.clear();
+				paginaActualEvaluados = 0;
+				paginaActualPruebas = 0;
+				paginaActualResultados = 0;
+				actualizarPruebas();
+				actualizarEvaluados();
+				actualizarResultados();
 			}
 		}
 	}
@@ -315,6 +345,7 @@ public class ProcesoEspecificoController implements Serializable {
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("pruebaEliminar");
+		actualizarPruebas();
 	}
 
 	public void eliminarParticipacion(ActionEvent event) {
@@ -351,6 +382,7 @@ public class ProcesoEspecificoController implements Serializable {
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("participacionEliminar");
+		actualizarEvaluados();
 	}
 
 	public void guardarEditarProceso() {
@@ -407,28 +439,41 @@ public class ProcesoEspecificoController implements Serializable {
 	}
 
 	public void enviarNotificacion() {
-		ParticipacionEnProcesoBO par = (ParticipacionEnProcesoBO) dataTableEvaluados
-				.getRowData();
-		int result = SMTPSender.enviarCorreoParticipacionAProceso(par,
-				usuario.getEmpresa());
-		if (result == Convencion.CORRECTO) {
-			GestionEvaluacion gEvaluacion = new GestionEvaluacion();
-			par.setEstaNotificado(Convencion.ESTADO_NOTIFICACION_ENVIADA);
-			gEvaluacion.editarParticipacionEnProceso(
-					usuario.getIdentificador(), par.getUsuarioBasico()
-							.getIdentificador(), par.getProcesoID(), par);
-			setParticipacionesProcesoEspecifico(gEvaluacion
-					.listarParticipacionesEnProceso(usuario.getIdentificador(),
-							proceso.getIdentificador()));
-			FacesContext context = FacesContext.getCurrentInstance();
-			context.addMessage(null, new FacesMessage(
-					FacesMessage.SEVERITY_INFO, "Notificación enviada.", ""));
+		GestionUsos gUsos = new GestionUsos();
+		if (gUsos.consultarCapacidadUsos(idUsuario, 1)) {
+			ParticipacionEnProcesoBO par = (ParticipacionEnProcesoBO) dataTableEvaluados
+					.getRowData();
+			int result = SMTPSender.enviarCorreoParticipacionAProceso(par,
+					usuario.getEmpresa());
+			if (result == Convencion.CORRECTO) {
+				GestionEvaluacion gEvaluacion = new GestionEvaluacion();
+				par.setEstaNotificado(Convencion.ESTADO_NOTIFICACION_ENVIADA);
+				gEvaluacion.editarParticipacionEnProceso(usuario
+						.getIdentificador(), par.getUsuarioBasico()
+						.getIdentificador(), par.getProcesoID(), par);
+				setParticipacionesProcesoEspecifico(gEvaluacion
+						.listarParticipacionesEnProceso(
+								usuario.getIdentificador(),
+								proceso.getIdentificador()));
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_INFO,
+								"Notificación enviada.", ""));
+			} else {
+				// Mensaje para el feedback
+				FacesContext context = FacesContext.getCurrentInstance();
+				context.addMessage(null, new FacesMessage(
+						FacesMessage.SEVERITY_WARN,
+						"La notificación no se pudo enviar.", ""));
+			}
 		} else {
+			System.out.print("Revision de usos negativa.");
 			// Mensaje para el feedback
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage(
 					FacesMessage.SEVERITY_WARN,
-					"La notificación no se pudo enviar.", ""));
+					"La notificacion no puede ser enviada.",
+					"No dispone de los usos suficientes."));
 		}
 	}
 
@@ -464,28 +509,33 @@ public class ProcesoEspecificoController implements Serializable {
 	}
 
 	public void crearEvaluadoEnProceso() {
-		System.out.println("Creando evaluado...");
-		EvaluadoBO eva = new EvaluadoBO();
-		eva.setApellidos(apellidoEvaluadoCrear);
-		eva.setCedula(cedulaEvaluadoCrear);
-		eva.setNombres(nombreEvaluadoCrear);
-		eva.setCorreoElectronico(correoEvaluadoCrear.toLowerCase());
-		eva.setIdentificadorUsuarioAdministrador(usuario.getIdentificador());
-
-		ParticipacionEnProcesoBO p = new ParticipacionEnProcesoBO();
-		p.setUsuarioBasico(eva);
-		p.setFechaFinalizacion(proceso.getFechaFinalizacion());
-		p.setFechaInicio(new Date());
-		p.setProcesoID(proceso.getIdentificador());
-		p.setEstaNotificado(Convencion.ESTADO_NOTIFICACION_NO_ENVIADA);
+		System.out.print("Creando evaluado...");
 
 		GestionEvaluacion gEvaluacion = new GestionEvaluacion();
 		GestionUsos gUsos = new GestionUsos();
 		if (gUsos.consultarCapacidadUsos(idUsuario, 1)) {
+			System.out.print("Revision de usos positiva...");
+
+			EvaluadoBO eva = new EvaluadoBO();
+			eva.setApellidos(apellidoEvaluadoCrear);
+			eva.setCedula(cedulaEvaluadoCrear);
+			eva.setNombres(nombreEvaluadoCrear);
+			eva.setCorreoElectronico(correoEvaluadoCrear.toLowerCase());
+			eva.setIdentificadorUsuarioAdministrador(usuario.getIdentificador());
+
+			ParticipacionEnProcesoBO p = new ParticipacionEnProcesoBO();
+			p.setUsuarioBasico(eva);
+			p.setFechaFinalizacion(proceso.getFechaFinalizacion());
+			p.setFechaInicio(new Date());
+			p.setProcesoID(proceso.getIdentificador());
+			p.setEstaNotificado(Convencion.ESTADO_NOTIFICACION_NO_ENVIADA);
+
 			int result = gEvaluacion.agregarParticipacionEnProceso(usuario
 					.getIdentificador(), p.getUsuarioBasico()
 					.getIdentificador(), proceso.getIdentificador(), p);
 			if (result == Convencion.CORRECTO) {
+				System.out.println("Usuario creado...");
+
 				setParticipacionesProcesoEspecifico(gEvaluacion
 						.listarParticipacionesEnProceso(
 								usuario.getIdentificador(),
@@ -499,6 +549,7 @@ public class ProcesoEspecificoController implements Serializable {
 				context.addMessage(null, new FacesMessage(
 						FacesMessage.SEVERITY_INFO, "Evaluado creado.", ""));
 			} else {
+				System.out.println("Usuario no creado...");
 				// Mensaje para el feedback
 				FacesContext context = FacesContext.getCurrentInstance();
 				context.addMessage(null, new FacesMessage(
@@ -506,6 +557,7 @@ public class ProcesoEspecificoController implements Serializable {
 						"El evaluado no se pudo crear.", ""));
 			}
 		} else {
+			System.out.print("Revision de usos negativa.");
 			// Mensaje para el feedback
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage(
@@ -517,6 +569,7 @@ public class ProcesoEspecificoController implements Serializable {
 		setCedulaEvaluadoCrear(0);
 		setNombreEvaluadoCrear("");
 		setCorreoEvaluadoCrear("");
+		actualizarEvaluados();
 	}
 
 	public void crearPruebaEnProceso() {
@@ -555,6 +608,7 @@ public class ProcesoEspecificoController implements Serializable {
 		}
 		setNombrePruebaCrear("");
 		setDescripcionPruebaCrear("");
+		actualizarPruebas();
 	}
 
 	public void agregarEvaluadosAProceso() {
@@ -594,6 +648,7 @@ public class ProcesoEspecificoController implements Serializable {
 					FacesMessage.SEVERITY_WARN,
 					"El evaluado no se pudo agregar.",
 					"No dispone de los usos suficientes."));
+			actualizarEvaluados();
 		}
 	}
 
@@ -622,6 +677,7 @@ public class ProcesoEspecificoController implements Serializable {
 		FacesContext context = FacesContext.getCurrentInstance();
 		context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,
 				"Prueba agregada.", ""));
+		actualizarPruebas();
 	}
 
 	private List<PruebaUsuarioBO> obtenerPruebasNoEnProceso(
@@ -795,6 +851,219 @@ public class ProcesoEspecificoController implements Serializable {
 						FacesMessage.SEVERITY_WARN,
 						"Debe seleccionar los resultados para exportar", ""));
 
+			}
+		}
+	}
+
+	public void pruebasSiguientes() {
+		if (!ultimaPaginaPruebas) {
+			paginaActualPruebas++;
+			actualizarPruebas();
+		}
+	}
+
+	public void pruebasAnteriores() {
+		if (!primeraPaginaPruebas) {
+			paginaActualPruebas--;
+			actualizarPruebas();
+		}
+	}
+
+	private void actualizarPruebas() {
+		pruebasAMostrar.clear();
+		for (int i = 0; i < cantidadPruebasAMostrar; i++) {
+			try {
+				pruebasAMostrar.add(getPruebasProcesoEspecifico().get(
+						paginaActualPruebas * cantidadPruebasAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPaginaPruebas = true;
+				primeraPaginaPruebas = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActualPruebas <= 0) {
+			ultimaPaginaPruebas = false;
+			if (pruebasAMostrar.size() < cantidadPruebasAMostrar
+					|| pruebasAMostrar.size() == pruebasProcesoEspecifico
+							.size()) {
+				ultimaPaginaPruebas = true;
+			}
+			primeraPaginaPruebas = true;
+		} else if (paginaActualPruebas >= pruebasProcesoEspecifico.size()
+				/ cantidadPruebasAMostrar) {
+			ultimaPaginaPruebas = true;
+			primeraPaginaPruebas = false;
+		} else {
+			ultimaPaginaPruebas = false;
+			primeraPaginaPruebas = false;
+		}
+	}
+
+	public void evaluadosSiguientes() {
+		if (!ultimaPaginaEvaluados) {
+			paginaActualEvaluados++;
+			actualizarEvaluados();
+		}
+	}
+
+	public void evaluadosAnteriores() {
+		if (!primeraPaginaEvaluados) {
+			paginaActualEvaluados--;
+			actualizarEvaluados();
+		}
+	}
+
+	private void actualizarEvaluados() {
+		evaluadosAMostrar.clear();
+		for (int i = 0; i < cantidadEvaluadosAMostrar; i++) {
+			try {
+				evaluadosAMostrar.add(getParticipacionesProcesoEspecifico()
+						.get(paginaActualEvaluados * cantidadEvaluadosAMostrar
+								+ i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPaginaEvaluados = true;
+				primeraPaginaEvaluados = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActualEvaluados <= 0) {
+			ultimaPaginaEvaluados = false;
+			if (evaluadosAMostrar.size() < cantidadEvaluadosAMostrar
+					|| evaluadosAMostrar.size() == participacionesProcesoEspecifico
+							.size()) {
+				ultimaPaginaEvaluados = true;
+			}
+			primeraPaginaEvaluados = true;
+		} else if (paginaActualEvaluados >= participacionesProcesoEspecifico
+				.size() / cantidadEvaluadosAMostrar) {
+			ultimaPaginaEvaluados = true;
+			primeraPaginaEvaluados = false;
+		} else {
+			ultimaPaginaEvaluados = false;
+			primeraPaginaEvaluados = false;
+		}
+	}
+
+	public void resultadosSiguientes() {
+		if (!ultimaPaginaResultados) {
+			paginaActualResultados++;
+			actualizarResultados();
+		}
+	}
+
+	public void resultadosAnteriores() {
+		if (!primeraPaginaResultados) {
+			paginaActualResultados--;
+			actualizarResultados();
+		}
+	}
+
+	private void actualizarResultados() {
+		resultadosAMostrar.clear();
+		for (int i = 0; i < cantidadEvaluadosAMostrar; i++) {
+			try {
+				resultadosAMostrar.add(getResultadosProcesoEspecifico()
+						.get(paginaActualResultados
+								* cantidadResultadosAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPaginaResultados = true;
+				primeraPaginaResultados = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActualResultados <= 0) {
+			ultimaPaginaResultados = false;
+			if (resultadosAMostrar.size() < cantidadResultadosAMostrar
+					|| resultadosAMostrar.size() == resultadosProcesoEspecifico
+							.size()) {
+				ultimaPaginaResultados = true;
+			}
+			primeraPaginaResultados = true;
+		} else if (paginaActualResultados >= resultadosProcesoEspecifico.size()
+				/ cantidadResultadosAMostrar) {
+			ultimaPaginaResultados = true;
+			primeraPaginaResultados = false;
+		} else {
+			ultimaPaginaResultados = false;
+			primeraPaginaResultados = false;
+		}
+	}
+
+	public void buscarPruebas() {
+		pruebasRestantes = pruebasTemp;
+		if (getParametroBusquedaPrueba() != null) {
+			if (getParametroBusquedaPrueba() != "") {
+				List<PruebaUsuarioBO> resultadoBusqueda = new ArrayList<PruebaUsuarioBO>();
+				for (PruebaUsuarioBO prueba : getPruebasRestantes()) {
+					String nombre = prueba.getNombre();
+					if (nombre.toLowerCase().contains(
+							getParametroBusquedaPrueba().toLowerCase())) {
+						resultadoBusqueda.add(prueba);
+					}
+				}
+				pruebasTemp = pruebasRestantes;
+				PruebaUsuarioBO[] res = new PruebaUsuarioBO[resultadoBusqueda
+						.size()];
+				for (int i = 0; i < resultadoBusqueda.size(); i++) {
+					res[i] = resultadoBusqueda.get(i);
+				}
+				pruebasRestantes = res;
+			}
+		}
+	}
+
+	public void buscarEvaluados() {
+		evaluadosRestantes = evaluadosTemp;
+		if (getParametroBusquedaEvaluado() != null) {
+			if (getParametroBusquedaEvaluado() != "") {
+				int cedula = 0;
+				boolean esCedula = true;
+				try {
+					cedula = Integer.parseInt(getParametroBusquedaEvaluado());
+				} catch (NumberFormatException e) {
+					esCedula = false;
+				}
+				List<EvaluadoBO> resultadoBusqueda = new ArrayList<EvaluadoBO>();
+				if (esCedula) {
+					for (EvaluadoBO eval : getEvaluadosRestantes()) {
+						int id = eval.getIdentificador();
+						if (id == cedula) {
+							resultadoBusqueda.add(eval);
+						}
+					}
+				} else {
+					for (EvaluadoBO eval : getEvaluadosRestantes()) {
+						if (getParametroBusquedaEvaluado().equalsIgnoreCase(
+								eval.getCorreoElectronico())
+								|| eval.getNombres()
+										.toLowerCase()
+										.contains(
+												getParametroBusquedaEvaluado()
+														.toLowerCase())
+								|| eval.getApellidos()
+										.toLowerCase()
+										.contains(
+												getParametroBusquedaEvaluado()
+														.toLowerCase())) {
+							resultadoBusqueda.add(eval);
+						}
+					}
+				}
+				evaluadosTemp = evaluadosRestantes;
+				EvaluadoBO[] res = new EvaluadoBO[resultadoBusqueda.size()];
+				for (int i = 0; i < resultadoBusqueda.size(); i++) {
+					res[i] = resultadoBusqueda.get(i);
+				}
+				evaluadosRestantes = res;
 			}
 		}
 	}
@@ -1075,6 +1344,120 @@ public class ProcesoEspecificoController implements Serializable {
 
 	public void setResultadosReporte(Map<Integer, Boolean> resultadosReporte) {
 		this.resultadosReporte = resultadosReporte;
+	}
+
+	public int getCantidadPruebasAMostrar() {
+		return cantidadPruebasAMostrar;
+	}
+
+	public void setCantidadPruebasAMostrar(int cantidadPruebasAMostrar) {
+		this.cantidadPruebasAMostrar = cantidadPruebasAMostrar;
+	}
+
+	public List<PruebaUsuarioBO> getPruebasAMostrar() {
+		return pruebasAMostrar;
+	}
+
+	public void setPruebasAMostrar(List<PruebaUsuarioBO> pruebasAMostrar) {
+		this.pruebasAMostrar = pruebasAMostrar;
+	}
+
+	public boolean isPrimeraPaginaPruebas() {
+		return primeraPaginaPruebas;
+	}
+
+	public void setPrimeraPaginaPruebas(boolean primeraPaginaPruebas) {
+		this.primeraPaginaPruebas = primeraPaginaPruebas;
+	}
+
+	public boolean isUltimaPaginaPruebas() {
+		return ultimaPaginaPruebas;
+	}
+
+	public void setUltimaPaginaPruebas(boolean ultimaPaginaPruebas) {
+		this.ultimaPaginaPruebas = ultimaPaginaPruebas;
+	}
+
+	public int getCantidadEvaluadosAMostrar() {
+		return cantidadEvaluadosAMostrar;
+	}
+
+	public void setCantidadEvaluadosAMostrar(int cantidadEvaluadosAMostrar) {
+		this.cantidadEvaluadosAMostrar = cantidadEvaluadosAMostrar;
+	}
+
+	public List<ParticipacionEnProcesoBO> getEvaluadosAMostrar() {
+		return evaluadosAMostrar;
+	}
+
+	public void setEvaluadosAMostrar(
+			List<ParticipacionEnProcesoBO> evaluadosAMostrar) {
+		this.evaluadosAMostrar = evaluadosAMostrar;
+	}
+
+	public boolean isPrimeraPaginaEvaluados() {
+		return primeraPaginaEvaluados;
+	}
+
+	public void setPrimeraPaginaEvaluados(boolean primeraPaginaEvaluados) {
+		this.primeraPaginaEvaluados = primeraPaginaEvaluados;
+	}
+
+	public boolean isUltimaPaginaEvaluados() {
+		return ultimaPaginaEvaluados;
+	}
+
+	public void setUltimaPaginaEvaluados(boolean ultimaPaginaEvaluados) {
+		this.ultimaPaginaEvaluados = ultimaPaginaEvaluados;
+	}
+
+	public int getCantidadResultadosAMostrar() {
+		return cantidadResultadosAMostrar;
+	}
+
+	public void setCantidadResultadosAMostrar(int cantidadResultadosAMostrar) {
+		this.cantidadResultadosAMostrar = cantidadResultadosAMostrar;
+	}
+
+	public List<ParticipacionEnProcesoBO> getResultadosAMostrar() {
+		return resultadosAMostrar;
+	}
+
+	public void setResultadosAMostrar(
+			List<ParticipacionEnProcesoBO> resultadosAMostrar) {
+		this.resultadosAMostrar = resultadosAMostrar;
+	}
+
+	public boolean isPrimeraPaginaResultados() {
+		return primeraPaginaResultados;
+	}
+
+	public void setPrimeraPaginaResultados(boolean primeraPaginaResultados) {
+		this.primeraPaginaResultados = primeraPaginaResultados;
+	}
+
+	public boolean isUltimaPaginaResultados() {
+		return ultimaPaginaResultados;
+	}
+
+	public void setUltimaPaginaResultados(boolean ultimaPaginaResultados) {
+		this.ultimaPaginaResultados = ultimaPaginaResultados;
+	}
+
+	public String getParametroBusquedaPrueba() {
+		return parametroBusquedaPrueba;
+	}
+
+	public void setParametroBusquedaPrueba(String parametrBusquedaPrueba) {
+		this.parametroBusquedaPrueba = parametrBusquedaPrueba;
+	}
+
+	public String getParametroBusquedaEvaluado() {
+		return parametroBusquedaEvaluado;
+	}
+
+	public void setParametroBusquedaEvaluado(String parametroBusquedaEvaluado) {
+		this.parametroBusquedaEvaluado = parametroBusquedaEvaluado;
 	}
 
 }

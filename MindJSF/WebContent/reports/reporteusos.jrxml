@@ -24,7 +24,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="32" splitType="Stretch">
+		<band height="30" splitType="Stretch">
 			<staticText>
 				<reportElement uuid="34ef02a6-df9c-4f58-9747-05968424ad2a" key="staticText-1" x="0" y="0" width="555" height="30"/>
 				<box>
@@ -40,6 +40,45 @@
 			</staticText>
 		</band>
 	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="36ede976-f7b2-4da7-b9f6-605bb94dc752" x="0" y="0" width="110" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Asignación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="f7a99cff-3615-4015-ad32-781d64efc185" x="110" y="0" width="150" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombres]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e90ab865-308d-4c8e-9fca-c2748bb5799f" x="260" y="0" width="140" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Apellidos]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="a286dde1-c0ab-4fbf-bdb2-d237be87bce6" x="400" y="0" width="80" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Asignados]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e955fde5-996e-41c3-b527-eb9f7a9549bd" x="480" y="0" width="74" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usados]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
 	<detail>
 		<band height="270" splitType="Stretch">
 			<textField>

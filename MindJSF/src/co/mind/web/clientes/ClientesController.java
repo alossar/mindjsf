@@ -23,6 +23,7 @@ import co.mind.management.shared.dto.PruebaUsuarioBO;
 import co.mind.management.shared.dto.UsoBO;
 import co.mind.management.shared.dto.UsuarioAdministradorBO;
 import co.mind.management.shared.dto.UsuarioBO;
+import co.mind.management.shared.dto.UsuarioProgramadorBO;
 import co.mind.management.shared.persistencia.GestionClientes;
 import co.mind.management.shared.persistencia.GestionPruebas;
 import co.mind.management.shared.recursos.Convencion;
@@ -62,6 +63,12 @@ public class ClientesController implements Serializable {
 
 	private Integer[] selectItemsPruebas;
 
+	private int cantidadClientesAMostrar = 10;
+	private List<UsuarioAdministradorBO> clientesAMostrar = new ArrayList<UsuarioAdministradorBO>();
+	private boolean primeraPagina = true;
+	private boolean ultimaPagina = false;
+	private int paginaActual;
+
 	@PostConstruct
 	public void init() {
 		verificarLogin();
@@ -75,6 +82,8 @@ public class ClientesController implements Serializable {
 					.listarPruebasUsuarioAdministrador(usuario
 							.getIdentificador())));
 			clientesTemp = clientes;
+			paginaActual = 0;
+			actualizarClientes();
 		}
 	}
 
@@ -170,6 +179,7 @@ public class ClientesController implements Serializable {
 		setCorreoClienteCrear("");
 		setEmpresaClienteCrear("");
 		setTelefonoClienteCrear("");
+		actualizarClientes();
 	}
 
 	public void editarCliente() {
@@ -274,6 +284,7 @@ public class ClientesController implements Serializable {
 		}
 		HttpSession session = request.getSession();
 		session.removeAttribute("clienteEliminar");
+		actualizarClientes();
 	}
 
 	public void seleccionarClienteEliminar(AjaxBehaviorEvent event) {
@@ -340,6 +351,51 @@ public class ClientesController implements Serializable {
 				clientesTemp = clientes;
 				clientes = resultadoBusqueda;
 			}
+		}
+		actualizarClientes();
+	}
+
+	public void clientesSiguientes() {
+		if (!ultimaPagina) {
+			paginaActual++;
+			actualizarClientes();
+		}
+	}
+
+	public void clientesAnteriores() {
+		if (!primeraPagina) {
+			paginaActual--;
+			actualizarClientes();
+		}
+	}
+
+	private void actualizarClientes() {
+		clientesAMostrar.clear();
+		for (int i = 0; i < cantidadClientesAMostrar; i++) {
+			try {
+				clientesAMostrar.add(clientes.get(paginaActual
+						* cantidadClientesAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPagina = true;
+				primeraPagina = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActual <= 0) {
+			ultimaPagina = false;
+			if (clientesAMostrar.size() < cantidadClientesAMostrar) {
+				ultimaPagina = true;
+			}
+			primeraPagina = true;
+		} else if (paginaActual >= clientes.size() / cantidadClientesAMostrar) {
+			ultimaPagina = true;
+			primeraPagina = false;
+		} else {
+			ultimaPagina = false;
+			primeraPagina = false;
 		}
 	}
 
@@ -496,6 +552,39 @@ public class ClientesController implements Serializable {
 
 	public void setSelectItemsPruebas(Integer[] selectItemsPruebas) {
 		this.selectItemsPruebas = selectItemsPruebas;
+	}
+
+	public int getCantidadClientesAMostrar() {
+		return cantidadClientesAMostrar;
+	}
+
+	public void setCantidadClientesAMostrar(int cantidadClientesAMostrar) {
+		this.cantidadClientesAMostrar = cantidadClientesAMostrar;
+	}
+
+	public List<UsuarioAdministradorBO> getClientesAMostrar() {
+		return clientesAMostrar;
+	}
+
+	public void setClientesAMostrar(
+			List<UsuarioAdministradorBO> clientesAMostrar) {
+		this.clientesAMostrar = clientesAMostrar;
+	}
+
+	public boolean isPrimeraPagina() {
+		return primeraPagina;
+	}
+
+	public void setPrimeraPagina(boolean primeraPagina) {
+		this.primeraPagina = primeraPagina;
+	}
+
+	public boolean isUltimaPagina() {
+		return ultimaPagina;
+	}
+
+	public void setUltimaPagina(boolean ultimaPagina) {
+		this.ultimaPagina = ultimaPagina;
 	}
 
 }

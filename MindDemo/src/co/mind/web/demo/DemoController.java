@@ -36,12 +36,12 @@ public class DemoController implements Serializable {
 	private int caracteresMaximo;
 	private int tiempoMaximo;
 	private int tiempoActual;
-	private int tiempoRepresentado;
+	private String tiempoRepresentado;
 	private String unidadRepresentada;
 	private String imagenInstruccion;
 	private List<PreguntaUsuarioBO> listaPregunta;
 	private PreguntaUsuarioBO preguntaActual;
-	static List<ResultadoBO> resultados = new ArrayList<ResultadoBO>();
+	static List<ResultadoBO> resultados;
 
 	@PostConstruct
 	public void init() {
@@ -64,6 +64,7 @@ public class DemoController implements Serializable {
 			navigationHandler.handleNavigation(facesContext, null, "end");
 		}
 		setImagenInstruccion("instrucciones.png");
+		resultados = new ArrayList<ResultadoBO>();
 	}
 
 	public void guardarResultado() {
@@ -87,11 +88,12 @@ public class DemoController implements Serializable {
 			setTiempoActual(preguntaActual.getTiempoMaximo());
 			if (tiempoActual / 60 > 0) {
 				// Representar Minutos
-				setTiempoRepresentado(tiempoActual / 60);
+				setTiempoRepresentado(tiempoActual / 60 + ":" + tiempoActual
+						% 60);
 				setUnidadRepresentada("min");
 			} else {
 				// Representar Segundos
-				setTiempoRepresentado(tiempoActual);
+				setTiempoRepresentado(tiempoActual + "");
 				setUnidadRepresentada("seg");
 			}
 			setRespuesta("");
@@ -109,11 +111,11 @@ public class DemoController implements Serializable {
 		tiempoActual--;
 		if (tiempoActual / 60 > 0) {
 			// Representar Minutos
-			setTiempoRepresentado(tiempoActual / 60);
+			setTiempoRepresentado(tiempoActual / 60 + ":" + tiempoActual % 60);
 			setUnidadRepresentada("min");
 		} else {
 			// Representar Segundos
-			setTiempoRepresentado(tiempoActual);
+			setTiempoRepresentado(tiempoActual + "");
 			setUnidadRepresentada("seg");
 		}
 	}
@@ -162,11 +164,11 @@ public class DemoController implements Serializable {
 		this.tiempoActual = tiempoActual;
 	}
 
-	public int getTiempoRepresentado() {
+	public String getTiempoRepresentado() {
 		return tiempoRepresentado;
 	}
 
-	public void setTiempoRepresentado(int tiempoRepresentado) {
+	public void setTiempoRepresentado(String tiempoRepresentado) {
 		this.tiempoRepresentado = tiempoRepresentado;
 	}
 

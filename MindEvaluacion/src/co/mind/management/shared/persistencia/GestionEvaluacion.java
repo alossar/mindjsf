@@ -18,6 +18,7 @@ import co.mind.management.shared.dto.PreguntaUsuarioBO;
 import co.mind.management.shared.dto.ProcesoUsuarioBO;
 import co.mind.management.shared.dto.ResultadoBO;
 import co.mind.management.shared.dto.UsuarioBO;
+import co.mind.management.shared.dto.UsuarioProgramadorBO;
 import co.mind.management.shared.entidades.ParticipacionEnProceso;
 import co.mind.management.shared.entidades.PreguntaUsuario;
 import co.mind.management.shared.entidades.ProcesoUsuario;
@@ -609,6 +610,12 @@ public class GestionEvaluacion implements IGestionEvaluacion {
 				return Convencion.CORRECTO;
 			}
 			List<UsoUsuario> usos = user.getUsosUsuarios();
+			if (user.getTipo().equalsIgnoreCase(
+					Convencion.TIPO_USUARIO_PROGRAMADOR)) {
+				Usuario usuarioCliente = user.getUsuario();
+				entityManager.refresh(usuarioCliente);
+				usos = usuarioCliente.getUsosUsuarios();
+			}
 			boolean continuar = true;
 			for (int i = 0; i < usos.size() && continuar; i++) {
 				UsoUsuario usoUsuario = usos.get(i);

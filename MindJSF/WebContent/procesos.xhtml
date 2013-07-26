@@ -54,7 +54,7 @@ body {
 									<li class="active"><h:commandLink
 											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
-								<h:panelGroup rendered="#{autorizacionController.cliente }">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
 											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
@@ -120,12 +120,12 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icoprocesos.png"></img>Procesos
 			</legend>
-			<h:form id="formPanelTablaProcesos">
+			<h:form id="formPanelTablaProcesos"
+				rendered="#{not empty procesosController.procesosAMostrar }">
 				<h:panelGroup layout="block" id="panelTablaProcesos">
 					<h:dataTable binding="#{procesosController.dataTable}"
-						rendered="#{not empty procesosController.procesos }"
 						styleClass="table table-hover table-condensed table-striped"
-						value="#{procesosController.procesos }" var="proceso">
+						value="#{procesosController.procesosAMostrar }" var="proceso">
 						<small> <h:column>
 								<f:facet name="header">
 									<h:outputText value="Nombre del Proceso"></h:outputText>
@@ -242,10 +242,24 @@ body {
 						</small>
 					</h:dataTable>
 				</h:panelGroup>
+				<ul class="pager">
+					<li
+						class="previous #{procesosController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaProcesos"
+							disabled="#{procesosController.primeraPagina}"
+							actionListener="#{procesosController.procesosAnteriores}">&larr; Anterior
+							</p:commandLink></li>
+					<li
+						class="next #{procesosController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaProcesos"
+							disabled="#{procesosController.ultimaPagina}"
+							actionListener="#{procesosController.procesosSiguientes}">Siguiente &rarr;
+							</p:commandLink></li>
+				</ul>
 			</h:form>
 
 			<h:panelGroup styleClass="alert" id="mensajeNoHay"
-				rendered="#{empty procesosController.procesos }">
+				rendered="#{empty procesosController.procesosAMostrar }">
 				<h:outputText value="No se encontraron procesos en tu cuenta."></h:outputText>
 				<a data-toggle="modal" href="#myModalCrearProceso">Crea un
 					proceso. </a>

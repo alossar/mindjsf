@@ -63,6 +63,18 @@ public class CuentaController implements Serializable {
 
 	private String mensajeCorreo;
 
+	private int cantidadUsosAMostrar = 10;
+	private List<UsoBO> usosAMostrar = new ArrayList<UsoBO>();
+	private boolean primeraPaginaUsos = true;
+	private boolean ultimaPaginaUsos = false;
+	private int paginaActualUsos;
+
+	private int cantidadProcesosAMostrar = 10;
+	private List<ProcesoUsuarioBO> procesosAMostrar = new ArrayList<ProcesoUsuarioBO>();
+	private boolean primeraPaginaProcesos = true;
+	private boolean ultimaPaginaProcesos = false;
+	private int paginaActualProcesos;
+
 	@PostConstruct
 	public void init() {
 		verificarLogin();
@@ -76,13 +88,21 @@ public class CuentaController implements Serializable {
 						.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_MAESTRO)) {
 					GestionProcesos gProcesos = new GestionProcesos();
 					setProcesosRevisar(gProcesos.listarProcesosParaRevisar());
-				}
-			}
-			if (permiso != null) {
-				if (permiso
+					paginaActualProcesos = 0;
+					actualizarProcesos();
+				} else if (permiso
 						.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_ADMINISTRADOR)) {
 					GestionUsos gUsos = new GestionUsos();
 					setUsos(gUsos.listarUsos(usuario.getIdentificador()));
+					paginaActualUsos = 0;
+					actualizarUsos();
+				} else if (permiso
+						.equalsIgnoreCase(Convencion.VALOR_PERMISOS_USUARIO_PROGRAMADOR)) {
+					GestionUsos gUsos = new GestionUsos();
+					setUsos(gUsos.listarUsos(((UsuarioProgramadorBO) usuario)
+							.getUsuarioAdministradorID()));
+					actualizarUsos();
+					paginaActualUsos = 0;
 				}
 			}
 
@@ -276,6 +296,95 @@ public class CuentaController implements Serializable {
 		}
 	}
 
+	public void usosSiguientes() {
+		if (!ultimaPaginaUsos) {
+			paginaActualUsos++;
+			actualizarUsos();
+		}
+	}
+
+	public void usosAnteriores() {
+		if (!primeraPaginaUsos) {
+			paginaActualUsos--;
+			actualizarUsos();
+		}
+	}
+
+	private void actualizarUsos() {
+		usosAMostrar.clear();
+		for (int i = 0; i < cantidadUsosAMostrar; i++) {
+			try {
+				usosAMostrar.add(getUsos().get(
+						paginaActualUsos * cantidadUsosAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPaginaUsos = true;
+				primeraPaginaUsos = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActualUsos <= 0) {
+			ultimaPaginaUsos = false;
+			if (usosAMostrar.size() < cantidadUsosAMostrar) {
+				ultimaPaginaUsos = true;
+			}
+			primeraPaginaUsos = true;
+		} else if (paginaActualUsos >= usos.size() / cantidadUsosAMostrar) {
+			ultimaPaginaUsos = true;
+			primeraPaginaUsos = false;
+		} else {
+			ultimaPaginaUsos = false;
+			primeraPaginaUsos = false;
+		}
+	}
+
+	public void procesosSiguientes() {
+		if (!ultimaPaginaProcesos) {
+			paginaActualProcesos++;
+			actualizarProcesos();
+		}
+	}
+
+	public void procesosAnteriores() {
+		if (!primeraPaginaProcesos) {
+			paginaActualProcesos--;
+			actualizarProcesos();
+		}
+	}
+
+	private void actualizarProcesos() {
+		procesosAMostrar.clear();
+		for (int i = 0; i < cantidadProcesosAMostrar; i++) {
+			try {
+				procesosAMostrar.add(getProcesosRevisar().get(
+						paginaActualProcesos * cantidadProcesosAMostrar + i));
+
+			} catch (IndexOutOfBoundsException e) {
+				ultimaPaginaUsos = true;
+				primeraPaginaUsos = false;
+				break;
+			} catch (NullPointerException e) {
+				break;
+			}
+		}
+		if (paginaActualProcesos <= 0) {
+			ultimaPaginaProcesos = false;
+			if (procesosAMostrar.size() < cantidadProcesosAMostrar) {
+				ultimaPaginaProcesos = true;
+			}
+			primeraPaginaProcesos = true;
+		} else if (paginaActualProcesos >= procesosRevisar.size()
+				/ cantidadProcesosAMostrar) {
+			ultimaPaginaProcesos = true;
+			primeraPaginaProcesos = false;
+		} else {
+			ultimaPaginaProcesos = false;
+			primeraPaginaProcesos = false;
+		}
+	}
+
 	public String getNombreUsuario() {
 		return nombreUsuario;
 	}
@@ -370,6 +479,70 @@ public class CuentaController implements Serializable {
 
 	public void setMensajeCorreo(String mensajeCorreo) {
 		this.mensajeCorreo = mensajeCorreo;
+	}
+
+	public int getCantidadUsosAMostrar() {
+		return cantidadUsosAMostrar;
+	}
+
+	public void setCantidadUsosAMostrar(int cantidadUsosAMostrar) {
+		this.cantidadUsosAMostrar = cantidadUsosAMostrar;
+	}
+
+	public List<UsoBO> getUsosAMostrar() {
+		return usosAMostrar;
+	}
+
+	public void setUsosAMostrar(List<UsoBO> usosAMostrar) {
+		this.usosAMostrar = usosAMostrar;
+	}
+
+	public boolean isPrimeraPaginaUsos() {
+		return primeraPaginaUsos;
+	}
+
+	public void setPrimeraPaginaUsos(boolean primeraPaginaUsos) {
+		this.primeraPaginaUsos = primeraPaginaUsos;
+	}
+
+	public boolean isUltimaPaginaUsos() {
+		return ultimaPaginaUsos;
+	}
+
+	public void setUltimaPaginaUsos(boolean ultimaPaginaUsos) {
+		this.ultimaPaginaUsos = ultimaPaginaUsos;
+	}
+
+	public int getCantidadProcesosAMostrar() {
+		return cantidadProcesosAMostrar;
+	}
+
+	public void setCantidadProcesosAMostrar(int cantidadProcesosAMostrar) {
+		this.cantidadProcesosAMostrar = cantidadProcesosAMostrar;
+	}
+
+	public List<ProcesoUsuarioBO> getProcesosAMostrar() {
+		return procesosAMostrar;
+	}
+
+	public void setProcesosAMostrar(List<ProcesoUsuarioBO> procesosAMostrar) {
+		this.procesosAMostrar = procesosAMostrar;
+	}
+
+	public boolean isPrimeraPaginaProcesos() {
+		return primeraPaginaProcesos;
+	}
+
+	public void setPrimeraPaginaProcesos(boolean primeraPaginaProcesos) {
+		this.primeraPaginaProcesos = primeraPaginaProcesos;
+	}
+
+	public boolean isUltimaPaginaProcesos() {
+		return ultimaPaginaProcesos;
+	}
+
+	public void setUltimaPaginaProcesos(boolean ultimaPaginaProcesos) {
+		this.ultimaPaginaProcesos = ultimaPaginaProcesos;
 	}
 
 }

@@ -51,7 +51,7 @@ body {
 									<li><h:commandLink
 											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
-								<h:panelGroup rendered="#{autorizacionController.cliente }">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li><h:commandLink action="#{indexController.irAPruebas }"
 											value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
@@ -214,6 +214,20 @@ body {
 										</h:column>
 									</small>
 								</h:dataTable>
+								<ul class="pager">
+									<li
+										class="previous #{clienteEspecificoController.primeraPaginaUsos ? 'disabled' : ''}"><p:commandLink
+											update="@form"
+											disabled="#{clienteEspecificoController.primeraPaginaUsos}"
+											actionListener="#{clienteEspecificoController.usosAnteriores}">&larr; Anterior	</p:commandLink>
+									</li>
+									<li
+										class="next #{clienteEspecificoController.ultimaPaginaUsos ? 'disabled' : ''}"><p:commandLink
+											update="@form"
+											disabled="#{clienteEspecificoController.ultimaPaginaUsos}"
+											actionListener="#{clienteEspecificoController.usosSiguientes}">Siguiente &rarr;</p:commandLink>
+									</li>
+								</ul>
 							</h:form>
 
 							<h:outputText

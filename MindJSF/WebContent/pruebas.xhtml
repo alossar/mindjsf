@@ -52,7 +52,7 @@ body {
 									<li><h:commandLink
 											action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 								</h:panelGroup>
-								<h:panelGroup rendered="#{autorizacionController.cliente }">
+								<h:panelGroup rendered="#{autorizacionController.programador }">
 									<li class="active"><h:commandLink
 											action="#{indexController.irAPruebas }" value="Pruebas"></h:commandLink></li>
 								</h:panelGroup>
@@ -99,6 +99,7 @@ body {
 			<div class="row">
 
 				<h:form id="formsearch" styleClass="form-search pull-right"
+					rendered="#{autorizacionController.cliente }"
 					onkeypress="if (event.keyCode == 13) { document.getElementById('formsearch:searchid').click(); return false; }">
 					<h:inputText styleClass="input-medium search-query "
 						value="#{pruebasController.parametroBusqueda }" />
@@ -117,12 +118,12 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icopruebas.png"></img>Pruebas
 			</legend>
-			<h:form id="formPanelTablaPruebas">
-				<h:dataTable rendered="#{not empty pruebasController.pruebas }"
-					id="panelTablaPruebas"
+			<h:form id="formPanelTablaPruebas"
+				rendered="#{not empty pruebasController.pruebasAMostrar }">
+				<h:dataTable id="panelTablaPruebas"
 					styleClass="table table-hover table-condensed table-striped"
 					binding="#{pruebasController.dataTable }"
-					value="#{pruebasController.pruebas }" var="prueba">
+					value="#{pruebasController.pruebasAMostrar }" var="prueba">
 					<small> <h:column>
 							<f:facet name="header">
 								<h:outputText value="Nombre de la Prueba"></h:outputText>
@@ -161,7 +162,7 @@ body {
 								<h:outputText value="#{prueba.duracion }">
 								</h:outputText>
 							</center>
-						</h:column> <h:column>
+						</h:column> <h:column rendered="#{autorizacionController.cliente }">
 							<p:commandLink styleClass="btn btn-info btn-small"
 								actionListener="#{pruebasController.editarPrueba }"
 								title="Editar prueba." rendered="#{not prueba.editar }"
@@ -191,13 +192,34 @@ body {
 						</h:column>
 					</small>
 				</h:dataTable>
-				<h:panelGroup styleClass="alert" id="mensajeNoHay"
-					rendered="#{empty pruebasController.pruebas }">
-					<h:outputText value="No se encontraron pruebas en tu cuenta."></h:outputText>
-					<a data-toggle="modal" href="#myModalCrearPrueba">Crea una
-						prueba. </a>
-				</h:panelGroup>
+
+				<ul class="pager">
+					<li
+						class="previous #{pruebasController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaPruebas"
+							disabled="#{pruebasController.primeraPagina}"
+							actionListener="#{pruebasController.pruebasAnteriores}">&larr; Anterior
+							</p:commandLink></li>
+					<li
+						class="next #{pruebasController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+							update="@form panelTablaPruebas"
+							disabled="#{pruebasController.ultimaPagina}"
+							actionListener="#{pruebasController.pruebasSiguientes}">Siguiente &rarr;
+							</p:commandLink></li>
+				</ul>
+
 			</h:form>
+			<h:panelGroup styleClass="alert" id="mensajeNoHay"
+				rendered="#{empty pruebasController.pruebasAMostrar and autorizacionController.cliente}">
+				<h:outputText value="No se encontraron pruebas en tu cuenta."></h:outputText>
+				<a data-toggle="modal" href="#myModalCrearPrueba">Crea una
+					prueba. </a>
+			</h:panelGroup>
+			<h:panelGroup styleClass="alert" id="mensajeNoHayProg"
+				rendered="#{empty pruebasController.pruebasAMostrar and autorizacionController.onlyProgramador}">
+				<h:outputText
+					value="No se encontraron pruebas en la cuenta del cliente."></h:outputText>
+			</h:panelGroup>
 
 			<h:form id="formModalEliminarPrueba">
 				<div id="myModal" class="modal hide fade" tabindex="-1"
@@ -206,7 +228,7 @@ body {
 						style="text-align: center; font-size: 18pt; font-weight: bold;">
 						<img src="img/dialogo.png" />
 						<h2>Borrar Prueba.</h2>
-						<p style="font-size: 12pt;">¿Estas Seguro que Deseas Borrar?</p>
+						<p style="font-size: 12pt;">¿Estás Seguro que Deseas Borrar?</p>
 					</div>
 
 					<div class="modal-footer">
@@ -214,7 +236,8 @@ body {
 							aria-hidden="true">No</button>
 						<p:commandLink styleClass="btn btn-primary show-notification"
 							actionListener="#{pruebasController.eliminarPrueba }"
-							onclick="closeDialog ();" rendered="#{not prueba.editar }"
+							onclick="closeDialog ();"
+							rendered="#{autorizacionController.cliente  and not prueba.editar }"
 							style="padding: 5;" value="SI"
 							update=":formPanelTablaPruebas :growl">
 						</p:commandLink>
@@ -248,6 +271,7 @@ body {
 						</div>
 
 						<p:commandButton styleClass="btn btn-primary" id="botCrearPrueba"
+							rendered="#{autorizacionController.cliente }"
 							actionListener="#{pruebasController.crearPrueba }" value="Crear"
 							style="margin-left:65px;margin-top:5px;"
 							update=":formPanelTablaPruebas :growl @form"

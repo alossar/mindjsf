@@ -19,8 +19,8 @@
   <link rel="stylesheet" href="css/2mstyleIE8.css"/>
 <![endif]-->
 </h:head>
-<body>
-	<div id="wrap">
+<body style="background-color: rgb(45, 55, 60);">
+	<div id="wrap demoEva" style="background-color: rgb(45, 55, 60);">
 		<div class="container" style="width: 900px;">
 			<div class="contenedorEvaLaminas">
 
@@ -51,15 +51,15 @@
 								update="formEvaluacion"
 								rendered="#{evaluacionController.enPregunta}"
 								style="height:46px;	margin-top:33px; vertical-align:middle"
-								actionListener="#{evaluacionController.guardarResultado}"
-								value="Siguiente">
+								actionListener="#{evaluacionController.guardarResultado}">
+								<p>Siguiente</p>
 							</p:commandLink>
 							<p:commandLink styleClass="btn btn-inverse"
 								rendered="#{not evaluacionController.enPregunta}"
 								update="formEvaluacion"
 								style="height:46px;	margin-top:33px; vertical-align:middle"
-								actionListener="#{evaluacionController.cerrarInstruccion}"
-								value="Continuar">
+								actionListener="#{evaluacionController.cerrarInstruccion}">
+								<p>Continuar</p>
 							</p:commandLink>
 						</div>
 
@@ -90,8 +90,6 @@
 						update="formEvaluacion" />
 
 				</h:form>
-
-
 
 			</div>
 			<!-- Cierro contenedor ver Laminas -->

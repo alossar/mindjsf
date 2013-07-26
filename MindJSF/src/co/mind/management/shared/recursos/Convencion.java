@@ -107,7 +107,6 @@ public class Convencion {
 	public static final String CONEXION_USER = "root";
 	public static final String CONEXION_PASS = "cbvBpsfyRV";
 	// public static final String CONEXION_PASS = "admin";
-
 	// Mensajes
 	public static final String MENSAJE_FALLO_LOGIN = "El correo o la contraseña ingresada es incorrecta. Por favor intente de nuevo.";
 	public static final int MAXIMA_LONGITUD_PREGUNTA = 2000;

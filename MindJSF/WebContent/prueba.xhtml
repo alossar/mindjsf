@@ -11,12 +11,57 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></meta>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('#opcBotones').hide();
+		$('#tiempoLamina').attr('readonly',true);
+		$('#infoLaminaEscogida').attr('readonly',true);
+		$('#cantidadCaracteresLamina').attr('readonly',true);
+
+		$('#opcEditar').click(function(){
+			$('#opcBotones').show("slow");/*Muestro boton Guardar Cambios y Cancelar*/
+			$('#tiempoLamina').css("background-color","white");
+			$('#infoLaminaEscogida').css("background-color","white");
+			$('#cantidadCaracteresLamina').css("background-color","white");
+			
+			$('#tiempoLamina').attr('readonly',false);
+			$('#infoLaminaEscogida').attr('readonly',false);
+			$('#cantidadCaracteresLamina').attr('readonly',false);
+
+		});				
+		//Si undo "guardar cambios" desaparecen las opciones
+		
+		$('#guardar').click(function(){
+			$('#opcBotones').hide("slow");
+			$('#tiempoLamina').css("background-color","rgb(243,243,243)");
+			$('#infoLaminaEscogida').css("background-color","rgb(243,243,243)");
+			$('#cantidadCaracteresLamina').css("background-color","rgb(243,243,243)");
+			$('#tiempoLamina').attr('readonly',true);
+			$('#infoLaminaEscogida').attr('readonly',true);
+			$('#cantidadCaracteresLamina').attr('readonly',true);
+		});
+		//Si undo "Cancelar cambios"
+		$('#cancelar').click(function(){
+			$('#opcBotones').hide("slow");
+			$('#tiempoLamina').css("background-color","rgb(243,243,243)");
+			$('#cantidadCaracteresLamina').css("background-color","rgb(243,243,243)");
+			$('#infoLaminaEscogida').css("background-color","rgb(243,243,243)");
+			$('#tiempoLamina').attr('readonly',true);
+			$('#infoLaminaEscogida').attr('readonly',true);
+			$('#cantidadCaracteresLamina').attr('readonly',true);
+		});		
+	});
+	</script>
 	<style type="text/css">
 body {
 	padding-top: 60px;
 	padding-bottom: 40px;
 }
-
+#infoLaminaEscogida,#tiempoLamina,#cantidadCaracteres{
+	background-color:rgb(243,243,243);
+	resize:none;
+}
 .ui-growl {
 	left: 20px;
 	top: 50px;
@@ -60,7 +105,7 @@ body {
 											<li><h:commandLink
 													action="#{indexController.irAProcesos }" value="Procesos"></h:commandLink></li>
 										</h:panelGroup>
-										<h:panelGroup rendered="#{autorizacionController.cliente }">
+										<h:panelGroup rendered="#{autorizacionController.programador }">
 											<li class="active"><h:commandLink
 													action="#{indexController.irAPruebas }" value="Pruebas"></h:commandLink></li>
 										</h:panelGroup>
@@ -135,7 +180,7 @@ body {
 							</h:panelGroup>
 							<ui:repeat value="#{pruebaEspecificaController.preguntas}"
 								var="preg">
-								<p:commandLink update=":formContenedorPanelInfo"
+								<p:commandLink update=":formContenedorPanelInfo" 
 									actionListener="#{pruebaEspecificaController.mostrarInformacionPregunta }">
 
 									<h:graphicImage title="#{preg.pregunta}" width="150"
@@ -158,6 +203,7 @@ body {
 									</h5>
 									<div id="imgInfoZona">
 										<h:commandLink
+											disabled="#{not autorizacionController.cliente}"
 											rendered="#{not empty pruebaEspecificaController.pregunta}"
 											onclick="$('#myModalCambiarImagen').modal('show');">
 											<f:ajax
@@ -172,7 +218,7 @@ body {
 										Pregunta
 										<p:commandLink styleClass="btn btn-danger pull-right"
 											title="Eliminar la pregunta."
-											rendered="#{not empty pruebaEspecificaController.pregunta}"
+											rendered="#{not empty pruebaEspecificaController.pregunta and autorizacionController.cliente}"
 											update="@form :formContenedorLaminas :growl"
 											actionListener="#{pruebaEspecificaController.eliminarPregunta }">
 											<i class="icon-trash icon-white"></i>
@@ -200,13 +246,16 @@ body {
 										<h:panelGroup layout="block"
 											rendered="#{autorizacionController.cliente}"
 											id="panelBotones">
+																																																														
 											<p:commandLink styleClass="btn btn-primary show-notification"
 												value="Guardar Cambios"
 												style="margin-right:5px; margin-left:15px;"
 												rendered="#{not empty pruebaEspecificaController.pregunta}"
 												update="@form :growl :formContenedorLaminas"
-												actionListener="#{pruebaEspecificaController.editarPregunta }"></p:commandLink>
-
+												actionListener="#{pruebaEspecificaController.editarPregunta }">
+												</p:commandLink>												
+										
+											
 											<!--Modal de seguridad-->
 										</h:panelGroup>
 									</center>
@@ -236,10 +285,16 @@ body {
 											<p>0 m</p>
 										</div>
 										<div id="mostradorEditarLaminas">
-											<h:graphicImage width="600" height="400"
-												rendered="#{not empty pruebaEspecificaController.imagen}"
-												value="images/#{pruebaEspecificaController.imagen.imagen.imagenURI }">
-											</h:graphicImage>
+											<h:panelGroup id="imagenCrearPregunta">
+												<h:graphicImage width="600" height="400"
+													rendered="#{not empty pruebaEspecificaController.imagen}"
+													value="images/#{pruebaEspecificaController.imagen.imagen.imagenURI }">
+												</h:graphicImage>
+												<h:graphicImage width="600" height="400"
+													rendered="#{empty pruebaEspecificaController.imagen}"
+													value="img/laminaIntro.png }">
+												</h:graphicImage>
+											</h:panelGroup>
 										</div>
 										<div id="panelEdicionLamina">
 											<div id="espacioPreguntaEditar">
@@ -278,6 +333,7 @@ body {
 													style="margin:20px -20px; width:75px; height:75px;"
 													update="@form :formContenedorLaminas :growl"
 													onclick="closeDialog ();"
+													rendered="#{autorizacionController.cliente }"
 													actionListener="#{pruebaEspecificaController.crearPregunta}"></p:commandButton>
 											</div>
 										</div>
@@ -291,7 +347,8 @@ body {
 									<h5>Galeria de Imágenes</h5>
 									<ui:repeat value="#{pruebaEspecificaController.imagenes}"
 										var="image">
-										<p:commandLink update=":formContenedorEditarLaminas"
+										<p:commandLink
+											update=":formContenedorEditarLaminas:imagenCrearPregunta"
 											actionListener="#{pruebaEspecificaController.actualizarImagenModal }">
 											<h:graphicImage width="150" height="100"
 												styleClass="img-polaroid"
@@ -336,6 +393,7 @@ body {
 										<div id="panelCambiarLamina">
 											<div id="botCrearLamina">
 												<p:commandButton styleClass="btn btn-inverse"
+													rendered="#{autorizacionController.cliente }"
 													onclick="closeDialog ();" value="Cambiar"
 													update="@form :formContenedorLaminas :growl"
 													style="margin-top:10px; margin-left:210px; width:155px; height:75px;"
