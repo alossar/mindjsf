@@ -68,7 +68,7 @@ public class UsosReportServlet extends HttpServlet {
 			Timestamp stampInicio = new Timestamp(inicio.getTime());
 			Timestamp stampFinal = new Timestamp(ffinal.getTime());
 
-			Map<String, Object> parametros = new HashMap<>();
+			Map<String, Object> parametros = new HashMap<String, Object>();
 
 			parametros.put("usuarioUsos", usuario.getIdentificador());
 			parametros.put("inicioUsos", stampInicio);

@@ -128,7 +128,7 @@ public class GestionProcesos implements IGestionProcesos {
 			resultado.setNotificacionEnviada(proceso.getNotificacionEnviada());
 			List<ProcesoUsuarioHasPruebaUsuario> pruebas = proceso
 					.getProcesosUsuariosHasPruebasUsuarios();
-			List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<>();
+			List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<ProcesoUsuarioHasPruebaUsuarioBO>();
 			for (ProcesoUsuarioHasPruebaUsuario pruebaUsuario : pruebas) {
 				entityManager.refresh(pruebaUsuario);
 				ProcesoUsuarioHasPruebaUsuarioBO pHas = new ProcesoUsuarioHasPruebaUsuarioBO();
@@ -143,7 +143,7 @@ public class GestionProcesos implements IGestionProcesos {
 						.getPruebasUsuario().getUsuario().getIdentificador());
 				List<PreguntaUsuario> preguntas = pruebaUsuario
 						.getPruebasUsuario().getPreguntasUsuarios();
-				List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
+				List<PreguntaUsuarioBO> preguntasBO = new ArrayList<PreguntaUsuarioBO>();
 				for (PreguntaUsuario pre : preguntas) {
 					entityManager.refresh(pre);
 					PreguntaUsuarioBO pregunta = new PreguntaUsuarioBO();
@@ -249,7 +249,7 @@ public class GestionProcesos implements IGestionProcesos {
 				resultado.setNotificacionEnviada(im.getNotificacionEnviada());
 				List<ProcesoUsuarioHasPruebaUsuario> pruebas = im
 						.getProcesosUsuariosHasPruebasUsuarios();
-				List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<>();
+				List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<ProcesoUsuarioHasPruebaUsuarioBO>();
 				for (int j = 0; j < pruebas.size(); j++) {
 					ProcesoUsuarioHasPruebaUsuario pHas = pruebas.get(j);
 					ProcesoUsuarioHasPruebaUsuarioBO pHasBO = new ProcesoUsuarioHasPruebaUsuarioBO();
@@ -266,7 +266,7 @@ public class GestionProcesos implements IGestionProcesos {
 							.getUsuario().getIdentificador());
 					List<PreguntaUsuario> preguntas = pruebaUsuario
 							.getPreguntasUsuarios();
-					List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
+					List<PreguntaUsuarioBO> preguntasBO = new ArrayList<PreguntaUsuarioBO>();
 					for (int k = 0; k < preguntas.size(); k++) {
 						PreguntaUsuario pre = preguntas.get(k);
 						entityManager.refresh(pre);
@@ -379,7 +379,7 @@ public class GestionProcesos implements IGestionProcesos {
 							.getNotificacionEnviada());
 					List<ProcesoUsuarioHasPruebaUsuario> pruebas = im
 							.getProcesosUsuariosHasPruebasUsuarios();
-					List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<>();
+					List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<ProcesoUsuarioHasPruebaUsuarioBO>();
 					for (int j = 0; j < pruebas.size(); j++) {
 						ProcesoUsuarioHasPruebaUsuario pruebaUsuario = pruebas
 								.get(j);
@@ -397,7 +397,7 @@ public class GestionProcesos implements IGestionProcesos {
 								.getIdentificador());
 						List<PreguntaUsuario> preguntas = pruebaUsuario
 								.getPruebasUsuario().getPreguntasUsuarios();
-						List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
+						List<PreguntaUsuarioBO> preguntasBO = new ArrayList<PreguntaUsuarioBO>();
 						for (int k = 0; k < preguntas.size(); k++) {
 							PreguntaUsuario pre = preguntas.get(k);
 							entityManager.refresh(pre);
@@ -449,7 +449,7 @@ public class GestionProcesos implements IGestionProcesos {
 
 			List<ProcesoUsuarioHasPruebaUsuario> pruebas = proceso
 					.getProcesosUsuariosHasPruebasUsuarios();
-			List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<>();
+			List<ProcesoUsuarioHasPruebaUsuarioBO> pruebasUsuarioBOs = new ArrayList<ProcesoUsuarioHasPruebaUsuarioBO>();
 			for (ProcesoUsuarioHasPruebaUsuario pruebaUsuario : pruebas) {
 				entityManager.refresh(pruebaUsuario);
 				if (pruebaEliminar.getIdentificador() == pruebaUsuario

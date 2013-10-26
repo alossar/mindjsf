@@ -103,48 +103,58 @@ public class EvaluacionController implements Serializable {
 	}
 
 	private void comenzarPrueba() {
-		GestionEvaluacion gEvaluacion = new GestionEvaluacion();
-		if (participacionEnProceso.getEstado().equalsIgnoreCase(
-				Convencion.ESTADO_PARTICIPACION_EN_PROCESO_EN_EJECUCION)) {
-			nuevo = false;
-		}
-		EvaluadoBO usuarioBasico = participacionEnProceso.getUsuarioBasico();
-		int result = Convencion.CORRECTO;
-		if (nuevo) {
-			System.out.println("Es primera vez.");
-			participacionEnProceso
-					.setEstado(Convencion.ESTADO_PARTICIPACION_EN_PROCESO_EN_EJECUCION);
-			gEvaluacion.editarParticipacionEnProceso(
-					usuarioBasico.getIdentificadorUsuarioAdministrador(),
-					usuarioBasico.getIdentificador(),
-					participacionEnProceso.getProcesoID(),
-					participacionEnProceso);
-			result = gEvaluacion.decrementarCantidadDeUsosUsuarios(
-					participacionEnProceso.getIdentificador(),
-					participacionEnProceso.getProcesoID());
-			setImagenInstruccion("instrucciones.png");
-		} else {
-			System.out.println("No es primera vez.");
-			setImagenInstruccion("cambioTema.png");
-		}
-		if (result == Convencion.CORRECTO) {
-			List<PreguntaUsuarioBO> preguntas = null;
-			GestionPruebas gPruebas = new GestionPruebas();
-			ProcesoUsuarioBO proceso = new ProcesoUsuarioBO();
-			proceso.setIdentificador(participacionEnProceso.getProcesoID());
-			if (nuevo) {
-				preguntas = gPruebas.listarPreguntasPorProceso(
-						usuarioBasico.getIdentificadorUsuarioAdministrador(),
-						proceso.getIdentificador());
-			} else {
-				preguntas = gPruebas.listarPreguntasPorProcesoRestantes(
-						usuarioBasico.getIdentificador(),
-						usuarioBasico.getIdentificadorUsuarioAdministrador(),
-						proceso.getIdentificador());
+		try {
+			GestionEvaluacion gEvaluacion = new GestionEvaluacion();
+			if (participacionEnProceso.getEstado().equalsIgnoreCase(
+					Convencion.ESTADO_PARTICIPACION_EN_PROCESO_EN_EJECUCION)) {
+				nuevo = false;
 			}
-			obtenerListaPreguntasPorCategoria(preguntas);
-			mostrarInstruccion();
-		} else {
+			EvaluadoBO usuarioBasico = participacionEnProceso
+					.getUsuarioBasico();
+			int result = Convencion.CORRECTO;
+			if (nuevo) {
+				System.out.println("Es primera vez.");
+				participacionEnProceso
+						.setEstado(Convencion.ESTADO_PARTICIPACION_EN_PROCESO_EN_EJECUCION);
+				gEvaluacion.editarParticipacionEnProceso(
+						usuarioBasico.getIdentificadorUsuarioAdministrador(),
+						usuarioBasico.getIdentificador(),
+						participacionEnProceso.getProcesoID(),
+						participacionEnProceso);
+				result = gEvaluacion.decrementarCantidadDeUsosUsuarios(
+						participacionEnProceso.getIdentificador(),
+						participacionEnProceso.getProcesoID());
+				setImagenInstruccion("instrucciones.png");
+			} else {
+				System.out.println("No es primera vez.");
+				setImagenInstruccion("cambioTema.png");
+			}
+			if (result == Convencion.CORRECTO) {
+				List<PreguntaUsuarioBO> preguntas = null;
+				GestionPruebas gPruebas = new GestionPruebas();
+				ProcesoUsuarioBO proceso = new ProcesoUsuarioBO();
+				proceso.setIdentificador(participacionEnProceso.getProcesoID());
+				if (nuevo) {
+					preguntas = gPruebas.listarPreguntasPorProceso(
+							usuarioBasico
+									.getIdentificadorUsuarioAdministrador(),
+							proceso.getIdentificador());
+				} else {
+					preguntas = gPruebas.listarPreguntasPorProcesoRestantes(
+							usuarioBasico.getIdentificador(), usuarioBasico
+									.getIdentificadorUsuarioAdministrador(),
+							proceso.getIdentificador());
+				}
+				if (preguntas != null) {
+					obtenerListaPreguntasPorCategoria(preguntas);
+					mostrarInstruccion();
+				} else {
+					terminarPrueba(false);
+				}
+			} else {
+				terminarPrueba(false);
+			}
+		} catch (Exception e) {
 			terminarPrueba(false);
 		}
 

@@ -99,7 +99,7 @@ body {
 					<h:inputText styleClass="input-medium search-query "
 						value="#{programadoresController.parametroBusqueda }" />
 					<p:commandLink styleClass="btn btn-info " id="searchid"
-						update=":formPanelTablaProgramadores"
+						update=":panelTablaProgramadores"
 						actionListener="#{programadoresController.buscarProgramadores }">
 						<i class="icon-search icon-white"></i>
 					</p:commandLink>
@@ -113,108 +113,110 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icoprogramadores.png"></img>Programadores
 			</legend>
-			<h:form id="formPanelTablaProgramadores"
-				rendered="#{not empty programadoresController.programadoresAMostrar }">
-				<h:dataTable id="panelTablaProgramadores"
-					styleClass="table table-hover table-condensed table-striped"
-					binding="#{programadoresController.dataTable }"
-					value="#{programadoresController.programadoresAMostrar }"
-					var="programador">
-					<small> <h:column>
+			<h:panelGroup id="panelTablaProgramadores">
+				<h:form id="formPanelTablaProgramadores"
+					rendered="#{not empty programadoresController.programadoresAMostrar }">
+					<h:dataTable id="tablaProgramadores"
+						styleClass="table table-hover table-condensed table-striped"
+						binding="#{programadoresController.dataTable }"
+						value="#{programadoresController.programadoresAMostrar }"
+						var="programador">
+						<small> <h:column>
 
-							<f:facet name="header">
-								<h:outputText value="Cédula"></h:outputText>
-							</f:facet>
-							<i class="icon-user" style="margin-right: 5px;"></i>
-							<h:outputText value="#{programador.cedula}">
-							</h:outputText>
-
-						</h:column> <h:column>
-							<f:facet name="header">
-								<h:outputText value="Nombre del Programdor"></h:outputText>
-							</f:facet>
-							<h:commandLink
-								value="#{programador.nombres } #{programador.apellidos }"
-								style="color:black; "
-								action="#{programadoresController.irAProgramadorEspecifico }"
-								rendered="#{not programador.editar }"></h:commandLink>
-						</h:column> <h:column>
-
-							<f:facet name="header">
-								<h:outputText value="Correo Electrónico"></h:outputText>
-							</f:facet>
-							<h:outputText value="#{programador.correo_Electronico }">
-							</h:outputText>
-
-						</h:column> <h:column>
-							<center>
 								<f:facet name="header">
-									<center>
-										<h:outputText value="Fecha de Creación"></h:outputText>
-									</center>
+									<h:outputText value="Cédula"></h:outputText>
 								</f:facet>
-								<h:outputText value="#{programador.fecha_Creacion }">
-									<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+								<i class="icon-user" style="margin-right: 5px;"></i>
+								<h:outputText value="#{programador.cedula}">
 								</h:outputText>
-							</center>
-						</h:column> <h:column>
 
-							<f:facet name="header">
-								<h:outputText value="Estado"></h:outputText>
-							</f:facet>
+							</h:column> <h:column>
+								<f:facet name="header">
+									<h:outputText value="Nombre del Programdor"></h:outputText>
+								</f:facet>
+								<h:commandLink
+									value="#{programador.nombres } #{programador.apellidos }"
+									style="color:black; "
+									action="#{programadoresController.irAProgramadorEspecifico }"
+									rendered="#{not programador.editar }"></h:commandLink>
+							</h:column> <h:column>
 
-							<h:panelGroup styleClass="label label-info"
-								rendered="#{programador.estado_Cuenta == 'cuenta_activa'}">ACTIVA</h:panelGroup>
-							<h:panelGroup styleClass="label label-warning"
-								rendered="#{not (programador.estado_Cuenta == 'cuenta_activa') }">INACTIVA</h:panelGroup>
+								<f:facet name="header">
+									<h:outputText value="Correo Electrónico"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{programador.correo_Electronico }">
+								</h:outputText>
 
-						</h:column> <h:column>
-							<p:commandLink styleClass="btn btn-warning btn-small "
-								update="@form :growl"
-								actionListener="#{programadoresController.desactivarProgramador }"
-								rendered="#{not programador.editar and programador.estado_Cuenta == 'cuenta_activa' }"
-								style="padding: 5;">
-								<i class="icon-ban-circle icon-white"></i>
-							</p:commandLink>
-							<p:commandLink styleClass="btn btn-info btn-small "
-								update="@form :growl"
-								actionListener="#{programadoresController.activarProgramador }"
-								rendered="#{not programador.editar and not (programador.estado_Cuenta == 'cuenta_activa')}"
-								style="padding: 5;">
-								<i class="icon-ok-circle icon-white"></i>
-							</p:commandLink>
+							</h:column> <h:column>
+								<center>
+									<f:facet name="header">
+										<center>
+											<h:outputText value="Fecha de Creación"></h:outputText>
+										</center>
+									</f:facet>
+									<h:outputText value="#{programador.fecha_Creacion }">
+										<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+									</h:outputText>
+								</center>
+							</h:column> <h:column>
+
+								<f:facet name="header">
+									<h:outputText value="Estado"></h:outputText>
+								</f:facet>
+
+								<h:panelGroup styleClass="label label-info"
+									rendered="#{programador.estado_Cuenta == 'cuenta_activa'}">ACTIVA</h:panelGroup>
+								<h:panelGroup styleClass="label label-warning"
+									rendered="#{not (programador.estado_Cuenta == 'cuenta_activa') }">INACTIVA</h:panelGroup>
+
+							</h:column> <h:column>
+								<p:commandLink styleClass="btn btn-warning btn-small "
+									update="@form :growl"
+									actionListener="#{programadoresController.desactivarProgramador }"
+									rendered="#{not programador.editar and programador.estado_Cuenta == 'cuenta_activa' }"
+									style="padding: 5;">
+									<i class="icon-ban-circle icon-white"></i>
+								</p:commandLink>
+								<p:commandLink styleClass="btn btn-info btn-small "
+									update="@form :growl"
+									actionListener="#{programadoresController.activarProgramador }"
+									rendered="#{not programador.editar and not (programador.estado_Cuenta == 'cuenta_activa')}"
+									style="padding: 5;">
+									<i class="icon-ok-circle icon-white"></i>
+								</p:commandLink>
 							&nbsp;
 							<h:commandLink styleClass="btn btn-danger btn-small "
-								onclick="$('#myModal').modal('show');"
-								rendered="#{not programador.editar }">
-								<f:ajax
-									listener="#{programadoresController.seleccionarProgramadorEliminar }"></f:ajax>
-								<i class="icon-trash icon-white"></i>
-							</h:commandLink>
-						</h:column>
-					</small>
-				</h:dataTable>
-				<ul class="pager">
-					<li
-						class="previous #{programadoresController.primeraPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaProgramadores"
-							disabled="#{programadoresController.primeraPagina}"
-							actionListener="#{programadoresController.programadoresAnteriores}">&larr; Anterior
+									onclick="$('#myModal').modal('show');"
+									rendered="#{not programador.editar }">
+									<f:ajax
+										listener="#{programadoresController.seleccionarProgramadorEliminar }"></f:ajax>
+									<i class="icon-trash icon-white"></i>
+								</h:commandLink>
+							</h:column>
+						</small>
+					</h:dataTable>
+					<ul class="pager">
+						<li
+							class="previous #{programadoresController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form panelTablaProgramadores"
+								disabled="#{programadoresController.primeraPagina}"
+								actionListener="#{programadoresController.programadoresAnteriores}">&larr; Anterior
 							</p:commandLink></li>
-					<li
-						class="next #{programadoresController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaProgramadores"
-							disabled="#{programadoresController.ultimaPagina}"
-							actionListener="#{programadoresController.programadoresSiguientes}">Siguiente &rarr;
+						<li
+							class="next #{programadoresController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form panelTablaProgramadores"
+								disabled="#{programadoresController.ultimaPagina}"
+								actionListener="#{programadoresController.programadoresSiguientes}">Siguiente &rarr;
 							</p:commandLink></li>
-				</ul>
+					</ul>
 
-			</h:form>
-			<h:panelGroup styleClass="alert"
-				rendered="#{empty programadoresController.programadoresAMostrar }">
-				<h:outputText value="No se encontraron programadores."></h:outputText>
-				<a data-toggle="modal" href="#myModalCrearProgramador">Crea un
-					programador. </a>
+				</h:form>
+				<h:panelGroup styleClass="alert"
+					rendered="#{empty programadoresController.programadoresAMostrar }">
+					<h:outputText value="No se encontraron programadores."></h:outputText>
+					<a data-toggle="modal" href="#myModalCrearProgramador">Crea un
+						programador. </a>
+				</h:panelGroup>
 			</h:panelGroup>
 
 			<h:form>
@@ -268,7 +270,7 @@ body {
 						</div>
 						<p:commandButton styleClass="btn btn-primary"
 							onclick="closeDialog ();"
-							update="@form :formPanelTablaProgramadores :growl"
+							update="@form :panelTablaProgramadores :growl"
 							style="margin-left:66px;  padding-top:8px; height:45px; width:100px; margin-top:5px;"
 							actionListener="#{programadoresController.crearProgramador}"
 							id="botCrearEvaluado" value="Crear"></p:commandButton>
@@ -290,7 +292,7 @@ body {
 						<button class="btn btn-danger" data-dismiss="modal"
 							aria-hidden="true">No</button>
 						<p:commandLink styleClass="btn btn-primary show-notification"
-							update="@form :formPanelTablaProgramadores :growl"
+							update="@form :panelTablaProgramadores :growl"
 							actionListener="#{programadoresController.eliminarProgramador }"
 							onclick="closeDialog ();" rendered="#{not programador.editar }"
 							style="padding: 5;" value="SI">

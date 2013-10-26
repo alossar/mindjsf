@@ -98,7 +98,7 @@ body {
 					<h:inputText styleClass="input-medium search-query "
 						value="#{evaluadosController.parametroBusqueda }" />
 					<p:commandLink styleClass="btn btn-info " id="searchid"
-						update=":formPanelTablaEvaluados"
+						update=":panelTablaEvaluados"
 						actionListener="#{evaluadosController.buscarEvaluados }">
 						<i class="icon-search icon-white"></i>
 					</p:commandLink>
@@ -113,107 +113,109 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icoevaluados.png"></img>Evaluados
 			</legend>
-			<h:form id="formPanelTablaEvaluados"
-				rendered="#{not empty evaluadosController.evaluadosAMostrar }">
-				<h:dataTable id="panelTablaEvaluados"
-					styleClass="table table-hover table-condensed table-striped"
-					binding="#{evaluadosController.dataTable }"
-					rows="#{evaluadosController.cantidadEvaluadosAMostrar}"
-					value="#{evaluadosController.evaluadosAMostrar }" var="evaluado">
-					<small> <h:column>
+			<h:panelGroup id="panelTablaEvaluados">
+				<h:form id="formPanelTablaEvaluados"
+					rendered="#{not empty evaluadosController.evaluadosAMostrar }">
+					<h:dataTable id="tablaEvaluados"
+						styleClass="table table-hover table-condensed table-striped"
+						binding="#{evaluadosController.dataTable }"
+						rows="#{evaluadosController.cantidadEvaluadosAMostrar}"
+						value="#{evaluadosController.evaluadosAMostrar }" var="evaluado">
+						<small> <h:column>
 
-							<f:facet name="header">
-								<h:outputText value="Cédula"></h:outputText>
-							</f:facet>
-							<i class="icon-user" style="margin-right: 5px;"></i>
-							<h:outputText value="#{evaluado.cedula }">
-							</h:outputText>
+								<f:facet name="header">
+									<h:outputText value="Cédula"></h:outputText>
+								</f:facet>
+								<i class="icon-user" style="margin-right: 5px;"></i>
+								<h:outputText value="#{evaluado.cedula }">
+								</h:outputText>
 
-						</h:column> <h:column>
-							<f:facet name="header">
-								<h:outputText value="Nombre del Evaluado"></h:outputText>
-							</f:facet>
-							<h:commandLink
-								value="#{evaluado.nombres } #{evaluado.apellidos }"
-								style="color:black; "
-								action="#{evaluadosController.irAEvaluadoEspecifico }"
-								rendered="#{not evaluado.editar }"></h:commandLink>
-							<p:inputText styleClass="input-small"
-								value="#{evaluado.nombres }" rendered="#{evaluado.editar }"
-								required="true" requiredMessage="El nombre es necesario."
-								maxlength="20"></p:inputText>
-							<p:inputText styleClass="input-small"
-								value="#{evaluado.apellidos }" rendered="#{evaluado.editar }"
-								required="true" requiredMessage="Los apellidos es necesario."
-								maxlength="20"></p:inputText>
-						</h:column> <h:column>
+							</h:column> <h:column>
+								<f:facet name="header">
+									<h:outputText value="Nombre del Evaluado"></h:outputText>
+								</f:facet>
+								<h:commandLink
+									value="#{evaluado.nombres } #{evaluado.apellidos }"
+									style="color:black; "
+									action="#{evaluadosController.irAEvaluadoEspecifico }"
+									rendered="#{not evaluado.editar }"></h:commandLink>
+								<p:inputText styleClass="input-small"
+									value="#{evaluado.nombres }" rendered="#{evaluado.editar }"
+									required="true" requiredMessage="El nombre es necesario."
+									maxlength="20"></p:inputText>
+								<p:inputText styleClass="input-small"
+									value="#{evaluado.apellidos }" rendered="#{evaluado.editar }"
+									required="true" requiredMessage="Los apellidos es necesario."
+									maxlength="20"></p:inputText>
+							</h:column> <h:column>
 
-							<f:facet name="header">
-								<h:outputText value="Correo Electrónico"></h:outputText>
-							</f:facet>
-							<h:outputText value="#{evaluado.correoElectronico }"
-								rendered="#{not evaluado.editar }">
-							</h:outputText>
-							<h:inputText styleClass="input-medium"
-								value="#{evaluado.correoElectronico }"
-								rendered="#{evaluado.editar }" required="true"
-								requiredMessage="El correo es necesario.">
-								<f:validateRegex
-									pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
-							</h:inputText>
-						</h:column> <h:column>
-							<p:commandLink styleClass="btn btn-info btn-small "
-								actionListener="#{evaluadosController.editarEvaluado }"
-								title="Editar evaluado." rendered="#{not evaluado.editar }"
-								style="padding: 5;" update="@form">
-								<i class="icon-pencil icon-white"></i>
-							</p:commandLink>
-							<p:commandLink styleClass="btn btn-success btn-small "
-								actionListener="#{evaluadosController.guardarEditarEvaluado }"
-								title="Guardar cambios." rendered="#{evaluado.editar }"
-								style="padding: 5;" update="@form :growl">
-								<i class="icon-ok icon-white"></i>
-							</p:commandLink>
+								<f:facet name="header">
+									<h:outputText value="Correo Electrónico"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{evaluado.correoElectronico }"
+									rendered="#{not evaluado.editar }">
+								</h:outputText>
+								<h:inputText styleClass="input-medium"
+									value="#{evaluado.correoElectronico }"
+									rendered="#{evaluado.editar }" required="true"
+									requiredMessage="El correo es necesario.">
+									<f:validateRegex
+										pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+								</h:inputText>
+							</h:column> <h:column>
+								<p:commandLink styleClass="btn btn-info btn-small "
+									actionListener="#{evaluadosController.editarEvaluado }"
+									title="Editar evaluado." rendered="#{not evaluado.editar }"
+									style="padding: 5;" update="@form">
+									<i class="icon-pencil icon-white"></i>
+								</p:commandLink>
+								<p:commandLink styleClass="btn btn-success btn-small "
+									actionListener="#{evaluadosController.guardarEditarEvaluado }"
+									title="Guardar cambios." rendered="#{evaluado.editar }"
+									style="padding: 5;" update="@form :growl">
+									<i class="icon-ok icon-white"></i>
+								</p:commandLink>
 								&nbsp;						
 								<p:commandLink styleClass="btn btn-danger btn-small "
-								actionListener="#{evaluadosController.cancelarEditarEvaluado }"
-								title="Cancelar." rendered="#{evaluado.editar }"
-								style="padding: 5;" update="@form :growl">
-								<i class="icon-remove icon-white"></i>
-							</p:commandLink>
-							<h:commandLink styleClass="btn btn-danger btn-small "
-								onclick="$('#myModal').modal('show');"
-								title="Eliminar evaluado."
-								rendered="#{not evaluado.editar and false}">
-								<f:ajax
-									listener="#{evaluadosController.seleccionarEvaluadoEliminar }"></f:ajax>
-								<i class="icon-trash icon-white"></i>
-							</h:commandLink>
-						</h:column>
-					</small>
-				</h:dataTable>
+									actionListener="#{evaluadosController.cancelarEditarEvaluado }"
+									title="Cancelar." rendered="#{evaluado.editar }"
+									style="padding: 5;" update="@form :growl">
+									<i class="icon-remove icon-white"></i>
+								</p:commandLink>
+								<h:commandLink styleClass="btn btn-danger btn-small "
+									onclick="$('#myModal').modal('show');"
+									title="Eliminar evaluado."
+									rendered="#{not evaluado.editar}">
+									<f:ajax
+										listener="#{evaluadosController.seleccionarEvaluadoEliminar }"></f:ajax>
+									<i class="icon-trash icon-white"></i>
+								</h:commandLink>
+							</h:column>
+						</small>
+					</h:dataTable>
 
-				<ul class="pager">
-					<li
-						class="previous #{evaluadosController.primeraPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaEvaluados"
-							disabled="#{evaluadosController.primeraPagina}"
-							actionListener="#{evaluadosController.evaluadosAnteriores}">&larr; Anterior
+					<ul class="pager">
+						<li
+							class="previous #{evaluadosController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form :panelTablaEvaluados"
+								disabled="#{evaluadosController.primeraPagina}"
+								actionListener="#{evaluadosController.evaluadosAnteriores}">&larr; Anterior
 							</p:commandLink></li>
-					<li
-						class="next #{evaluadosController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaEvaluados"
-							disabled="#{evaluadosController.ultimaPagina}"
-							actionListener="#{evaluadosController.evaluadosSiguientes}">Siguiente &rarr;
+						<li
+							class="next #{evaluadosController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form :panelTablaEvaluados"
+								disabled="#{evaluadosController.ultimaPagina}"
+								actionListener="#{evaluadosController.evaluadosSiguientes}">Siguiente &rarr;
 							</p:commandLink></li>
-				</ul>
+					</ul>
 
-			</h:form>
-			<h:panelGroup styleClass="alert"
-				rendered="#{empty evaluadosController.evaluadosAMostrar }">
-				<h:outputText value="No se encontraron evaluados en tu cuenta."></h:outputText>
-				<a data-toggle="modal" href="#myModalCrearEvaluado">Crea un
-					evaluado. </a>
+				</h:form>
+				<h:panelGroup styleClass="alert"
+					rendered="#{empty evaluadosController.evaluadosAMostrar }">
+					<h:outputText value="No se encontraron evaluados en tu cuenta."></h:outputText>
+					<a data-toggle="modal" href="#myModalCrearEvaluado">Crea un
+						evaluado. </a>
+				</h:panelGroup>
 			</h:panelGroup>
 			<div id="myModalCrearEvaluado" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
@@ -264,7 +266,7 @@ body {
 							</p:inputText>
 						</div>
 						<p:commandButton styleClass="btn btn-primary"
-							update="@form :formPanelTablaEvaluados :growl"
+							update="@form :panelTablaEvaluados :growl"
 							onclick="closeDialog ();" id="botCrearEvaluado" value="Crear"
 							style="margin-left:66px;"
 							actionListener="#{evaluadosController.crearEvaluado }"></p:commandButton>
@@ -289,7 +291,7 @@ body {
 							actionListener="#{evaluadosController.eliminarEvaluado }"
 							onclick="closeDialog ();" rendered="#{not evaluado.editar }"
 							style="padding: 5;" value="SI"
-							update=":formPanelTablaEvaluados :growl">
+							update=":panelTablaEvaluados :growl">
 						</p:commandLink>
 					</div>
 

@@ -134,7 +134,7 @@ public class GestionPruebas implements IGestionPruebas {
 			resultado.setNombre(prueba.getNombre());
 			resultado.setUsuarioAdministradorID(usuarioAdministradorID);
 			List<PreguntaUsuario> preguntas = prueba.getPreguntasUsuarios();
-			List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
+			List<PreguntaUsuarioBO> preguntasBO = new ArrayList<PreguntaUsuarioBO>();
 			for (PreguntaUsuario pre : preguntas) {
 				PreguntaUsuarioBO pregunta = new PreguntaUsuarioBO();
 				pregunta.setCaracteresMaximo(pre.getCaracteresMaximo());
@@ -223,7 +223,7 @@ public class GestionPruebas implements IGestionPruebas {
 					resultado.setUsuarioAdministradorID(usuarioID);
 					List<PreguntaUsuario> preguntas = prueba
 							.getPreguntasUsuarios();
-					List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
+					List<PreguntaUsuarioBO> preguntasBO = new ArrayList<PreguntaUsuarioBO>();
 					for (PreguntaUsuario pre : preguntas) {
 						PreguntaUsuarioBO pregunta = new PreguntaUsuarioBO();
 						pregunta.setCaracteresMaximo(pre.getCaracteresMaximo());
@@ -273,7 +273,7 @@ public class GestionPruebas implements IGestionPruebas {
 				resultado.setNombre(prueba.getNombre());
 				resultado.setUsuarioAdministradorID(usuarioAdministradorID);
 				List<PreguntaUsuario> preguntas = prueba.getPreguntasUsuarios();
-				List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
+				List<PreguntaUsuarioBO> preguntasBO = new ArrayList<PreguntaUsuarioBO>();
 				for (PreguntaUsuario pre : preguntas) {
 					PreguntaUsuarioBO pregunta = new PreguntaUsuarioBO();
 					pregunta.setCaracteresMaximo(pre.getCaracteresMaximo());
@@ -337,7 +337,7 @@ public class GestionPruebas implements IGestionPruebas {
 				pruebasProceso.add(procesoUsuarioHasPruebaUsuario2
 						.getPruebasUsuario());
 			}
-			List<PreguntaUsuario> preguntas = new ArrayList<>();
+			List<PreguntaUsuario> preguntas = new ArrayList<PreguntaUsuario>();
 			for (PruebaUsuario pruebaUsuario : pruebasProceso) {
 				preguntas.addAll(pruebaUsuario.getPreguntasUsuarios());
 			}
@@ -602,7 +602,7 @@ public class GestionPruebas implements IGestionPruebas {
 				pruebasProceso.add(procesoUsuarioHasPruebaUsuario2
 						.getPruebasUsuario());
 			}
-			List<PreguntaUsuario> preguntas = new ArrayList<>();
+			List<PreguntaUsuario> preguntas = new ArrayList<PreguntaUsuario>();
 			for (PruebaUsuario pruebaUsuario : pruebasProceso) {
 				entityManager.refresh(pruebaUsuario);
 				preguntas.addAll(pruebaUsuario.getPreguntasUsuarios());

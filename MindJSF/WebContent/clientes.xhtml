@@ -100,7 +100,7 @@ body {
 						value="#{clientesController.parametroBusqueda }" />
 					<p:commandLink styleClass="btn btn-info " id="searchid"
 						actionListener="#{clientesController.buscarClientes }"
-						update=":formPanelTablaClientes">
+						update=":panelTablaClientes">
 						<i class="icon-search icon-white"></i>
 					</p:commandLink>
 					<a data-toggle="modal" class="btn btn-primary "
@@ -113,116 +113,119 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icoclientes.png"></img>Clientes
 			</legend>
-			<h:form id="formPanelTablaClientes"
-				rendered="#{not empty clientesController.clientesAMostrar }">
-				<h:dataTable id="panelTablaClientes"
-					styleClass="table table-hover table-condensed table-striped"
-					binding="#{clientesController.dataTable }"
-					value="#{clientesController.clientesAMostrar }" var="cliente">
-					<small> <h:column>
+			<h:panelGroup id="panelTablaClientes">
+				<h:form id="formPanelTablaClientes"
+					rendered="#{not empty clientesController.clientesAMostrar }">
+					<h:dataTable id="tablaClientes"
+						styleClass="table table-hover table-condensed table-striped"
+						binding="#{clientesController.dataTable }"
+						value="#{clientesController.clientesAMostrar }" var="cliente">
+						<small> <h:column>
 
-							<f:facet name="header">
-								<h:outputText value="Cédula"></h:outputText>
-							</f:facet>
-							<i class="icon-user" style="margin-right: 5px;"></i>
-							<h:outputText value="#{cliente.cedula }">
-							</h:outputText>
-
-						</h:column> <h:column>
-							<f:facet name="header">
-								<h:outputText value="Nombre del Cliente"></h:outputText>
-							</f:facet>
-							<h:commandLink value="#{cliente.nombres } #{cliente.apellidos }"
-								style="color:black; "
-								action="#{clientesController.irAClienteEspecifico }"
-								rendered="#{not cliente.editar }"></h:commandLink>
-						</h:column> <h:column>
-
-							<f:facet name="header">
-								<h:outputText value="Correo Electrónico"></h:outputText>
-							</f:facet>
-							<h:outputText value="#{cliente.correo_Electronico }">
-							</h:outputText>
-
-						</h:column> <h:column>
-
-							<f:facet name="header">
-								<h:outputText value="Estado"></h:outputText>
-							</f:facet>
-
-							<h:panelGroup styleClass="label label-info"
-								rendered="#{cliente.estado_Cuenta == 'cuenta_activa'}">ACTIVA</h:panelGroup>
-							<h:panelGroup styleClass="label label-warning"
-								rendered="#{not (cliente.estado_Cuenta == 'cuenta_activa') }">INACTIVA</h:panelGroup>
-
-						</h:column> <h:column>
-							<center>
 								<f:facet name="header">
-									<center>
-										<h:outputText value="Fecha de Creación"></h:outputText>
-									</center>
+									<h:outputText value="Cédula"></h:outputText>
 								</f:facet>
-								<h:outputText value="#{cliente.fecha_Creacion }">
-									<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+								<i class="icon-user" style="margin-right: 5px;"></i>
+								<h:outputText value="#{cliente.cedula }">
 								</h:outputText>
-							</center>
-						</h:column> <h:column>
-							<p:commandLink styleClass="btn btn-warning btn-small "
-								actionListener="#{clientesController.desactivarCliente }"
-								title="Desactivar la cuenta del cliente." update="@form :growl"
-								rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }"
-								style="padding: 5;">
-								<i class="icon-ban-circle icon-white"></i>
-							</p:commandLink>
-							<p:commandLink styleClass="btn btn-info btn-small "
-								actionListener="#{clientesController.activarCliente }"
-								title="Activar la cuenta del cliente." update="@form :growl"
-								rendered="#{not cliente.editar and not (cliente.estado_Cuenta == 'cuenta_activa')}"
-								style="padding: 5;">
-								<i class="icon-ok-circle icon-white"></i>
-							</p:commandLink>
+
+							</h:column> <h:column>
+								<f:facet name="header">
+									<h:outputText value="Nombre del Cliente"></h:outputText>
+								</f:facet>
+								<h:commandLink value="#{cliente.nombres } #{cliente.apellidos }"
+									style="color:black; "
+									action="#{clientesController.irAClienteEspecifico }"
+									rendered="#{not cliente.editar }"></h:commandLink>
+							</h:column> <h:column>
+
+								<f:facet name="header">
+									<h:outputText value="Correo Electrónico"></h:outputText>
+								</f:facet>
+								<h:outputText value="#{cliente.correo_Electronico }">
+								</h:outputText>
+
+							</h:column> <h:column>
+
+								<f:facet name="header">
+									<h:outputText value="Estado"></h:outputText>
+								</f:facet>
+
+								<h:panelGroup styleClass="label label-info"
+									rendered="#{cliente.estado_Cuenta == 'cuenta_activa'}">ACTIVA</h:panelGroup>
+								<h:panelGroup styleClass="label label-warning"
+									rendered="#{not (cliente.estado_Cuenta == 'cuenta_activa') }">INACTIVA</h:panelGroup>
+
+							</h:column> <h:column>
+								<center>
+									<f:facet name="header">
+										<center>
+											<h:outputText value="Fecha de Creación"></h:outputText>
+										</center>
+									</f:facet>
+									<h:outputText value="#{cliente.fecha_Creacion }">
+										<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+									</h:outputText>
+								</center>
+							</h:column> <h:column>
+								<p:commandLink styleClass="btn btn-warning btn-small "
+									actionListener="#{clientesController.desactivarCliente }"
+									title="Desactivar la cuenta del cliente." update="@form :growl"
+									rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }"
+									style="padding: 5;">
+									<i class="icon-ban-circle icon-white"></i>
+								</p:commandLink>
+								<p:commandLink styleClass="btn btn-info btn-small "
+									actionListener="#{clientesController.activarCliente }"
+									title="Activar la cuenta del cliente." update="@form :growl"
+									rendered="#{not cliente.editar and not (cliente.estado_Cuenta == 'cuenta_activa')}"
+									style="padding: 5;">
+									<i class="icon-ok-circle icon-white"></i>
+								</p:commandLink>
 								&nbsp;
 							<h:commandLink styleClass="btn btn-danger btn-small "
-								onclick="$('#myModal').modal('show');" title="Eliminar cliente."
-								rendered="#{not cliente.editar }">
-								<f:ajax
-									listener="#{clientesController.seleccionarClienteEliminar }"></f:ajax>
-								<i class="icon-trash icon-white"></i>
-							</h:commandLink>
+									onclick="$('#myModal').modal('show');"
+									title="Eliminar cliente." rendered="#{not cliente.editar }">
+									<f:ajax
+										listener="#{clientesController.seleccionarClienteEliminar }"></f:ajax>
+									<i class="icon-trash icon-white"></i>
+								</h:commandLink>
 								&nbsp;
 							<h:commandLink styleClass="btn btn-info btn-small "
-								onclick="$('#myModalAgregarPrueba').modal('show');"
-								title="Agregar pruebas a la cuenta del cliente."
-								value="Agregar Pruebas"
-								rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }">
-								<f:ajax
-									listener="#{clientesController.seleccionarClienteAgregarPruebas }"></f:ajax>
-							</h:commandLink>
-						</h:column>
-					</small>
-				</h:dataTable>
-				<ul class="pager">
-					<li
-						class="previous #{clientesController.primeraPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaClientes"
-							disabled="#{clientesController.primeraPagina}"
-							actionListener="#{clientesController.clientesAnteriores}">&larr; Anterior
+									onclick="$('#myModalAgregarPrueba').modal('show');"
+									title="Agregar pruebas a la cuenta del cliente."
+									value="Agregar Pruebas"
+									rendered="#{not cliente.editar and cliente.estado_Cuenta == 'cuenta_activa' }">
+									<f:ajax
+										listener="#{clientesController.seleccionarClienteAgregarPruebas }"></f:ajax>
+								</h:commandLink>
+							</h:column>
+						</small>
+					</h:dataTable>
+					<ul class="pager">
+						<li
+							class="previous #{clientesController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form :panelTablaClientes"
+								disabled="#{clientesController.primeraPagina}"
+								actionListener="#{clientesController.clientesAnteriores}">&larr; Anterior
 							</p:commandLink></li>
-					<li
-						class="next #{clientesController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaClientes"
-							disabled="#{clientesController.ultimaPagina}"
-							actionListener="#{clientesController.clientesSiguientes}">Siguiente &rarr;
+						<li
+							class="next #{clientesController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form :panelTablaClientes"
+								disabled="#{clientesController.ultimaPagina}"
+								actionListener="#{clientesController.clientesSiguientes}">Siguiente &rarr;
 							</p:commandLink></li>
-				</ul>
+					</ul>
 
-			</h:form>
-			<h:panelGroup styleClass="alert"
-				rendered="#{empty clientesController.clientesAMostrar }">
-				<h:outputText value="No se encontraron clientes."></h:outputText>
-				<a data-toggle="modal" href="#myModalCrearCliente">Crea un
-					cliente. </a>
+				</h:form>
+				<h:panelGroup styleClass="alert"
+					rendered="#{empty clientesController.clientesAMostrar }">
+					<h:outputText value="No se encontraron clientes."></h:outputText>
+					<a data-toggle="modal" href="#myModalCrearCliente">Crea un
+						cliente. </a>
+				</h:panelGroup>
 			</h:panelGroup>
+
 
 			<div id="myModalCrearCliente" class="modal hide fade" tabindex="-1"
 				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
@@ -299,7 +302,7 @@ body {
 						<p:commandButton styleClass="btn btn-primary"
 							style="margin-left:65px; width:100px; height:45px; padding-top:5px; margin-top:5px;"
 							actionListener="#{clientesController.crearCliente}"
-							update="@form :formPanelTablaClientes :growl"
+							update="@form :panelTablaClientes :growl"
 							onclick="closeDialog ();" id="botCrearEvaluado" value="Crear"></p:commandButton>
 
 					</div>
@@ -327,7 +330,7 @@ body {
 						</h:selectManyListbox>
 
 						<p:commandLink styleClass="btn btn-primary" value="Agregar"
-							update="@form :formPanelTablaClientes :growl"
+							update="@form :panelTablaClientes :growl"
 							onclick="closeDialog ();"
 							actionListener="#{clientesController.agregarPruebasACliente}">
 						</p:commandLink>
@@ -351,7 +354,7 @@ body {
 						<p:commandLink styleClass="btn btn-primary show-notification"
 							actionListener="#{clientesController.eliminarCliente }"
 							onclick="closeDialog ();" rendered="#{not cliente.editar }"
-							update=":formPanelTablaClientes :growl" style="padding: 5;"
+							update=":panelTablaClientes :growl" style="padding: 5;"
 							value="SI">
 						</p:commandLink>
 					</div>

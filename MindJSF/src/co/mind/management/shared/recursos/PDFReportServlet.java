@@ -37,7 +37,7 @@ public class PDFReportServlet extends HttpServlet {
 			List<ParticipacionEnProcesoBO> participaciones = (List<ParticipacionEnProcesoBO>) session
 					.getAttribute("participaciones");
 			if (participaciones != null) {
-				Map<String, Object> parametros = new HashMap<>();
+				Map<String, Object> parametros = new HashMap<String, Object>();
 				Integer participacion = participaciones.get(0)
 						.getIdentificador();
 				String direccionSubreporteCategorias = getServletConfig()

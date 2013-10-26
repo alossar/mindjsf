@@ -105,7 +105,7 @@ body {
 					<h:inputText styleClass="input-medium search-query "
 						value="#{procesosController.parametroBusqueda }" />
 					<p:commandLink styleClass="btn btn-info" id="searchid"
-						update=":formPanelTablaProcesos"
+						update=":panelTablaProcesos"
 						actionListener="#{procesosController.buscarProcesos }">
 						<i class="icon-search icon-white"></i>
 					</p:commandLink>
@@ -120,150 +120,153 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icoprocesos.png"></img>Procesos
 			</legend>
-			<h:form id="formPanelTablaProcesos"
-				rendered="#{not empty procesosController.procesosAMostrar }">
-				<h:panelGroup layout="block" id="panelTablaProcesos">
-					<h:dataTable binding="#{procesosController.dataTable}"
-						styleClass="table table-hover table-condensed table-striped"
-						value="#{procesosController.procesosAMostrar }" var="proceso">
-						<small> <h:column>
-								<f:facet name="header">
-									<h:outputText value="Nombre del Proceso"></h:outputText>
-								</f:facet>
-								<img style="margin-top: -4px; margin-right: 5px;"
-									src="img/icofolder.png"></img>
-								<h:commandLink value="#{proceso.nombre }" style="color:black; "
-									title="#{proceso.descripcion }"
-									action="#{procesosController.irAProcesoEspecifico }"
-									rendered="#{not proceso.editar }"></h:commandLink>
-								<p:inputText styleClass="input-small" id="editarNombreProceso"
-									value="#{proceso.nombre }" required="true"
-									requiredMessage="El nombre es necesario." maxlength="20"
-									rendered="#{proceso.editar }"></p:inputText>
+			<h:panelGroup id="panelTablaProcesos">
+				<h:form id="formPanelTablaProcesos"
+					rendered="#{not empty procesosController.procesosAMostrar }">
+					<h:panelGroup layout="block" id="panelTablaProcesos">
+						<h:dataTable id="tablaProcesos"
+							binding="#{procesosController.dataTable}"
+							styleClass="table table-hover table-condensed table-striped"
+							value="#{procesosController.procesosAMostrar }" var="proceso">
+							<small> <h:column>
+									<f:facet name="header">
+										<h:outputText value="Nombre del Proceso"></h:outputText>
+									</f:facet>
+									<img style="margin-top: -4px; margin-right: 5px;"
+										src="img/icofolder.png"></img>
+									<h:commandLink value="#{proceso.nombre }" style="color:black; "
+										title="#{proceso.descripcion }"
+										action="#{procesosController.irAProcesoEspecifico }"
+										rendered="#{not proceso.editar }"></h:commandLink>
+									<p:inputText styleClass="input-small" id="editarNombreProceso"
+										value="#{proceso.nombre }" required="true"
+										requiredMessage="El nombre es necesario." maxlength="20"
+										rendered="#{proceso.editar }"></p:inputText>
 
-								<h:message for="editarNombreProceso"
-									styleClass="alert alert-error" />
+									<h:message for="editarNombreProceso"
+										styleClass="alert alert-error" />
 
-							</h:column> <h:column>
-								<center>
-									<f:facet name="header">
-										<center>
-											<h:outputText value="Cantidad (preguntas)"></h:outputText>
-										</center>
-									</f:facet>
-									<h:outputText value="#{proceso.cantidad }"></h:outputText>
-								</center>
-							</h:column> <h:column>
-								<center>
-									<f:facet name="header">
-										<center>
-											<h:outputText value="Duración (minutos)"></h:outputText>
-										</center>
-									</f:facet>
-									<h:outputText value="#{proceso.duracion }">
-									</h:outputText>
-								</center>
-							</h:column> <h:column>
-								<center>
-									<f:facet name="header">
-										<center>
-											<h:outputText value="Fecha de Creación"></h:outputText>
-										</center>
-									</f:facet>
-
-									<h:outputText value="#{proceso.fechaCreacion }">
-										<f:convertDateTime type="date" pattern="MMM d, yyyy" />
-									</h:outputText>
-								</center>
-							</h:column> <h:column>
-								<center>
-									<f:facet name="header">
-										<center>
-											<h:outputText value="Estado"></h:outputText>
-										</center>
-									</f:facet>
-									<h:panelGroup styleClass="label label-info"
-										rendered="#{proceso.abierto}">ABIERTO</h:panelGroup>
-									<h:panelGroup styleClass="label label-warning"
-										rendered="#{not proceso.abierto }">CERRADO</h:panelGroup>
-								</center>
-							</h:column> <h:column rendered="#{autorizacionController.onlyCliente}">
-								<f:facet name="header">
+								</h:column> <h:column>
 									<center>
-										<h:outputText value="Estado de Revisión"
-											title="Estado en el que se encuentra el proceso."></h:outputText>
+										<f:facet name="header">
+											<center>
+												<h:outputText value="Cantidad (preguntas)"></h:outputText>
+											</center>
+										</f:facet>
+										<h:outputText value="#{proceso.cantidad }"></h:outputText>
 									</center>
-								</f:facet>
-								<center>
-									<h:panelGroup styleClass="label label-success"
-										rendered="#{proceso.estadoValoracion == 'realizada' }">COMPLETA</h:panelGroup>
-									<h:panelGroup styleClass="label label-warning"
-										rendered="#{proceso.estadoValoracion == 'pendiente'}">PENDIENTE</h:panelGroup>
-									<h:panelGroup styleClass="label"
-										rendered="#{proceso.estadoValoracion == 'no_realizada' or (empty proceso.estadoValoracion) }">NO REALIZADA</h:panelGroup>
-								</center>
-							</h:column> <h:column>
-								<p:commandLink styleClass="btn btn-info btn-small "
-									actionListener="#{procesosController.editarProceso }"
-									update="@form :growl" title="Editar proceso."
-									rendered="#{not proceso.editar }" style="padding: 5;">
-									<i class="icon-pencil icon-white"></i>
-								</p:commandLink>
-								<p:commandLink styleClass="btn btn-success btn-small "
-									title="Guardar cambios." update="@form :growl"
-									actionListener="#{procesosController.guardarEditarProceso }"
-									rendered="#{proceso.editar }" style="padding: 5;">
-									<i class="icon-ok icon-white"></i>
-								</p:commandLink>
+								</h:column> <h:column>
+									<center>
+										<f:facet name="header">
+											<center>
+												<h:outputText value="Duración (minutos)"></h:outputText>
+											</center>
+										</f:facet>
+										<h:outputText value="#{proceso.duracion }">
+										</h:outputText>
+									</center>
+								</h:column> <h:column>
+									<center>
+										<f:facet name="header">
+											<center>
+												<h:outputText value="Fecha de Creación"></h:outputText>
+											</center>
+										</f:facet>
+
+										<h:outputText value="#{proceso.fechaCreacion }">
+											<f:convertDateTime type="date" pattern="MMM d, yyyy" />
+										</h:outputText>
+									</center>
+								</h:column> <h:column>
+									<center>
+										<f:facet name="header">
+											<center>
+												<h:outputText value="Estado"></h:outputText>
+											</center>
+										</f:facet>
+										<h:panelGroup styleClass="label label-info"
+											rendered="#{proceso.abierto}">ABIERTO</h:panelGroup>
+										<h:panelGroup styleClass="label label-warning"
+											rendered="#{not proceso.abierto }">CERRADO</h:panelGroup>
+									</center>
+								</h:column> <h:column rendered="#{autorizacionController.onlyCliente}">
+									<f:facet name="header">
+										<center>
+											<h:outputText value="Estado de Revisión"
+												title="Estado en el que se encuentra el proceso."></h:outputText>
+										</center>
+									</f:facet>
+									<center>
+										<h:panelGroup styleClass="label label-success"
+											rendered="#{proceso.estadoValoracion == 'realizada' }">COMPLETA</h:panelGroup>
+										<h:panelGroup styleClass="label label-warning"
+											rendered="#{proceso.estadoValoracion == 'pendiente'}">PENDIENTE</h:panelGroup>
+										<h:panelGroup styleClass="label"
+											rendered="#{proceso.estadoValoracion == 'no_realizada' or (empty proceso.estadoValoracion) }">NO REALIZADA</h:panelGroup>
+									</center>
+								</h:column> <h:column>
+									<p:commandLink styleClass="btn btn-info btn-small "
+										actionListener="#{procesosController.editarProceso }"
+										update="@form :growl" title="Editar proceso."
+										rendered="#{not proceso.editar }" style="padding: 5;">
+										<i class="icon-pencil icon-white"></i>
+									</p:commandLink>
+									<p:commandLink styleClass="btn btn-success btn-small "
+										title="Guardar cambios." update="@form :growl"
+										actionListener="#{procesosController.guardarEditarProceso }"
+										rendered="#{proceso.editar }" style="padding: 5;">
+										<i class="icon-ok icon-white"></i>
+									</p:commandLink>
 								&nbsp;
 								<h:commandLink styleClass="btn btn-primary btn-small "
-									onclick="$('#myModalDuplicarProceso').modal('show');"
-									title="Duplicar el proceso." rendered="#{not proceso.editar }">
-									<img height="12" width="12" src="img/icoduplicar.png"></img>
-									<f:ajax
-										listener="#{procesosController.seleccionarProcesoDuplicar }"></f:ajax>
-								</h:commandLink>
-								<p:commandLink styleClass="btn btn-danger btn-small "
-									title="Cancelar." update="@form"
-									actionListener="#{procesosController.cancelarEditarProceso }"
-									rendered="#{proceso.editar }" style="padding: 5;">
-									<i class="icon-remove icon-white"></i>
-								</p:commandLink>
+										onclick="$('#myModalDuplicarProceso').modal('show');"
+										title="Duplicar el proceso." rendered="#{not proceso.editar }">
+										<img height="12" width="12" src="img/icoduplicar.png"></img>
+										<f:ajax
+											listener="#{procesosController.seleccionarProcesoDuplicar }"></f:ajax>
+									</h:commandLink>
+									<p:commandLink styleClass="btn btn-danger btn-small "
+										title="Cancelar." update="@form"
+										actionListener="#{procesosController.cancelarEditarProceso }"
+										rendered="#{proceso.editar }" style="padding: 5;">
+										<i class="icon-remove icon-white"></i>
+									</p:commandLink>
 								&nbsp;				
 								<h:commandLink styleClass="btn btn-danger btn-small "
-									onclick="$('#myModal').modal('show');"
-									title="Eliminar proceso." rendered="#{not proceso.editar }">
-									<f:ajax
-										listener="#{procesosController.seleccionarProcesoEliminar }"></f:ajax>
-									<i class="icon-trash icon-white"></i>
-								</h:commandLink>
+										onclick="$('#myModal').modal('show');"
+										title="Eliminar proceso." rendered="#{not proceso.editar }">
+										<f:ajax
+											listener="#{procesosController.seleccionarProcesoEliminar }"></f:ajax>
+										<i class="icon-trash icon-white"></i>
+									</h:commandLink>
 
-							</h:column>
-						</small>
-					</h:dataTable>
+								</h:column>
+							</small>
+						</h:dataTable>
+					</h:panelGroup>
+					<ul class="pager">
+						<li
+							class="previous #{procesosController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form panelTablaProcesos"
+								disabled="#{procesosController.primeraPagina}"
+								actionListener="#{procesosController.procesosAnteriores}">&larr; Anterior
+							</p:commandLink></li>
+						<li
+							class="next #{procesosController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form panelTablaProcesos"
+								disabled="#{procesosController.ultimaPagina}"
+								actionListener="#{procesosController.procesosSiguientes}">Siguiente &rarr;
+							</p:commandLink></li>
+					</ul>
+				</h:form>
+				<h:panelGroup styleClass="alert" id="mensajeNoHay"
+					rendered="#{empty procesosController.procesosAMostrar }">
+					<h:outputText value="No se encontraron procesos en tu cuenta."></h:outputText>
+					<a data-toggle="modal" href="#myModalCrearProceso">Crea un
+						proceso. </a>
 				</h:panelGroup>
-				<ul class="pager">
-					<li
-						class="previous #{procesosController.primeraPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaProcesos"
-							disabled="#{procesosController.primeraPagina}"
-							actionListener="#{procesosController.procesosAnteriores}">&larr; Anterior
-							</p:commandLink></li>
-					<li
-						class="next #{procesosController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaProcesos"
-							disabled="#{procesosController.ultimaPagina}"
-							actionListener="#{procesosController.procesosSiguientes}">Siguiente &rarr;
-							</p:commandLink></li>
-				</ul>
-			</h:form>
-
-			<h:panelGroup styleClass="alert" id="mensajeNoHay"
-				rendered="#{empty procesosController.procesosAMostrar }">
-				<h:outputText value="No se encontraron procesos en tu cuenta."></h:outputText>
-				<a data-toggle="modal" href="#myModalCrearProceso">Crea un
-					proceso. </a>
 			</h:panelGroup>
+
 
 			<h:form>
 				<div id="myModal" class="modal hide fade" tabindex="-1"
@@ -279,7 +282,7 @@ body {
 						<button class="btn btn-danger" data-dismiss="modal"
 							aria-hidden="true">No</button>
 						<p:commandLink styleClass="btn btn-primary"
-							update=":growl :formPanelTablaProcesos"
+							update=":growl :panelTablaProcesos"
 							actionListener="#{procesosController.eliminarProceso }"
 							onclick="closeDialog ();" rendered="#{not proceso.editar }"
 							style="padding: 5;" value="SI">
@@ -338,7 +341,7 @@ body {
 									<p:commandButton styleClass="btn btn-primary " value="Agregar"
 										style=" margin-left:65px; width:100px; height:45px;"
 										id="botCrearPrueba" onclick="closeDialog ();"
-										update=":growl :formPanelTablaProcesos @form"
+										update=":growl :panelTablaProcesos @form"
 										actionListener="#{procesosController.crearProceso}">
 									</p:commandButton>
 								</div>
@@ -398,7 +401,7 @@ body {
 									<p:commandButton styleClass="btn btn-primary" value="Duplicar"
 										style=" margin-left:65px; width:100px; height:45px;"
 										id="botDuplicarPrueba" onclick="closeDialog ();"
-										update=":growl :formPanelTablaProcesos @form"
+										update=":growl :panelTablaProcesos @form"
 										actionListener="#{procesosController.duplicarProceso}">
 									</p:commandButton>
 								</div>

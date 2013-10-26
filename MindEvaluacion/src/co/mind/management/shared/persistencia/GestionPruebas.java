@@ -134,7 +134,7 @@ public class GestionPruebas implements IGestionPruebas {
 			resultado.setNombre(prueba.getNombre());
 			resultado.setUsuarioAdministradorID(usuarioAdministradorID);
 			List<PreguntaUsuario> preguntas = prueba.getPreguntasUsuarios();
-			List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
+			List<PreguntaUsuarioBO> preguntasBO = new ArrayList<PreguntaUsuarioBO>();
 			for (PreguntaUsuario pre : preguntas) {
 				PreguntaUsuarioBO pregunta = new PreguntaUsuarioBO();
 				pregunta.setCaracteresMaximo(pre.getCaracteresMaximo());
@@ -223,7 +223,7 @@ public class GestionPruebas implements IGestionPruebas {
 					resultado.setUsuarioAdministradorID(usuarioID);
 					List<PreguntaUsuario> preguntas = prueba
 							.getPreguntasUsuarios();
-					List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
+					List<PreguntaUsuarioBO> preguntasBO = new ArrayList<PreguntaUsuarioBO>();
 					for (PreguntaUsuario pre : preguntas) {
 						PreguntaUsuarioBO pregunta = new PreguntaUsuarioBO();
 						pregunta.setCaracteresMaximo(pre.getCaracteresMaximo());
@@ -273,7 +273,7 @@ public class GestionPruebas implements IGestionPruebas {
 				resultado.setNombre(prueba.getNombre());
 				resultado.setUsuarioAdministradorID(usuarioAdministradorID);
 				List<PreguntaUsuario> preguntas = prueba.getPreguntasUsuarios();
-				List<PreguntaUsuarioBO> preguntasBO = new ArrayList<>();
+				List<PreguntaUsuarioBO> preguntasBO = new ArrayList<PreguntaUsuarioBO>();
 				for (PreguntaUsuario pre : preguntas) {
 					PreguntaUsuarioBO pregunta = new PreguntaUsuarioBO();
 					pregunta.setCaracteresMaximo(pre.getCaracteresMaximo());
@@ -337,7 +337,7 @@ public class GestionPruebas implements IGestionPruebas {
 				pruebasProceso.add(procesoUsuarioHasPruebaUsuario2
 						.getPruebasUsuario());
 			}
-			List<PreguntaUsuario> preguntas = new ArrayList<>();
+			List<PreguntaUsuario> preguntas = new ArrayList<PreguntaUsuario>();
 			for (PruebaUsuario pruebaUsuario : pruebasProceso) {
 				preguntas.addAll(pruebaUsuario.getPreguntasUsuarios());
 			}
@@ -586,73 +586,63 @@ public class GestionPruebas implements IGestionPruebas {
 
 	public List<PreguntaUsuarioBO> listarPreguntasPorProcesoRestantes(
 			int evaluado, int usuarioAdministradorID, int procesoID) {
-		Usuario user = entityManager
-				.find(Usuario.class, usuarioAdministradorID);
-		if (user != null) {
-			ProcesoUsuario proceso = entityManager.find(ProcesoUsuario.class,
-					procesoID);
-			Evaluado eval = entityManager.find(Evaluado.class, evaluado);
-			entityManager.refresh(proceso);
-			entityManager.refresh(eval);
-			List<ProcesoUsuarioHasPruebaUsuario> procesoUsuarioHasPruebaUsuario = proceso
-					.getProcesosUsuariosHasPruebasUsuarios();
-			List<PruebaUsuario> pruebasProceso = new ArrayList<PruebaUsuario>();
-			for (ProcesoUsuarioHasPruebaUsuario procesoUsuarioHasPruebaUsuario2 : procesoUsuarioHasPruebaUsuario) {
-				entityManager.refresh(procesoUsuarioHasPruebaUsuario2);
-				pruebasProceso.add(procesoUsuarioHasPruebaUsuario2
-						.getPruebasUsuario());
-			}
-			List<PreguntaUsuario> preguntas = new ArrayList<>();
-			for (PruebaUsuario pruebaUsuario : pruebasProceso) {
-				entityManager.refresh(pruebaUsuario);
-				preguntas.addAll(pruebaUsuario.getPreguntasUsuarios());
-			}
-			if (preguntas.size() > 0) {
-				List<PreguntaUsuarioBO> lista = new ArrayList<PreguntaUsuarioBO>();
-				for (int i = 0; i < preguntas.size(); i++) {
-					PreguntaUsuario pregunta = preguntas.get(i);
-					entityManager.refresh(pregunta);
+		Evaluado eval = entityManager.find(Evaluado.class, evaluado);
+		ProcesoUsuario proce = entityManager.find(ProcesoUsuario.class,
+				procesoID);
+		String query = "select distinct (pre)"
+				+ "from Evaluado e, PreguntaUsuario pre, ProcesoUsuario pro, ParticipacionEnProceso par, PruebaUsuario pru, ProcesoUsuarioHasPruebaUsuario prp, Resultado r "
+				+ "where e =:eval and par.estado =:estado pro =:proce"
+				+ "and pre.pruebasUsuario = pru and prp.pruebasUsuario = pru and prp.procesosUsuario = pro and r.preguntasUsuario = pre par.procesosUsuario = pro and par.evaluado = e "
+				+ "and 0= (SELECT COUNT(re) FROM Evaluado ev, PreguntaUsuario preg, ProcesoUsuario proc, ParticipacionEnProceso part, PruebaUsuario prue, ProcesoUsuarioHasPruebaUsuario prpr, Resultado re "
+				+ "WHERE e=ev and pre = preg and par = part and re.preguntasUsuario = preg and re.participacionEnProceso = part and part.evaluado = ev)";
 
-					PruebaUsuarioBO prueba = new PruebaUsuarioBO();
-					prueba.setDescripcion(pregunta.getPruebasUsuario()
-							.getDescripcion());
-					prueba.setIdentificador(pregunta.getPruebasUsuario()
-							.getIdentificador());
-					prueba.setNombre(pregunta.getPruebasUsuario().getNombre());
-					prueba.setUsuarioAdministradorID(pregunta
-							.getPruebasUsuario().getUsuario()
-							.getIdentificador());
+		Query q = entityManager.createQuery(query);
+		q.setParameter("eval", eval);
+		q.setParameter("estado",
+				Convencion.ESTADO_PARTICIPACION_EN_PROCESO_EN_EJECUCION);
+		q.setParameter("eval", proce);
+		List<PreguntaUsuario> preguntas = q.getResultList();
+		if (preguntas.size() > 0) {
+			List<PreguntaUsuarioBO> lista = new ArrayList<PreguntaUsuarioBO>();
+			for (int i = 0; i < preguntas.size(); i++) {
+				PreguntaUsuario pregunta = preguntas.get(i);
+				entityManager.refresh(pregunta);
 
-					PreguntaUsuarioBO preguntaUsuario = new PreguntaUsuarioBO();
-					preguntaUsuario.setCaracteresMaximo(pregunta
-							.getCaracteresMaximo());
-					preguntaUsuario.setIdentificador(pregunta
-							.getIdentificador());
-					preguntaUsuario.setPosicionPreguntaX(pregunta
-							.getPosicionPreguntaX());
-					preguntaUsuario.setOrden(pregunta.getOrden());
-					preguntaUsuario.setPosicionPreguntaY(pregunta
-							.getPosicionPreguntaY());
-					preguntaUsuario.setPregunta(pregunta.getPregunta());
-					preguntaUsuario.setTiempoMaximo(pregunta.getTiempoMaximo());
-					ImagenUsuarioBO imagen = new ImagenUsuarioBO();
-					imagen.setIdentificador(pregunta.getImagenesUsuario()
-							.getIdentificador());
-					ImagenBO img = new ImagenBO();
-					img.setIdentificador(pregunta.getImagenesUsuario()
-							.getImagene().getIdentificador());
-					img.setImagenURI(pregunta.getImagenesUsuario().getImagene()
-							.getImagenURI());
-					imagen.setImagene(img);
-					imagen.setUsuario(usuarioAdministradorID);
-					preguntaUsuario.setImagenesUsuarioID(imagen);
-					preguntaUsuario.setPruebaUsuario(prueba);
-					lista.add(preguntaUsuario);
-				}
-				return lista;
-			} else {
-				return null;
+				PruebaUsuarioBO prueba = new PruebaUsuarioBO();
+				prueba.setDescripcion(pregunta.getPruebasUsuario()
+						.getDescripcion());
+				prueba.setIdentificador(pregunta.getPruebasUsuario()
+						.getIdentificador());
+				prueba.setNombre(pregunta.getPruebasUsuario().getNombre());
+				prueba.setUsuarioAdministradorID(pregunta.getPruebasUsuario()
+						.getUsuario().getIdentificador());
+
+				PreguntaUsuarioBO preguntaUsuario = new PreguntaUsuarioBO();
+				preguntaUsuario.setCaracteresMaximo(pregunta
+						.getCaracteresMaximo());
+				preguntaUsuario.setIdentificador(pregunta.getIdentificador());
+				preguntaUsuario.setPosicionPreguntaX(pregunta
+						.getPosicionPreguntaX());
+				preguntaUsuario.setPosicionPreguntaY(pregunta
+						.getPosicionPreguntaY());
+				preguntaUsuario.setPregunta(pregunta.getPregunta());
+				preguntaUsuario.setOrden(pregunta.getOrden());
+				preguntaUsuario.setTiempoMaximo(pregunta.getTiempoMaximo());
+				ImagenUsuarioBO imagen = new ImagenUsuarioBO();
+				imagen.setIdentificador(pregunta.getImagenesUsuario()
+						.getIdentificador());
+				ImagenBO img = new ImagenBO();
+				img.setIdentificador(pregunta.getImagenesUsuario().getImagene()
+						.getIdentificador());
+				img.setImagenURI(pregunta.getImagenesUsuario().getImagene()
+						.getImagenURI());
+				imagen.setImagene(img);
+				imagen.setUsuario(usuarioAdministradorID);
+				preguntaUsuario.setImagenesUsuarioID(imagen);
+				preguntaUsuario.setPruebaUsuario(prueba);
+				lista.add(preguntaUsuario);
 			}
+			return lista;
 		} else {
 			return null;
 		}

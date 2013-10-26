@@ -105,7 +105,7 @@ body {
 						value="#{pruebasController.parametroBusqueda }" />
 					<p:commandLink styleClass="btn btn-info " id="searchid"
 						actionListener="#{pruebasController.buscarPruebas }"
-						update=":formPanelTablaPruebas">
+						update=":panelTablaPruebas">
 						<i class="icon-search icon-white"></i>
 					</p:commandLink>
 					<a data-toggle="modal" class="btn btn-primary "
@@ -118,109 +118,110 @@ body {
 			<legend class="legendTitles">
 				<img src="img/icopruebas.png"></img>Pruebas
 			</legend>
-			<h:form id="formPanelTablaPruebas"
-				rendered="#{not empty pruebasController.pruebasAMostrar }">
-				<h:dataTable id="panelTablaPruebas"
-					styleClass="table table-hover table-condensed table-striped"
-					binding="#{pruebasController.dataTable }"
-					value="#{pruebasController.pruebasAMostrar }" var="prueba">
-					<small> <h:column>
-							<f:facet name="header">
-								<h:outputText value="Nombre de la Prueba"></h:outputText>
-							</f:facet>
-							<img style="margin-top: -4px; margin-right: 5px;"
-								src="img/icofolder.png"></img>
-							<h:commandLink value="#{prueba.nombre }" style="color:black; "
-								title="#{prueba.descripcion }"
-								action="#{pruebasController.irAPruebaEspecifica }"
-								rendered="#{not prueba.editar }"></h:commandLink>
-							<p:inputText styleClass="input-small" id="editarNombrePrueba"
-								value="#{prueba.nombre }" rendered="#{prueba.editar }"
-								required="true" requiredMessage="El nombre es necesario."
-								maxlength="20"></p:inputText>
-
-							<h:message for="editarNombrePrueba"
-								styleClass="alert alert-error" />
-
-						</h:column> <h:column>
-							<center>
+			<h:panelGroup id="panelTablaPruebas">
+				<h:form id="formPanelTablaPruebas"
+					rendered="#{not empty pruebasController.pruebasAMostrar }">
+					<h:dataTable id="tablaPruebas"
+						styleClass="table table-hover table-condensed table-striped"
+						binding="#{pruebasController.dataTable }"
+						value="#{pruebasController.pruebasAMostrar }" var="prueba">
+						<small> <h:column>
 								<f:facet name="header">
-									<center>
-										<h:outputText value="Cantidad (preguntas)"></h:outputText>
-									</center>
+									<h:outputText value="Nombre de la Prueba"></h:outputText>
 								</f:facet>
-								<h:outputText value="#{prueba.cantidad }">
-								</h:outputText>
-							</center>
-						</h:column> <h:column>
-							<center>
-								<f:facet name="header">
-									<center>
-										<h:outputText value="Duración (minutos)"></h:outputText>
-									</center>
-								</f:facet>
-								<h:outputText value="#{prueba.duracion }">
-								</h:outputText>
-							</center>
-						</h:column> <h:column rendered="#{autorizacionController.cliente }">
-							<p:commandLink styleClass="btn btn-info btn-small"
-								actionListener="#{pruebasController.editarPrueba }"
-								title="Editar prueba." rendered="#{not prueba.editar }"
-								style="padding: 5;" update="@form :growl">
-								<i class="icon-pencil icon-white"></i>
-							</p:commandLink>
-							<p:commandLink styleClass="btn btn-success btn-small"
-								actionListener="#{pruebasController.guardarEditarPrueba }"
-								title="Guardar cambios." rendered="#{prueba.editar }"
-								style="padding: 5;" update="@form :growl">
-								<i class="icon-ok icon-white"></i>
-							</p:commandLink>&nbsp;
+								<img style="margin-top: -4px; margin-right: 5px;"
+									src="img/icofolder.png"></img>
+								<h:commandLink value="#{prueba.nombre }" style="color:black; "
+									title="#{prueba.descripcion }"
+									action="#{pruebasController.irAPruebaEspecifica }"
+									rendered="#{not prueba.editar }"></h:commandLink>
+								<p:inputText styleClass="input-small" id="editarNombrePrueba"
+									value="#{prueba.nombre }" rendered="#{prueba.editar }"
+									required="true" requiredMessage="El nombre es necesario."
+									maxlength="20"></p:inputText>
+
+								<h:message for="editarNombrePrueba"
+									styleClass="alert alert-error" />
+
+							</h:column> <h:column>
+								<center>
+									<f:facet name="header">
+										<center>
+											<h:outputText value="Cantidad (preguntas)"></h:outputText>
+										</center>
+									</f:facet>
+									<h:outputText value="#{prueba.cantidad }">
+									</h:outputText>
+								</center>
+							</h:column> <h:column>
+								<center>
+									<f:facet name="header">
+										<center>
+											<h:outputText value="Duración (minutos)"></h:outputText>
+										</center>
+									</f:facet>
+									<h:outputText value="#{prueba.duracion }">
+									</h:outputText>
+								</center>
+							</h:column> <h:column rendered="#{autorizacionController.cliente }">
+								<p:commandLink styleClass="btn btn-info btn-small"
+									actionListener="#{pruebasController.editarPrueba }"
+									title="Editar prueba." rendered="#{not prueba.editar }"
+									style="padding: 5;" update="@form :growl">
+									<i class="icon-pencil icon-white"></i>
+								</p:commandLink>
+								<p:commandLink styleClass="btn btn-success btn-small"
+									actionListener="#{pruebasController.guardarEditarPrueba }"
+									title="Guardar cambios." rendered="#{prueba.editar }"
+									style="padding: 5;" update="@form :growl">
+									<i class="icon-ok icon-white"></i>
+								</p:commandLink>&nbsp;
 							<h:commandLink styleClass="btn btn-danger btn-small "
-								onclick="$('#myModal').modal('show');" title="Eliminar prueba."
-								rendered="#{not prueba.editar }">
-								<f:ajax
-									listener="#{pruebasController.seleccionarPruebaEliminar }"></f:ajax>
-								<i class="icon-trash icon-white"></i>
-							</h:commandLink>
-							<p:commandLink styleClass="btn btn-danger btn-small"
-								actionListener="#{pruebasController.cancelarEditarPrueba }"
-								title="Cancelar." rendered="#{prueba.editar }"
-								style="padding: 5;" update="@form :growl">
-								<i class="icon-remove icon-white"></i>
-							</p:commandLink>
+									onclick="$('#myModal').modal('show');" title="Eliminar prueba."
+									rendered="#{not prueba.editar }">
+									<f:ajax
+										listener="#{pruebasController.seleccionarPruebaEliminar }"></f:ajax>
+									<i class="icon-trash icon-white"></i>
+								</h:commandLink>
+								<p:commandLink styleClass="btn btn-danger btn-small"
+									actionListener="#{pruebasController.cancelarEditarPrueba }"
+									title="Cancelar." rendered="#{prueba.editar }"
+									style="padding: 5;" update="@form :growl">
+									<i class="icon-remove icon-white"></i>
+								</p:commandLink>
 
-						</h:column>
-					</small>
-				</h:dataTable>
+							</h:column>
+						</small>
+					</h:dataTable>
 
-				<ul class="pager">
-					<li
-						class="previous #{pruebasController.primeraPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaPruebas"
-							disabled="#{pruebasController.primeraPagina}"
-							actionListener="#{pruebasController.pruebasAnteriores}">&larr; Anterior
+					<ul class="pager">
+						<li
+							class="previous #{pruebasController.primeraPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form :panelTablaPruebas"
+								disabled="#{pruebasController.primeraPagina}"
+								actionListener="#{pruebasController.pruebasAnteriores}">&larr; Anterior
 							</p:commandLink></li>
-					<li
-						class="next #{pruebasController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
-							update="@form panelTablaPruebas"
-							disabled="#{pruebasController.ultimaPagina}"
-							actionListener="#{pruebasController.pruebasSiguientes}">Siguiente &rarr;
+						<li
+							class="next #{pruebasController.ultimaPagina ? 'disabled' : ''}"><p:commandLink
+								update="@form :panelTablaPruebas"
+								disabled="#{pruebasController.ultimaPagina}"
+								actionListener="#{pruebasController.pruebasSiguientes}">Siguiente &rarr;
 							</p:commandLink></li>
-				</ul>
+					</ul>
 
-			</h:form>
-			<h:panelGroup styleClass="alert" id="mensajeNoHay"
-				rendered="#{empty pruebasController.pruebasAMostrar and autorizacionController.cliente}">
-				<h:outputText value="No se encontraron pruebas en tu cuenta."></h:outputText>
-				<a data-toggle="modal" href="#myModalCrearPrueba">Crea una
-					prueba. </a>
+				</h:form>
+				<h:panelGroup styleClass="alert" id="mensajeNoHay"
+					rendered="#{empty pruebasController.pruebasAMostrar and autorizacionController.cliente}">
+					<h:outputText value="No se encontraron pruebas en tu cuenta."></h:outputText>
+					<a data-toggle="modal" href="#myModalCrearPrueba">Crea una
+						prueba. </a>
+				</h:panelGroup>
+				<h:panelGroup styleClass="alert" id="mensajeNoHayProg"
+					rendered="#{empty pruebasController.pruebasAMostrar and autorizacionController.onlyProgramador}">
+					<h:outputText
+						value="No se encontraron pruebas en la cuenta del cliente."></h:outputText>
+				</h:panelGroup>
 			</h:panelGroup>
-			<h:panelGroup styleClass="alert" id="mensajeNoHayProg"
-				rendered="#{empty pruebasController.pruebasAMostrar and autorizacionController.onlyProgramador}">
-				<h:outputText
-					value="No se encontraron pruebas en la cuenta del cliente."></h:outputText>
-			</h:panelGroup>
-
 			<h:form id="formModalEliminarPrueba">
 				<div id="myModal" class="modal hide fade" tabindex="-1"
 					role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -239,7 +240,7 @@ body {
 							onclick="closeDialog ();"
 							rendered="#{autorizacionController.cliente  and not prueba.editar }"
 							style="padding: 5;" value="SI"
-							update=":formPanelTablaPruebas :growl">
+							update=":panelTablaPruebas :growl">
 						</p:commandLink>
 					</div>
 
@@ -274,7 +275,7 @@ body {
 							rendered="#{autorizacionController.cliente }"
 							actionListener="#{pruebasController.crearPrueba }" value="Crear"
 							style="margin-left:65px;margin-top:5px;"
-							update=":formPanelTablaPruebas :growl @form"
+							update=":panelTablaPruebas :growl @form"
 							onclick="closeDialog ();"></p:commandButton>
 					</div>
 				</h:form>

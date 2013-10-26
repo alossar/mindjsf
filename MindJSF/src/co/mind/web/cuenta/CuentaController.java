@@ -234,7 +234,8 @@ public class CuentaController implements Serializable {
 	}
 
 	public void enviarCorreo(ActionEvent event) {
-		int result = SMTPSender.enviarMensajeAMaestro(usuario, mensajeCorreo);
+		int result = SMTPSender.enviarMensajeAMaestro(usuario, mensajeCorreo,
+				"raymond.chaux@gmail.com");
 		if (result == Convencion.CORRECTO) {
 			FacesContext context = FacesContext.getCurrentInstance();
 			context.addMessage(null, new FacesMessage(

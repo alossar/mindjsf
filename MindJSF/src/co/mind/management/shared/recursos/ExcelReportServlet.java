@@ -58,7 +58,7 @@ public class ExcelReportServlet extends HttpServlet {
 			List<Integer> participaciones = (List<Integer>) session
 					.getAttribute("participaciones");
 			if (participaciones != null) {
-				Map<String, Object> parametros = new HashMap<>();
+				Map<String, Object> parametros = new HashMap<String, Object>();
 				parametros.put("participaciones", participaciones);
 
 				Connection jdbcConnection = getConnection();

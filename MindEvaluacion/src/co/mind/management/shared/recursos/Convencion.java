@@ -3,8 +3,6 @@ package co.mind.management.shared.recursos;
 public class Convencion {
 
 	public static final String JTA_PU_NAME = "Mind";
-	public static final String CORREO_NOTIFICACION = "studiosmalak@gmail.com";
-	public static final String CONTRASENA_NOTIFICACION = "studios123";
 	public static final int ID_USUARIO_ADMINISTRADOR_BASE = 123456789;
 
 	public static final String MENSAJE_CREACION_CUENTA_USUARIO_ADMINISTRADOR = "Bienvenido a Tarmin. Hemos creado su cuenta.";
@@ -101,13 +99,9 @@ public class Convencion {
 	public static final int MAXIMA_LONGITUD_EMPRESA = 19;
 	public static final int MAXIMA_LONGITUD_CARGO = 40;
 	public static final String DIRECCION_WEB = "http://www.mindmanagement.co";
-	public static final String CONEXION_URL = "jdbc:mysql://192.168.9.24:3306/mind_measurement";
-	// public static final String CONEXION_URL =
-	// "jdbc:mysql://localhost:3306/mind_measurement";
+	public static final String CONEXION_URL = "jdbc:mysql://localhost:3306/mind_measurement";
 	public static final String CONEXION_USER = "root";
-	public static final String CONEXION_PASS = "cbvBpsfyRV";
-	// public static final String CONEXION_PASS = "admin";
-
+	public static final String CONEXION_PASS = "2mmysqlserver";
 	// Mensajes
 	public static final String MENSAJE_FALLO_LOGIN = "El correo o la contraseña ingresada es incorrecta. Por favor intente de nuevo.";
 	public static final int MAXIMA_LONGITUD_PREGUNTA = 2000;
